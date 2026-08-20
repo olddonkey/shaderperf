@@ -88,6 +88,28 @@ wheels = [
 ]
 
 [[package]]
+name = "flip-evaluator"
+version = "1.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/dc/39cc51468562899883b43d04b9754c634798e6f7f8ffcd3b984743da041c/flip_evaluator-1.7.tar.gz", hash = "sha256:88204ec5000fa90b26e00f6f21e8d73f18e5afac7e8a23cb0803b117b3da081b", size = 244369, upload-time = "2025-11-07T15:34:33.59Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/28/58/f21e62cc7dead92191fc5dc36a8c3fa127f8097a22e4c835ab54787bd050/flip_evaluator-1.7-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:1e3344ddc903d4c8ef35cc87fd09edfc85c63d648b864d046c19ed0c51e6a7f7", size = 189920, upload-time = "2025-11-07T15:33:12.365Z" },
+    { url = "https://files.pythonhosted.org/packages/44/e1/2a3a85ee76cc7005c3347094eb9dd79a838d8f293ef7e50e7881a16c2a4c/flip_evaluator-1.7-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:5bbb63965c3bfa2c890c37ef349522bc8e9ce6c565cc4a621a29c4f586fd3ebe", size = 444740, upload-time = "2025-11-07T15:33:13.327Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/13/f6cd04b63d30bed8befeec3c5f424f698d80f71a530f6fc6f86e7aca0fe6/flip_evaluator-1.7-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:afd53e4ea606e6b6518e4cbbdce416a1b3b018bcb4c370bed0328a7f65f1308f", size = 415159, upload-time = "2025-11-07T15:33:14.416Z" },
+    { url = "https://files.pythonhosted.org/packages/34/72/652183139a7128638da48e035bc072fb86718eed330a477dfdc1cb5135e1/flip_evaluator-1.7-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:64dfece3eac45a1ce5ade37849a6ef12c598ea882fda096ab4df66bfc67e3da9", size = 976485, upload-time = "2025-11-07T15:33:15.456Z" },
+    { url = "https://files.pythonhosted.org/packages/de/72/8f5d083ef3ea86263a49296a4247343b111077b479d172b66f1d2971cd28/flip_evaluator-1.7-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:db5bd82d93c5be24e10134138cb54942fdce93fe771412a8b389e29e378cb59e", size = 906634, upload-time = "2025-11-07T15:33:16.866Z" },
+    { url = "https://files.pythonhosted.org/packages/53/bb/9a85a283efca7f57c6ba2c6457d299e4021984315e2ecf5a0d5fb13cc106/flip_evaluator-1.7-cp312-cp312-win32.whl", hash = "sha256:8a734f77b2f820110e67c78ad103cf62888cf26d9602e5fc0469551d9b81f0b8", size = 188882, upload-time = "2025-11-07T15:33:18.406Z" },
+    { url = "https://files.pythonhosted.org/packages/95/a6/fe3e220fc50783682662cc5fd9d1f86a4e9ee47d229c3079915bc226d0c9/flip_evaluator-1.7-cp312-cp312-win_amd64.whl", hash = "sha256:dc685bfc5acaab99adeb878b261c819637b2a0638bb7cbcffe9eb6a3d988c52b", size = 214363, upload-time = "2025-11-07T15:33:19.424Z" },
+    { url = "https://files.pythonhosted.org/packages/25/86/e328522798cd53908ee875b69a3272306cc6229377fb2f70517fcc6820d9/flip_evaluator-1.7-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:76e689402877598b5f4a42d57d7109a4339381cd104317f361cefb103d0851b3", size = 189925, upload-time = "2025-11-07T15:33:20.51Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/bf/6d62779ed195adfda082f3cd7a91ebbe3a1cc9c1e936f6fd26283a248bdb/flip_evaluator-1.7-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3f37f778e02f15607450f11f6d1b21a9b8c6817415cdc3441c3a7c55c33b5664", size = 444745, upload-time = "2025-11-07T15:33:21.498Z" },
+    { url = "https://files.pythonhosted.org/packages/a5/ed/fc88540c25b08aba2458835c26c8db54c6ea9c1dee058734492efe96eb1e/flip_evaluator-1.7-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d63eff9eaf9a68a6f9c30a3714c8a1a83fb6182f18df2fbc9bc361634a6691f7", size = 415164, upload-time = "2025-11-07T15:33:22.531Z" },
+    { url = "https://files.pythonhosted.org/packages/3b/4d/18923dc2e5262d2e34cc09aa51d3d2b977855922afc8ce333df2a10e9fc8/flip_evaluator-1.7-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:1308484dfd89a90fef4d87db7ba26c18fbb4f7df36c7ed20c9369e1cb5b19689", size = 976486, upload-time = "2025-11-07T15:33:25.133Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/27/f552b286648c40bb5820b19c4a8200965abace4e17554ce098b33d7e4f28/flip_evaluator-1.7-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:8fc68d919692ba147c6a3c6f8b2c41aa7d8aa578cad6ee86884019d90c99df66", size = 906636, upload-time = "2025-11-07T15:33:26.217Z" },
+    { url = "https://files.pythonhosted.org/packages/da/e8/e8b84c26cabcfe939c9909b5414090506496015f3e5937fade4557467011/flip_evaluator-1.7-cp313-cp313-win32.whl", hash = "sha256:3735232d08f6128ff743e8405bf6c7666efbee6e0a6ee1b5e2f5aa0b64f9b090", size = 188882, upload-time = "2025-11-07T15:33:27.33Z" },
+    { url = "https://files.pythonhosted.org/packages/b0/00/820a81e5d047298a622ca0538fede02b6ff09fbe85ad4bfa82649a92d919/flip_evaluator-1.7-cp313-cp313-win_amd64.whl", hash = "sha256:2081f715ea8190a5f58bc578b0cccd36a9a3f3cf78ad13fe6f86e5a75615bda7", size = 214374, upload-time = "2025-11-07T15:33:28.226Z" },
+]
+
+[[package]]
 name = "numpy"
 version = "2.5.2"
 source = { registry = "https://pypi.org/simple" }
@@ -195,12 +217,14 @@ name = "shaderperf"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
+    { name = "flip-evaluator" },
     { name = "numpy" },
     { name = "wgpu" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "flip-evaluator", specifier = ">=1.7" },
     { name = "numpy", specifier = ">=2.0" },
     { name = "wgpu", specifier = ">=0.19" },
 ]
