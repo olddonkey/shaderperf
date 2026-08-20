@@ -290,6 +290,25 @@ class ShaderTimer:
 
     # -- metadata ----------------------------------------------------------
 
+    def read_pixels(self, time_value: float = 1.0):
+        """Render once and read back the RGBA8 image as (h, w, 4) uint8."""
+        import numpy as np
+
+        self.set_uniforms(time_value)
+        self.render_once(1)
+        data = self.device.queue.read_texture(
+            {"texture": self.texture, "mip_level": 0, "origin": (0, 0, 0)},
+            {
+                "offset": 0,
+                "bytes_per_row": self.width * 4,
+                "rows_per_image": self.height,
+            },
+            (self.width, self.height, 1),
+        )
+        return np.frombuffer(bytes(data), dtype=np.uint8).reshape(
+            self.height, self.width, 4
+        )
+
     def environment_meta(self) -> dict:
         return self.ctx.meta() | {
             "shader_path": str(self.shader_path),
