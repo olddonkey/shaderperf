@@ -100,10 +100,12 @@ class ShaderTimer:
         width: int = 1024,
         height: int = 1024,
         context: GpuContext | None = None,
+        texture_format=wgpu.TextureFormat.rgba8unorm,
     ):
         self.shader_path = Path(shader_path)
         self.width = width
         self.height = height
+        self.texture_format = texture_format
 
         self.ctx = context or GpuContext()
         self.adapter = self.ctx.adapter
@@ -154,7 +156,7 @@ class ShaderTimer:
         )
         self.texture = device.create_texture(
             size=(self.width, self.height, 1),
-            format=wgpu.TextureFormat.rgba8unorm,
+            format=self.texture_format,
             usage=wgpu.TextureUsage.RENDER_ATTACHMENT | wgpu.TextureUsage.COPY_SRC,
         )
         self.texture_view = self.texture.create_view()
@@ -165,7 +167,7 @@ class ShaderTimer:
             fragment={
                 "module": self.module,
                 "entry_point": "fs_main",
-                "targets": [{"format": wgpu.TextureFormat.rgba8unorm}],
+                "targets": [{"format": self.texture_format}],
             },
         )
 
@@ -291,8 +293,28 @@ class ShaderTimer:
     # -- metadata ----------------------------------------------------------
 
     def read_pixels(self, time_value: float = 1.0):
-        """Render once and read back the RGBA8 image as (h, w, 4) uint8."""
+        """Render once and read back an RGBA8 or RGBA32F image."""
         import numpy as np
+
+        if self.texture_format == wgpu.TextureFormat.rgba8unorm:
+            dtype = np.uint8
+            bytes_per_pixel = 4
+        elif self.texture_format == wgpu.TextureFormat.rgba32float:
+            dtype = np.float32
+            bytes_per_pixel = 16
+        else:
+            raise ValueError(
+                "read_pixels supports only rgba8unorm and rgba32float; "
+                f"got {self.texture_format!r}"
+            )
+
+        bytes_per_row = self.width * bytes_per_pixel
+        if bytes_per_row % 256 != 0:
+            raise ValueError(
+                "WebGPU texture readback requires bytes_per_row to be a "
+                f"multiple of 256; width={self.width} and "
+                f"bytes_per_pixel={bytes_per_pixel} produce {bytes_per_row}"
+            )
 
         self.set_uniforms(time_value)
         self.render_once(1)
@@ -300,12 +322,12 @@ class ShaderTimer:
             {"texture": self.texture, "mip_level": 0, "origin": (0, 0, 0)},
             {
                 "offset": 0,
-                "bytes_per_row": self.width * 4,
+                "bytes_per_row": bytes_per_row,
                 "rows_per_image": self.height,
             },
             (self.width, self.height, 1),
         )
-        return np.frombuffer(bytes(data), dtype=np.uint8).reshape(
+        return np.frombuffer(bytes(data), dtype=dtype).reshape(
             self.height, self.width, 4
         )
 
