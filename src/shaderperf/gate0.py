@@ -17,10 +17,14 @@ baseline: max abs pixel diff <= 1/255 and <= 1% of pixels differing
 flip rounding on quantization-boundary pixels).
 
 One invocation = one certification run in a fresh process (cold start).
-The full gate requires >= 3 runs across >= 2 different days / times of day,
-all passing. Usage:
+The full gate requires >= 3 passing runs across >= 2 distinct UTC dates.
+Usage:
 
     uv run python -m shaderperf.gate0 --label day1-evening
+
+Run 1's sentinel p50 rose ~19% over ~50s at full load; a 90s full-load
+preheat in run 2 instead produced 5-14% block CV and 19.14% drift. This M5
+has no full-load steady state, so timed samples are duty-cycled to limit heat.
 """
 
 from __future__ import annotations
@@ -63,8 +67,18 @@ def _cmd(args: list[str]) -> str:
         return f"unavailable: {e}"
 
 
-def sentinel_block(timer: ShaderTimer, batch: int, n: int = 10) -> dict:
-    samples = [timer.render_once(batch).wall_ns / batch for _ in range(n)]
+def sentinel_block(
+    timer: ShaderTimer, batch: int, n: int = 10, duty: float = 1.0
+) -> dict:
+    if not 0.0 < duty <= 1.0:
+        raise ValueError("duty must be in the interval (0, 1]")
+
+    samples = []
+    for _ in range(n):
+        wall_ns = timer.render_once(batch).wall_ns
+        samples.append(wall_ns / batch)
+        if duty < 1.0:
+            time.sleep(wall_ns / 1e9 * (1.0 / duty - 1.0))
     return {
         "utc_time": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "wall_ns_per_pass": samples,
@@ -73,31 +87,17 @@ def sentinel_block(timer: ShaderTimer, batch: int, n: int = 10) -> dict:
     }
 
 
-def preheat(timer: ShaderTimer, batch: int, seconds: float) -> dict:
-    """Drive the GPU to thermal steady state before any measurement.
-
-    Run 1 (2026-08-19, no preheat) showed a monotonic ~19% sentinel slowdown
-    over ~50s of sustained load: the M5 downclocks as it heats. Interleaved
-    pairs are robust to slow drift, but the drift-band criterion is only
-    meaningful once the device is at steady state.
-    """
-    t0 = time.monotonic()
-    count = 0
-    while time.monotonic() - t0 < seconds:
-        timer.render_once(batch)
-        count += 1
-    return {"seconds": seconds, "renders": count}
-
-
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pairs", type=int, default=30)
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--warmup", type=int, default=5)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--preheat", type=float, default=90.0)
+    ap.add_argument("--duty", type=float, default=0.3)
     ap.add_argument("--label", type=str, required=True)
     args = ap.parse_args()
+    if not 0.0 < args.duty <= 1.0:
+        ap.error("--duty must be in the interval (0, 1]")
 
     t_start = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     ctx = GpuContext()
@@ -109,11 +109,10 @@ def main() -> None:
     order = list(range(len(CONTROLS)))
     rng.shuffle(order)
 
-    cold_block = sentinel_block(sentinel, args.batch)  # cold-start record
-    preheat_info = preheat(sentinel, args.batch, args.preheat)
-    print(f"preheat: {preheat_info['renders']} renders in {args.preheat:.0f}s")
-
-    sentinels = [sentinel_block(sentinel, args.batch)]
+    cold_block = sentinel_block(
+        sentinel, args.batch, duty=args.duty
+    )  # cold-start record
+    sentinels = [sentinel_block(sentinel, args.batch, duty=args.duty)]
     shader_results = {}
 
     for idx in order:
@@ -126,13 +125,25 @@ def main() -> None:
         patched = ShaderTimer(opt_path, context=ctx)
 
         null_cmp = interleaved_compare(
-            base_a, base_b, args.pairs, args.batch, args.warmup, rng
+            base_a,
+            base_b,
+            args.pairs,
+            args.batch,
+            args.warmup,
+            rng,
+            duty=args.duty,
         )
         null_rev_ci = paired_speedup_ci(
             null_cmp["b_wall_ns_per_pass"], null_cmp["a_wall_ns_per_pass"]
         )
         pos_cmp = interleaved_compare(
-            base_a, patched, args.pairs, args.batch, args.warmup, rng
+            base_a,
+            patched,
+            args.pairs,
+            args.batch,
+            args.warmup,
+            rng,
+            duty=args.duty,
         )
         pixels = pixel_equivalence(base_a, patched)
 
@@ -169,7 +180,7 @@ def main() -> None:
             f"[{ci['ci_low']:.4f},{ci['ci_high']:.4f}] "
             f"cert={pos_certified}  pixels_ok={pixels_ok}"
         )
-        sentinels.append(sentinel_block(sentinel, args.batch))
+        sentinels.append(sentinel_block(sentinel, args.batch, duty=args.duty))
 
     # Criteria evaluation.
     p50s = np.array([s["summary"]["p50_ns"] for s in sentinels])
@@ -190,6 +201,7 @@ def main() -> None:
             "batch": args.batch,
             "warmup": args.warmup,
             "seed": args.seed,
+            "duty": args.duty,
             "block_order": [CONTROLS[i][0] for i in order],
             "threshold": THRESHOLD,
             "drift_band": DRIFT_BAND,
@@ -199,7 +211,6 @@ def main() -> None:
             },
             "thermal": _cmd(["pmset", "-g", "therm"]),
             "power": _cmd(["pmset", "-g", "batt"]),
-            "preheat": preheat_info,
         },
         "cold_start_block": cold_block,
         "sentinel_blocks": sentinels,

@@ -55,6 +55,34 @@ Raw data in `results/`.
    smoke effect (56%) is far larger than the 15–20% effects gate #0 must
    certify; the smoke variant also alters the image, which is fine for pure
    timing but real positive controls must be known *honest* optimizations.
+5. **Sustained full load has no steady state on the M5**: run 1's sentinel
+   p50 rose monotonically by ~19% over ~50s. A fixed 90s full-load preheat in
+   run 2 instead induced thermal oscillation, with 5–14% CV across sentinel
+   blocks. Gate #0 therefore uses duty-cycled sampling at ~30% to keep average
+   power below the throttle threshold.
+
+## Gate #0 protocol
+
+Each run evaluates three measurement-validity criteria:
+
+- **(a) Positive-control sensitivity:** certify at least 4 of 5 known honest
+  optimizations at a paired-bootstrap p50 speedup CI lower bound >= 1.10.
+- **(b) Null specificity:** produce zero false certifications on null
+  comparisons, checked in both directions.
+- **(c) Within-run stability:** keep every sentinel-block p50 within +/-10%
+  of the run's median sentinel p50.
+
+Every positive control must also pass the pixel gate: maximum absolute channel
+difference <= 1/255 (one 8-bit level), with no more than 1% of pixels differing.
+
+The overall gate requires at least 3 passing runs across at least 2 distinct
+UTC dates, using one fresh process per run. Run a certification and aggregate
+all reports with:
+
+```
+uv run python -m shaderperf.gate0 --label day1-evening --duty 0.3
+uv run python -m shaderperf.gate0_report
+```
 
 ## Layout
 

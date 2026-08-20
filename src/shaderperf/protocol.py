@@ -7,6 +7,8 @@ device and samples are taken in randomized interleaved order.
 
 from __future__ import annotations
 
+import time
+
 import numpy as np
 
 from .harness import ShaderTimer
@@ -21,13 +23,23 @@ def interleaved_compare(
     warmup: int,
     rng: np.random.Generator,
     time_value: float = 1.0,
+    duty: float = 1.0,
 ) -> dict:
     """Randomized-interleaved paired comparison. Returns raw samples + CI."""
+    if not 0.0 < duty <= 1.0:
+        raise ValueError("duty must be in the interval (0, 1]")
+
+    def render_sample(timer: ShaderTimer) -> float:
+        wall_ns = timer.render_once(batch).wall_ns
+        if duty < 1.0:
+            time.sleep(wall_ns / 1e9 * (1.0 / duty - 1.0))
+        return wall_ns / batch
+
     for t in (timer_a, timer_b):
         t.set_uniforms(time_value)
     for _ in range(warmup):
-        timer_a.render_once(batch)
-        timer_b.render_once(batch)
+        render_sample(timer_a)
+        render_sample(timer_b)
 
     wall_a: list[float] = []
     wall_b: list[float] = []
@@ -39,9 +51,10 @@ def interleaved_compare(
         if not first_a:
             seq.reverse()
         for timer, sink in seq:
-            sink.append(timer.render_once(batch).wall_ns / batch)
+            sink.append(render_sample(timer))
 
     return {
+        "duty": duty,
         "a_wall_ns_per_pass": wall_a,
         "b_wall_ns_per_pass": wall_b,
         "first_in_pair": order_log,
