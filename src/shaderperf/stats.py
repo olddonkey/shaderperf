@@ -60,3 +60,62 @@ def paired_speedup_ci(
         "seed": seed,
         "certified_at_1.10": lo >= 1.10,
     }
+
+
+def bootstrap_share_difference(
+    full_a: list[int],
+    var_a: list[int],
+    full_b: list[int],
+    var_b: list[int],
+    n_boot: int = 10_000,
+    seed: int = 0,
+    alpha: float = 0.05,
+) -> dict:
+    """Bootstrap CI for the difference between two ablation cost shares.
+
+    Each of the four conditions is resampled independently. A condition's
+    share is ``1 - p50(variant) / p50(full)``, and the reported delta is the
+    share for condition A minus the share for condition B.
+    """
+    full_a_array = np.asarray(full_a, dtype=np.float64)
+    var_a_array = np.asarray(var_a, dtype=np.float64)
+    full_b_array = np.asarray(full_b, dtype=np.float64)
+    var_b_array = np.asarray(var_b, dtype=np.float64)
+    rng = np.random.default_rng(seed)
+
+    deltas = np.empty(n_boot)
+    for i in range(n_boot):
+        full_a_sample = rng.choice(
+            full_a_array, size=full_a_array.size, replace=True
+        )
+        var_a_sample = rng.choice(var_a_array, size=var_a_array.size, replace=True)
+        full_b_sample = rng.choice(
+            full_b_array, size=full_b_array.size, replace=True
+        )
+        var_b_sample = rng.choice(var_b_array, size=var_b_array.size, replace=True)
+        share_a = 1.0 - np.percentile(var_a_sample, 50) / np.percentile(
+            full_a_sample, 50
+        )
+        share_b = 1.0 - np.percentile(var_b_sample, 50) / np.percentile(
+            full_b_sample, 50
+        )
+        deltas[i] = share_a - share_b
+
+    share_a_point = 1.0 - np.percentile(var_a_array, 50) / np.percentile(
+        full_a_array, 50
+    )
+    share_b_point = 1.0 - np.percentile(var_b_array, 50) / np.percentile(
+        full_b_array, 50
+    )
+    point = float(share_a_point - share_b_point)
+    lo = float(np.percentile(deltas, 100 * alpha / 2))
+    hi = float(np.percentile(deltas, 100 * (1 - alpha / 2)))
+    return {
+        "delta_point": point,
+        "ci_low": lo,
+        "ci_high": hi,
+        "alpha": alpha,
+        "n_boot": n_boot,
+        "seed": seed,
+        "distinguishable_from_zero": lo > 0 or hi < 0,
+    }

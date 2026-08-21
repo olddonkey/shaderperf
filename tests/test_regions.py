@@ -6,7 +6,12 @@ import re
 import unittest
 from pathlib import Path
 
-from shaderperf.ablate import main as ablate_main
+from shaderperf.ablate import (
+    COLLAPSE_SHARE,
+    classify_results,
+    main as ablate_main,
+    regions_structurally_match,
+)
 from shaderperf.regions import (
     ablate,
     find_regions,
@@ -18,6 +23,7 @@ from shaderperf.regions import (
 ROOT = Path(__file__).resolve().parents[1]
 RAYMARCH = ROOT / "shaders/gate0/raymarch_sdf.wgsl"
 VORONOI = ROOT / "shaders/gate0/voronoi_cells.wgsl"
+VORONOI_SNR4 = ROOT / "shaders/gate0/voronoi_cells_snr4.wgsl"
 
 
 def _braces_balanced(src: str) -> bool:
@@ -170,6 +176,26 @@ class FixtureRegionTests(unittest.TestCase):
         self.assertTrue(any(r.kind == "if" for r in regions))
         self.assertTrue(any(r.kind in {"else", "else_if"} for r in regions))
 
+    def test_structure_preserving_fixture_match(self):
+        voronoi_regions = find_regions(VORONOI.read_text())
+        snr4_regions = find_regions(VORONOI_SNR4.read_text())
+        raymarch_regions = find_regions(RAYMARCH.read_text())
+
+        self.assertEqual(
+            [region.id for region in voronoi_regions],
+            [region.id for region in snr4_regions],
+        )
+        self.assertTrue(
+            regions_structurally_match(voronoi_regions, snr4_regions)
+        )
+        self.assertNotEqual(
+            [region.id for region in voronoi_regions],
+            [region.id for region in raymarch_regions],
+        )
+        self.assertFalse(
+            regions_structurally_match(voronoi_regions, raymarch_regions)
+        )
+
     def test_list_cli_for_both_fixtures(self):
         for path in (RAYMARCH, VORONOI):
             with self.subTest(shader=path.name), contextlib.redirect_stdout(
@@ -182,6 +208,60 @@ class FixtureRegionTests(unittest.TestCase):
             self.assertIn("snippet", table)
             self.assertRegex(table, r"\n\d+ region\(s\)\n$")
             self.assertNotIn("\n0 region(s)\n", table)
+
+
+class ClassificationTests(unittest.TestCase):
+    def test_three_informative_regions_pass(self):
+        results = [
+            {"valid": True, "cost_share": 0.10},
+            {"valid": True, "cost_share": 0.20},
+            {"valid": True, "cost_share": 0.30},
+        ]
+
+        summary = classify_results(results, COLLAPSE_SHARE)
+
+        self.assertEqual(
+            summary,
+            {
+                "valid_regions": 3,
+                "collapse_regions": 0,
+                "informative_regions": 3,
+                "max_informative_share": 0.30,
+                "nonredundancy_ok": True,
+            },
+        )
+
+    def test_collapse_regions_do_not_satisfy_precheck(self):
+        results = [
+            {"valid": True, "cost_share": 0.10},
+            {"valid": True, "cost_share": 0.20},
+            {"valid": True, "cost_share": 0.80},
+            {"valid": True, "cost_share": 0.90},
+            {"valid": True, "cost_share": 0.95},
+        ]
+
+        summary = classify_results(results, COLLAPSE_SHARE)
+
+        self.assertEqual(summary["valid_regions"], 5)
+        self.assertEqual(summary["collapse_regions"], 3)
+        self.assertEqual(summary["informative_regions"], 2)
+        self.assertEqual(summary["max_informative_share"], 0.20)
+        self.assertFalse(summary["nonredundancy_ok"])
+
+    def test_invalid_regions_are_ignored(self):
+        results = [
+            {"valid": True, "cost_share": 0.25},
+            {"valid": False, "cost_share": 0.99},
+            {"valid": False, "error": "compile failed"},
+        ]
+
+        summary = classify_results(results, COLLAPSE_SHARE)
+
+        self.assertEqual(summary["valid_regions"], 1)
+        self.assertEqual(summary["collapse_regions"], 0)
+        self.assertEqual(summary["informative_regions"], 1)
+        self.assertEqual(summary["max_informative_share"], 0.25)
+        self.assertFalse(summary["nonredundancy_ok"])
 
 
 if __name__ == "__main__":

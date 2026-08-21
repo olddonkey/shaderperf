@@ -6,6 +6,8 @@
 #   fbm_warp:         delete micro block (sub-quantization noise octaves)
 #   voronoi_cells:    delete ballast blocks (trig-identity zero terms)
 #   plasma_layers:    delete ballast blocks (trig-identity zero terms)
+#   voronoi_cells_snr4: preserve structure; reduce BALLAST_CELLS 12 -> 4
+#   mandelbrot_orbit_snr8: preserve structure; reduce BALLAST_ITERS 25 -> 8
 set -euo pipefail
 cd "$(dirname "$0")/../shaders/gate0"
 
@@ -20,5 +22,11 @@ sed '/BALLAST-BEGIN/,/BALLAST-END/d' voronoi_cells.wgsl > voronoi_cells_opt.wgsl
 
 sed '/BALLAST-BEGIN/,/BALLAST-END/d' plasma_layers.wgsl > plasma_layers_opt.wgsl
 
+sed 's/const BALLAST_CELLS: i32 = 12;/const BALLAST_CELLS: i32 = 4;/' \
+    voronoi_cells.wgsl > voronoi_cells_snr4.wgsl
+
+sed 's/const BALLAST_ITERS: i32 = 25;/const BALLAST_ITERS: i32 = 8;/' \
+    mandelbrot_orbit.wgsl > mandelbrot_orbit_snr8.wgsl
+
 echo "patches regenerated:"
-ls -1 *_opt.wgsl
+ls -1 *_opt.wgsl *_snr*.wgsl
