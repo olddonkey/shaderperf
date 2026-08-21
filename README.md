@@ -34,7 +34,7 @@ uv run python -m shaderperf.compare baseline.wgsl patched.wgsl \
 Certification criterion: bootstrap CI of the p50 speedup ratio; a patch is
 certified iff the CI lower bound >= 1.10.
 
-## Measurement findings so far (2026-08-19, M5, wgpu-py 0.32)
+## Measurement findings so far (2026-08-21, M5, wgpu-py 0.32)
 
 Raw data in `results/`.
 
@@ -60,8 +60,23 @@ Raw data in `results/`.
    run 2 instead induced thermal oscillation, with 5–14% CV across sentinel
    blocks. Gate #0 therefore uses duty-cycled sampling at ~30% to keep average
    power below the throttle threshold.
+6. **Battery power invalidates measurement**: runs 4-6 were on battery; their
+   sentinel blocks ran at 3.9/3.6 ms versus ~2.4 ms on AC, with 20-40% block
+   CV versus 2-5% on AC. Run 6 drifted 45% on an otherwise idle machine. AC
+   power is now a runner-enforced precondition, and legacy runs are classified
+   from their recorded power string.
+7. **Concurrent machine load is a suspected disturbance**: in run 5, one
+   ~20 s sentinel block ran 1.8x slower while tooling activity was present.
+   Battery power confounds the attribution, but certification runs are now
+   done on an otherwise idle machine.
 
 ## Gate #0 protocol
+
+**Preconditions:** The machine must be on AC power and otherwise idle. The
+runner enforces AC power before creating the GPU context; `--allow-battery`
+exists only for diagnostic runs, which are marked non-counting if AC power is
+not present at both the start and end. The idle-machine requirement is
+documented but not automatically enforced.
 
 Each run evaluates three measurement-validity criteria:
 
@@ -75,8 +90,9 @@ Each run evaluates three measurement-validity criteria:
 Every positive control must also pass the pixel gate: maximum absolute channel
 difference <= 1/255 (one 8-bit level), with no more than 1% of pixels differing.
 
-The overall gate requires at least 3 passing runs across at least 2 distinct
-UTC dates, using one fresh process per run. Run a certification and aggregate
+The overall gate requires at least 3 compliant passing runs across at least 2
+distinct UTC dates, using one fresh process per run. A measurement pass counts
+only when the run is also power-compliant. Run a certification and aggregate
 all reports with:
 
 ```

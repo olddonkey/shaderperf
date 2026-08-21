@@ -25,6 +25,10 @@ Usage:
 Run 1's sentinel p50 rose ~19% over ~50s at full load; a 90s full-load
 preheat in run 2 instead produced 5-14% block CV and 19.14% drift. This M5
 has no full-load steady state, so timed samples are duty-cycled to limit heat.
+
+Certification requires AC power and an otherwise idle machine. Runs 4-6 on
+battery showed sentinel blocks at 3.9/3.6 ms versus ~2.4 ms on AC, with
+20-40% block CV versus 2-5% on AC; run 5 also coincided with tooling load.
 """
 
 from __future__ import annotations
@@ -32,14 +36,16 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 import time
 from pathlib import Path
 
 import numpy as np
 
 from .harness import GpuContext, ShaderTimer
-from .stats import paired_speedup_ci, summarize
+from .power import parse_power_source
 from .protocol import interleaved_compare, pixel_equivalence
+from .stats import paired_speedup_ci, summarize
 
 ROOT = Path(__file__).parent.parent.parent
 
@@ -95,9 +101,25 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--duty", type=float, default=0.3)
     ap.add_argument("--label", type=str, required=True)
+    ap.add_argument("--allow-battery", action="store_true")
     args = ap.parse_args()
     if not 0.0 < args.duty <= 1.0:
         ap.error("--duty must be in the interval (0, 1]")
+
+    power_start = parse_power_source(_cmd(["pmset", "-g", "batt"]))
+    if power_start["on_ac"] is not True:
+        if not args.allow_battery:
+            print(
+                "error: Gate #0 requires AC power; connect AC power and retry "
+                "(--allow-battery is diagnostics only)",
+                file=sys.stderr,
+            )
+            raise SystemExit(2)
+        print(
+            "WARNING: AC POWER PRECONDITION NOT MET; diagnostic run will not "
+            "count toward Gate #0",
+            file=sys.stderr,
+        )
 
     t_start = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     ctx = GpuContext()
@@ -191,6 +213,11 @@ def main() -> None:
     crit_c = bool(drift_dev.max() <= DRIFT_BAND)
     pixels_all_ok = all(r["pixels_ok"] for r in shader_results.values())
     passed = crit_a and crit_b and crit_c and pixels_all_ok
+    power_end = parse_power_source(_cmd(["pmset", "-g", "batt"]))
+    power_compliant = (
+        power_start["on_ac"] is True and power_end["on_ac"] is True
+    )
+    counts_toward_gate = passed and power_compliant
 
     report = {
         "meta": ctx.meta()
@@ -210,7 +237,10 @@ def main() -> None:
                 "max_fraction": PIXEL_MAX_FRACTION,
             },
             "thermal": _cmd(["pmset", "-g", "therm"]),
-            "power": _cmd(["pmset", "-g", "batt"]),
+            "power": power_end["raw"],
+            "power_start": power_start,
+            "power_end": power_end,
+            "power_compliant": power_compliant,
         },
         "cold_start_block": cold_block,
         "sentinel_blocks": sentinels,
@@ -222,7 +252,9 @@ def main() -> None:
             "c_max_sentinel_drift": float(drift_dev.max()),
             "c_pass": crit_c,
             "pixels_all_ok": pixels_all_ok,
+            "power_compliant": power_compliant,
             "run_passed": passed,
+            "counts_toward_gate": counts_toward_gate,
         },
     }
 
@@ -237,6 +269,7 @@ def main() -> None:
     print(f"(c) drift within band -> {'PASS' if crit_c else 'FAIL'}")
     print(f"pixel equivalence all ok -> {'PASS' if pixels_all_ok else 'FAIL'}")
     print(f"RUN VERDICT: {'PASS' if passed else 'FAIL'}")
+    print(f"COUNTS TOWARD GATE: {'YES' if counts_toward_gate else 'NO'}")
     print(f"wrote {out}")
 
 
