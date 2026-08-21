@@ -101,6 +101,7 @@ class ShaderTimer:
         height: int = 1024,
         context: GpuContext | None = None,
         texture_format=wgpu.TextureFormat.rgba8unorm,
+        source_override: str | None = None,
     ):
         self.shader_path = Path(shader_path)
         self.width = width
@@ -113,7 +114,12 @@ class ShaderTimer:
         self.has_timestamps = self.ctx.has_timestamps
         self.device = self.ctx.device
 
-        self.shader_source = self.shader_path.read_text()
+        self.source_override = source_override is not None
+        self.shader_source = (
+            source_override
+            if source_override is not None
+            else self.shader_path.read_text()
+        )
         self.shader_hash = hashlib.sha256(self.shader_source.encode()).hexdigest()
 
         self._build_pipeline()
@@ -335,5 +341,6 @@ class ShaderTimer:
         return self.ctx.meta() | {
             "shader_path": str(self.shader_path),
             "shader_sha256": self.shader_hash,
+            "source_override": self.source_override,
             "resolution": [self.width, self.height],
         }
