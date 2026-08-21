@@ -34,6 +34,25 @@ uv run python -m shaderperf.compare baseline.wgsl patched.wgsl \
 Certification criterion: bootstrap CI of the p50 speedup ratio; a patch is
 certified iff the CI lower bound >= 1.10.
 
+## Sealed samples
+
+Each evaluation task has deterministic, stratified sealed time samples that
+are evaluated once at the end of a trajectory and never exposed to the agent.
+Create the commitment before experiments, then reveal its seed after every
+trajectory has ended:
+
+```
+uv run python -m shaderperf.sealed_cli commit --task TASK_ID
+uv run python -m shaderperf.sealed_cli reveal --task TASK_ID
+```
+
+Public records live in the tracked `sealed/commitments.json`. Local seeds live
+in `sealed/secrets.json`, which is gitignored and must remain secret until
+reveal. A third party can validate a revealed seed with `sealed_cli check` and
+regenerate the same samples. The verifier accepts `--sealed-task TASK_ID`; its
+report records the task ID and commitment hash, never the seed. Visible samples
+are a separate public list selected per task and are not managed by this unit.
+
 ## Measurement findings so far (2026-08-21, M5, wgpu-py 0.32)
 
 Raw data in `results/`.

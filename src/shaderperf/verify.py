@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .sealed import load_commitment, load_sealed_times
 from .verifier import verify
 
 
@@ -25,13 +26,27 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ref", type=Path, help="reference WGSL shader")
     parser.add_argument("test", type=Path, help="test WGSL shader")
-    parser.add_argument(
+    sample_group = parser.add_mutually_exclusive_group()
+    sample_group.add_argument(
         "--sample-times",
         type=_comma_separated_floats,
-        default=[1.0],
+        default=None,
         help="comma-separated sample times (default: 1.0)",
     )
-    parser.add_argument("--tc-start", type=float, default=1.0)
+    sample_group.add_argument(
+        "--sealed-task",
+        metavar="ID",
+        help="use locally regenerated sealed samples for task ID",
+    )
+    parser.add_argument(
+        "--tc-start",
+        type=float,
+        default=None,
+        help=(
+            "first temporal-check time (default: first sealed time with "
+            "--sealed-task, otherwise 1.0)"
+        ),
+    )
     parser.add_argument("--tc-step", type=float, default=0.05)
     parser.add_argument(
         "--tc-count",
@@ -51,19 +66,33 @@ def main() -> int:
     if args.tc_count > 0 and args.tau_tc is None:
         parser.error("--tau-tc is required unless --tc-count is 0")
 
+    if args.sealed_task is not None:
+        sample_times = load_sealed_times(args.sealed_task)
+        sealed_commitment = load_commitment(args.sealed_task)["commitment"]
+    else:
+        sample_times = args.sample_times or [1.0]
+        sealed_commitment = None
+    tc_start = (
+        args.tc_start
+        if args.tc_start is not None
+        else sample_times[0] if args.sealed_task is not None else 1.0
+    )
     tc_times = [
-        args.tc_start + index * args.tc_step for index in range(args.tc_count)
+        tc_start + index * args.tc_step for index in range(args.tc_count)
     ]
     report = verify(
         args.ref,
         args.test,
-        sample_times=args.sample_times,
+        sample_times=sample_times,
         tc_times=tc_times,
         tau_flip=args.tau_flip,
         tau_tc=args.tau_tc,
         width=args.width,
         height=args.height,
     )
+    if args.sealed_task is not None:
+        report["sealed_task"] = args.sealed_task
+        report["sealed_commitment"] = sealed_commitment
 
     for sample in report["samples"]:
         numerical = "PASS" if sample["numerical_test"]["passed"] else "FAIL"
