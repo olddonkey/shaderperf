@@ -1,0 +1,512 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-09-12T17:11:15Z",
+  "seed": 42,
+  "resolution": [
+    1024,
+    1024
+  ],
+  "flip_input": "rgba8unorm RGB converted to float32/255",
+  "pairs": [
+    {
+      "pair_id": "2a73c22a17",
+      "shader": "cal_detail",
+      "variant_id": "detail_octaves_5",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 2.0,
+      "expected": "unknown",
+      "flip_mean": 0.046684637665748596
+    },
+    {
+      "pair_id": "36a73a60d3",
+      "shader": "cal_detail",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 2.0,
+      "expected": "acceptable",
+      "flip_mean": 8.910619726520963e-07
+    },
+    {
+      "pair_id": "683138c6c3",
+      "shader": "cal_edges",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.34944096207618713
+    },
+    {
+      "pair_id": "d4b924630c",
+      "shader": "cal_sky",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 3.25,
+      "expected": "unknown",
+      "flip_mean": 0.3278953433036804
+    },
+    {
+      "pair_id": "f2a37ed347",
+      "shader": "cal_sky",
+      "variant_id": "cloud_octaves_2",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.021344086155295372
+    },
+    {
+      "pair_id": "45de613d38",
+      "shader": "cal_waves",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 2.4,
+      "expected": "unknown",
+      "flip_mean": 0.13590556383132935
+    },
+    {
+      "pair_id": "cea2f9168b",
+      "shader": "cal_detail",
+      "variant_id": "detail_octaves_3",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.1603238582611084
+    },
+    {
+      "pair_id": "160149c7e7",
+      "shader": "cal_sky",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 3.25,
+      "expected": "unknown",
+      "flip_mean": 0.14486819505691528
+    },
+    {
+      "pair_id": "79db7e3531",
+      "shader": "cal_detail",
+      "variant_id": "detail_octaves_1",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 2.0,
+      "expected": "unknown",
+      "flip_mean": 0.46413636207580566
+    },
+    {
+      "pair_id": "55e6fafa17",
+      "shader": "cal_edges",
+      "variant_id": "march_steps_24",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.05785754695534706
+    },
+    {
+      "pair_id": "55d65f6e79",
+      "shader": "cal_detail",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 2.0,
+      "expected": "unknown",
+      "flip_mean": 0.13381730020046234
+    },
+    {
+      "pair_id": "0b32f657cd",
+      "shader": "cal_edges",
+      "variant_id": "constant_light",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.13760125637054443
+    },
+    {
+      "pair_id": "e659d06b83",
+      "shader": "cal_sky",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.5016239285469055
+    },
+    {
+      "pair_id": "399e3c31b9",
+      "shader": "cal_sky",
+      "variant_id": "cloud_octaves_4",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 3.25,
+      "expected": "unknown",
+      "flip_mean": 0.008230759762227535
+    },
+    {
+      "pair_id": "4dbcc490c2",
+      "shader": "cal_waves",
+      "variant_id": "wave_terms_10",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 2.4,
+      "expected": "unknown",
+      "flip_mean": 0.17652301490306854
+    },
+    {
+      "pair_id": "9014f0151b",
+      "shader": "cal_waves",
+      "variant_id": "wave_terms_10",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 0.35,
+      "expected": "unknown",
+      "flip_mean": 0.24011419713497162
+    },
+    {
+      "pair_id": "835c504a97",
+      "shader": "cal_sky",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.32749831676483154
+    },
+    {
+      "pair_id": "d68e0739b7",
+      "shader": "cal_detail",
+      "variant_id": "detail_octaves_5",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.04665497690439224
+    },
+    {
+      "pair_id": "dd050a1377",
+      "shader": "cal_detail",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 2.0,
+      "expected": "unknown",
+      "flip_mean": 0.4346199929714203
+    },
+    {
+      "pair_id": "eaca0e28b2",
+      "shader": "cal_sky",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 0.0,
+      "expected": "acceptable",
+      "flip_mean": 7.469910912050182e-08
+    },
+    {
+      "pair_id": "c64610ab93",
+      "shader": "cal_waves",
+      "variant_id": "wave_terms_3",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 2.4,
+      "expected": "unknown",
+      "flip_mean": 0.438098669052124
+    },
+    {
+      "pair_id": "c2d067e0d2",
+      "shader": "cal_edges",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.1384166181087494
+    },
+    {
+      "pair_id": "24d084bd78",
+      "shader": "cal_detail",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 2.0,
+      "expected": "unknown",
+      "flip_mean": 0.2865423560142517
+    },
+    {
+      "pair_id": "2fb2becb57",
+      "shader": "cal_waves",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 0.35,
+      "expected": "unknown",
+      "flip_mean": 0.40505483746528625
+    },
+    {
+      "pair_id": "3897dcc3a8",
+      "shader": "cal_waves",
+      "variant_id": "wave_terms_6",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 2.4,
+      "expected": "unknown",
+      "flip_mean": 0.2831237316131592
+    },
+    {
+      "pair_id": "c7c6a815bf",
+      "shader": "cal_detail",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.13366134464740753
+    },
+    {
+      "pair_id": "df18e93fe0",
+      "shader": "cal_detail",
+      "variant_id": "detail_octaves_1",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.463838666677475
+    },
+    {
+      "pair_id": "278b9fd60c",
+      "shader": "cal_edges",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.5230859518051147
+    },
+    {
+      "pair_id": "db99d276f4",
+      "shader": "cal_detail",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 0.0,
+      "expected": "acceptable",
+      "flip_mean": 1.5023566675154143e-06
+    },
+    {
+      "pair_id": "68ca68f1cd",
+      "shader": "cal_waves",
+      "variant_id": "wave_terms_3",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 0.35,
+      "expected": "unknown",
+      "flip_mean": 0.5174027681350708
+    },
+    {
+      "pair_id": "00f30d5162",
+      "shader": "cal_waves",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 0.35,
+      "expected": "unknown",
+      "flip_mean": 0.29695096611976624
+    },
+    {
+      "pair_id": "34daf647cf",
+      "shader": "cal_waves",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 0.35,
+      "expected": "acceptable",
+      "flip_mean": 0.0
+    },
+    {
+      "pair_id": "70fbabd212",
+      "shader": "cal_detail",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.2862904369831085
+    },
+    {
+      "pair_id": "2e36d87fd8",
+      "shader": "cal_waves",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 0.35,
+      "expected": "unknown",
+      "flip_mean": 0.1476728469133377
+    },
+    {
+      "pair_id": "7cc5be2e6e",
+      "shader": "cal_sky",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 3.25,
+      "expected": "unknown",
+      "flip_mean": 0.5025786757469177
+    },
+    {
+      "pair_id": "7dd4f96c21",
+      "shader": "cal_waves",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 2.4,
+      "expected": "unknown",
+      "flip_mean": 0.4768849015235901
+    },
+    {
+      "pair_id": "a527648bba",
+      "shader": "cal_waves",
+      "variant_id": "posterize_8",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 2.4,
+      "expected": "unknown",
+      "flip_mean": 0.29318568110466003
+    },
+    {
+      "pair_id": "a7f7e29f37",
+      "shader": "cal_sky",
+      "variant_id": "cloud_octaves_4",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.008164611645042896
+    },
+    {
+      "pair_id": "728075b1bf",
+      "shader": "cal_detail",
+      "variant_id": "detail_octaves_3",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 2.0,
+      "expected": "unknown",
+      "flip_mean": 0.16058780252933502
+    },
+    {
+      "pair_id": "df2460a14f",
+      "shader": "cal_waves",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 2.4,
+      "expected": "acceptable",
+      "flip_mean": 0.0
+    },
+    {
+      "pair_id": "97a43833e8",
+      "shader": "cal_sky",
+      "variant_id": "cloud_octaves_2",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 3.25,
+      "expected": "unknown",
+      "flip_mean": 0.02211141213774681
+    },
+    {
+      "pair_id": "eb3470202b",
+      "shader": "cal_detail",
+      "variant_id": "posterize_4",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.4343019127845764
+    },
+    {
+      "pair_id": "6402f2248f",
+      "shader": "cal_sky",
+      "variant_id": "cloud_octaves_1",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.03306809067726135
+    },
+    {
+      "pair_id": "49c8ac5793",
+      "shader": "cal_sky",
+      "variant_id": "posterize_24",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 0.0,
+      "expected": "unknown",
+      "flip_mean": 0.1448986530303955
+    },
+    {
+      "pair_id": "26a25d71df",
+      "shader": "cal_edges",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 1.0,
+      "expected": "acceptable",
+      "flip_mean": 0.0
+    },
+    {
+      "pair_id": "5f86372780",
+      "shader": "cal_edges",
+      "variant_id": "march_steps_40",
+      "kind": "graded_degradation",
+      "severity": 1,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.020867319777607918
+    },
+    {
+      "pair_id": "3cb0d557f4",
+      "shader": "cal_edges",
+      "variant_id": "march_steps_12",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 1.0,
+      "expected": "unknown",
+      "flip_mean": 0.18739548325538635
+    },
+    {
+      "pair_id": "1d0fa1e207",
+      "shader": "cal_sky",
+      "variant_id": "safe_ballast",
+      "kind": "known_safe",
+      "severity": 0,
+      "time": 3.25,
+      "expected": "acceptable",
+      "flip_mean": 0.0
+    },
+    {
+      "pair_id": "ac06a4bd4e",
+      "shader": "cal_sky",
+      "variant_id": "cloud_octaves_1",
+      "kind": "graded_degradation",
+      "severity": 3,
+      "time": 3.25,
+      "expected": "unknown",
+      "flip_mean": 0.033309727907180786
+    },
+    {
+      "pair_id": "9e7a7bc6c6",
+      "shader": "cal_waves",
+      "variant_id": "wave_terms_6",
+      "kind": "graded_degradation",
+      "severity": 2,
+      "time": 0.35,
+      "expected": "unknown",
+      "flip_mean": 0.3630160689353943
+    }
+  ]
+}

@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 .DS_Store
 sealed/secrets.json
+results/calibration/*.png
