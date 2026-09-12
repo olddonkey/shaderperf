@@ -40,8 +40,9 @@
     "utc": "2026-09-12T23:08:54.480321Z"
   },
   "34daf647cf": {
-    "label": "unacceptable",
-    "utc": "2026-09-12T23:09:07.406504Z"
+    "label": "acceptable",
+    "note": "corrected from 'unacceptable' after review: rendered pair is pixel-identical (34daf647cf: 0 differing pixels; db99d276f4: 17/1048576 pixels at 1/255) \u2014 no visible difference exists; user confirmed misclick and approved correction in chat, 2026-09-12",
+    "utc": "2026-09-12T23:20:16Z"
   },
   "36a73a60d3": {
     "label": "acceptable",
@@ -168,8 +169,9 @@
     "utc": "2026-09-12T23:08:34.997988Z"
   },
   "db99d276f4": {
-    "label": "unacceptable",
-    "utc": "2026-09-12T23:09:05.144743Z"
+    "label": "acceptable",
+    "note": "corrected from 'unacceptable' after review: rendered pair is pixel-identical (34daf647cf: 0 differing pixels; db99d276f4: 17/1048576 pixels at 1/255) \u2014 no visible difference exists; user confirmed misclick and approved correction in chat, 2026-09-12",
+    "utc": "2026-09-12T23:20:16Z"
   },
   "dd050a1377": {
     "label": "unacceptable",
