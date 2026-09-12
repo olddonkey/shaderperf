@@ -7,6 +7,7 @@ dependencies = [
     "wgpu>=0.19",
     "numpy>=2.0",
     "flip-evaluator>=1.7",
+    "pillow>=12.3.0",
 ]
 
 [build-system]
