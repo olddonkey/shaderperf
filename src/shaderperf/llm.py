@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -65,6 +66,223 @@ class MockChat:
             "input_tokens": fake_tokens,
             "output_tokens": fake_tokens,
         }
+
+
+def build_codex_argv(
+    *,
+    model: str,
+    effort: str,
+    workspace_dir: str | Path,
+    prompt: str,
+    codex_bin: str = "codex",
+    extra_config: list[str] | None = None,
+    thread_id: str | None = None,
+) -> list[str]:
+    """Build a first-turn or resume ``codex exec`` argument vector."""
+
+    argv = [codex_bin, "exec"]
+    if thread_id is not None:
+        argv.extend(["resume", thread_id])
+    argv.extend(["--json", "--skip-git-repo-check"])
+    if thread_id is None:
+        argv.extend(["-s", "read-only", "-C", str(workspace_dir), "-m", model])
+    argv.extend(["-c", f'model_reasoning_effort="{effort}"'])
+    if thread_id is not None:
+        argv.extend(["-c", 'sandbox_mode="read-only"'])
+    for value in extra_config or []:
+        argv.extend(["-c", value])
+    argv.extend(["-c", "mcp_servers={}", prompt])
+    return argv
+
+
+def parse_codex_jsonl(text: str) -> dict[str, Any]:
+    """Parse the useful fields from ``codex exec --json`` JSONL output."""
+
+    thread_id: str | None = None
+    final_text = ""
+    warnings: list[str] = []
+    usage: dict[str, Any] = {}
+    turn_completed = False
+
+    for line in text.splitlines():
+        try:
+            event = json.loads(line)
+        except (json.JSONDecodeError, TypeError):
+            continue
+        if not isinstance(event, dict):
+            continue
+        event_type = event.get("type")
+        if event_type == "thread.started":
+            candidate = event.get("thread_id")
+            if isinstance(candidate, str) and candidate:
+                thread_id = candidate
+        elif event_type == "item.completed":
+            item = event.get("item")
+            if not isinstance(item, dict):
+                continue
+            item_type = item.get("type")
+            if item_type == "agent_message":
+                candidate = item.get("text")
+                if isinstance(candidate, str):
+                    final_text = candidate
+            elif item_type == "error":
+                candidate = item.get("message", item.get("text"))
+                if isinstance(candidate, str):
+                    warnings.append(candidate)
+                else:
+                    warnings.append(json.dumps(item, sort_keys=True))
+        elif event_type == "turn.completed":
+            turn_completed = True
+            candidate = event.get("usage")
+            usage = candidate if isinstance(candidate, dict) else {}
+
+    def token_count(name: str) -> int:
+        try:
+            return int(usage.get(name, 0))
+        except (TypeError, ValueError):
+            return 0
+
+    result: dict[str, Any] = {
+        "text": final_text,
+        "input_tokens": token_count("input_tokens"),
+        "output_tokens": token_count("output_tokens"),
+    }
+    if thread_id is not None:
+        result["thread_id"] = thread_id
+    if "cached_input_tokens" in usage:
+        result["cached_input_tokens"] = token_count("cached_input_tokens")
+    if "reasoning_output_tokens" in usage:
+        result["reasoning_output_tokens"] = token_count(
+            "reasoning_output_tokens"
+        )
+    if not turn_completed:
+        warnings.append("missing turn.completed event; usage defaults to zero")
+    result["warnings"] = warnings
+    return result
+
+
+def _subprocess_output(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
+def _output_tail(stdout: str | bytes | None, stderr: str | bytes | None) -> str:
+    combined = "\n".join(
+        part for part in (_subprocess_output(stdout), _subprocess_output(stderr)) if part
+    )
+    return combined[-800:]
+
+
+class CodexChat:
+    """Stateful adapter around subscription-backed ``codex exec`` threads."""
+
+    def __init__(
+        self,
+        model: str,
+        effort: str,
+        workspace_dir: str | Path,
+        codex_bin: str = "codex",
+        extra_config: list[str] | None = None,
+        timeout_seconds: float = 600.0,
+    ):
+        workspace = Path(workspace_dir).expanduser().resolve()
+        if workspace == REPO_ROOT.resolve():
+            raise ValueError("Codex workspace must be a scratch directory, not the repo")
+        workspace.mkdir(parents=True, exist_ok=True)
+        self.model = model
+        self.effort = effort
+        self.workspace_dir = workspace
+        self.codex_bin = codex_bin
+        self.extra_config = list(extra_config or [])
+        self.timeout_seconds = float(timeout_seconds)
+        self.thread_id: str | None = None
+        self.warnings: list[str] = []
+        self.max_output_tokens_requests: list[int] = []
+        self.argv_flags_history: list[list[str]] = []
+        self._message_count: int | None = None
+        self._run = subprocess.run
+
+    def complete(
+        self, messages: list[dict], max_output_tokens: int
+    ) -> dict[str, Any]:
+        if self._message_count is not None and len(messages) < self._message_count:
+            raise RuntimeError(
+                "CodexChat message history shrank between complete() calls"
+            )
+
+        first_turn = self._message_count is None
+        if first_turn:
+            if (
+                len(messages) < 2
+                or messages[0].get("role") != "system"
+                or messages[1].get("role") != "user"
+            ):
+                raise ValueError(
+                    "first CodexChat call requires a system message followed by "
+                    "a user message"
+                )
+            prompt = f"{messages[0].get('content', '')}\n\n{messages[1].get('content', '')}"
+            resume_thread_id = None
+        else:
+            if self.thread_id is None:
+                raise RuntimeError("CodexChat thread_id is missing for resume")
+            if not messages:
+                raise ValueError("CodexChat requires at least one message")
+            prompt = str(messages[-1].get("content", ""))
+            resume_thread_id = self.thread_id
+
+        requested_tokens = int(max_output_tokens)
+        self.max_output_tokens_requests.append(requested_tokens)
+        argv = build_codex_argv(
+            model=self.model,
+            effort=self.effort,
+            workspace_dir=self.workspace_dir,
+            prompt=prompt,
+            codex_bin=self.codex_bin,
+            extra_config=self.extra_config,
+            thread_id=resume_thread_id,
+        )
+        self.argv_flags_history.append(argv[1:-1])
+        try:
+            completed = self._run(
+                argv,
+                capture_output=True,
+                text=True,
+                timeout=self.timeout_seconds,
+                cwd=self.workspace_dir,
+            )
+        except subprocess.TimeoutExpired as exc:
+            tail = _output_tail(exc.stdout, exc.stderr)
+            detail = f"\n{tail}" if tail else ""
+            raise RuntimeError(
+                f"Codex CLI timed out after {self.timeout_seconds:g} seconds{detail}"
+            ) from exc
+
+        if completed.returncode != 0:
+            tail = _output_tail(completed.stdout, completed.stderr)
+            detail = f"\n{tail}" if tail else ""
+            raise RuntimeError(
+                f"Codex CLI exited with status {completed.returncode}{detail}"
+            )
+
+        parsed = parse_codex_jsonl(completed.stdout)
+        if first_turn:
+            parsed_thread_id = parsed.get("thread_id")
+            if not isinstance(parsed_thread_id, str) or not parsed_thread_id:
+                raise RuntimeError(
+                    "Codex CLI output did not include a thread.started thread_id"
+                )
+            self.thread_id = parsed_thread_id
+        parsed["thread_id"] = self.thread_id
+        latest_warnings = list(parsed.get("warnings", []))
+        self.warnings.extend(latest_warnings)
+        parsed["warnings"] = latest_warnings
+        parsed["requested_max_output_tokens"] = requested_tokens
+        self._message_count = len(messages)
+        return parsed
 
 
 def resolve_api_key(repo_root: str | Path | None = None) -> str:

@@ -1,4 +1,8 @@
-"""Run one feedback Condition-A shader-optimization trajectory."""
+"""Run one feedback Condition-A shader-optimization trajectory.
+
+For the Codex backend, the system-role text is embedded in the first prompt
+because the deployed agent's hidden system prompt cannot be replaced.
+"""
 
 from __future__ import annotations
 
@@ -7,6 +11,8 @@ import hashlib
 import json
 import math
 import re
+import subprocess
+import tempfile
 import time
 from pathlib import Path
 from typing import Any, Protocol
@@ -17,6 +23,7 @@ import wgpu
 from .harness import GpuContext, ShaderTimer
 from .llm import (
     BUDGET_USD,
+    CodexChat,
     LEDGER_PATH,
     MockChat,
     OpenAIChat,
@@ -49,7 +56,7 @@ WGSL_BLOCK = re.compile(
 class ChatClient(Protocol):
     def complete(
         self, messages: list[dict], max_output_tokens: int
-    ) -> dict[str, str | int]: ...
+    ) -> dict[str, Any]: ...
 
 
 class Evaluator(Protocol):
@@ -291,11 +298,16 @@ def run_trajectory(
     ledger_path: str | Path = LEDGER_PATH,
     allow_unpriced: bool = False,
     budget_usd: float = BUDGET_USD,
+    backend: str | None = None,
+    backend_config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Run the mock-testable loop and return its persisted trajectory log."""
 
     if condition != "A":
         raise ValueError("only condition A is implemented")
+    selected_backend = backend or ("openai" if real_run else "mock-file")
+    if selected_backend not in {"openai", "codex", "mock-file"}:
+        raise ValueError(f"unsupported backend: {selected_backend!r}")
     _validate_label(label)
     if max_attempts < 0 or max_total_tokens < 0 or max_output_tokens <= 0:
         raise ValueError(
@@ -323,29 +335,35 @@ def run_trajectory(
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": _first_user_message(task_source, tau_flip)},
     ]
+    run_config: dict[str, Any] = {
+        "task_path": str(task_path),
+        "task_sha256": hashlib.sha256(task_source.encode("utf-8")).hexdigest(),
+        "condition": condition,
+        "max_attempts": max_attempts,
+        "max_total_tokens": max_total_tokens,
+        "max_output_tokens": max_output_tokens,
+        "visible_times": visible,
+        "pairs": pairs,
+        "batch": batch,
+        "duty": duty,
+        "seed": seed,
+        "model": model,
+        "base_url": base_url,
+        "tau_flip": float(tau_flip),
+        "backend": selected_backend,
+        "mock": selected_backend == "mock-file",
+        "allow_unpriced": bool(allow_unpriced),
+        "budget_usd": float(budget_usd),
+    }
+    if backend_config is not None:
+        run_config.update(dict(backend_config))
+        run_config["backend"] = selected_backend
+
     trajectory: dict[str, Any] = {
         "schema_version": 1,
         "label": label,
         "started_utc": _utc_now(),
-        "config": {
-            "task_path": str(task_path),
-            "task_sha256": hashlib.sha256(task_source.encode("utf-8")).hexdigest(),
-            "condition": condition,
-            "max_attempts": max_attempts,
-            "max_total_tokens": max_total_tokens,
-            "max_output_tokens": max_output_tokens,
-            "visible_times": visible,
-            "pairs": pairs,
-            "batch": batch,
-            "duty": duty,
-            "seed": seed,
-            "model": model,
-            "base_url": base_url,
-            "tau_flip": float(tau_flip),
-            "mock": not real_run,
-            "allow_unpriced": bool(allow_unpriced),
-            "budget_usd": float(budget_usd),
-        },
+        "config": run_config,
         "env_meta": dict(env_meta or {}),
         "messages": messages,
         "attempts": [],
@@ -377,6 +395,12 @@ def run_trajectory(
             messages,
             max_output_tokens=min(max_output_tokens, remaining_before),
         )
+        if selected_backend == "codex":
+            argv_history = getattr(chat, "argv_flags_history", None)
+            if argv_history is not None:
+                trajectory["config"]["codex_argv_flags"] = [
+                    list(argv) for argv in argv_history
+                ]
         text = str(response["text"])
         input_tokens = int(response["input_tokens"])
         output_tokens = int(response["output_tokens"])
@@ -416,6 +440,28 @@ def run_trajectory(
             "cumulative_total_tokens": trajectory["usage"]["total_tokens"],
             "cumulative_cost_usd": trajectory["usage"]["cost_usd"],
         }
+        for token_name in ("cached_input_tokens", "reasoning_output_tokens"):
+            if token_name in response:
+                token_value = int(response[token_name])
+                if token_value < 0:
+                    raise ValueError("LLM token usage must be non-negative")
+                trajectory["usage"][token_name] = (
+                    int(trajectory["usage"].get(token_name, 0)) + token_value
+                )
+                usage_record[token_name] = token_value
+                usage_record[f"cumulative_{token_name}"] = trajectory["usage"][
+                    token_name
+                ]
+        if "requested_max_output_tokens" in response:
+            usage_record["requested_max_output_tokens"] = int(
+                response["requested_max_output_tokens"]
+            )
+
+        call_record: dict[str, Any] = {}
+        if "thread_id" in response:
+            call_record["thread_id"] = response["thread_id"]
+        if "warnings" in response:
+            call_record["warnings"] = list(response["warnings"])
 
         if text.strip() == "FINAL" and valid_submission_seen:
             attempt = {
@@ -430,6 +476,7 @@ def run_trajectory(
                 "speedup_ci": None,
                 "wall_seconds": time.perf_counter() - attempt_started,
                 "usage": usage_record,
+                **call_record,
             }
             trajectory["attempts"].append(attempt)
             trajectory["stop_reason"] = "final"
@@ -454,6 +501,7 @@ def run_trajectory(
                 "speedup_ci": None,
                 "wall_seconds": time.perf_counter() - attempt_started,
                 "usage": usage_record,
+                **call_record,
             }
             feedback = _missing_block_feedback(
                 attempts_remaining, tokens_remaining
@@ -474,6 +522,7 @@ def run_trajectory(
                 "speedup_ci": evaluation.get("speedup_ci"),
                 "wall_seconds": time.perf_counter() - attempt_started,
                 "usage": usage_record,
+                **call_record,
             }
             if attempt["compile_ok"]:
                 valid_submission_seen = True
@@ -542,12 +591,42 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--model", default="gpt-5.6-sol")
     parser.add_argument("--base-url")
+    parser.add_argument(
+        "--backend",
+        choices=["openai", "codex", "mock-file"],
+        default="openai",
+    )
+    parser.add_argument("--effort", default="low")
+    parser.add_argument(
+        "--codex-workspace",
+        type=Path,
+        help="Codex scratch workspace (default: a fresh system temp directory)",
+    )
     parser.add_argument("--mock", type=Path, metavar="SCRIPT.json")
     parser.add_argument("--allow-unpriced", action="store_true")
     parser.add_argument(
         "--out", type=Path, default=Path("results/agent/trajectories")
     )
     return parser
+
+
+def _codex_cli_version(codex_bin: str = "codex") -> str:
+    try:
+        completed = subprocess.run(
+            [codex_bin, "--version"],
+            capture_output=True,
+            text=True,
+            timeout=30.0,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise RuntimeError(f"could not run {codex_bin} --version: {exc}") from exc
+    if completed.returncode != 0:
+        detail = (completed.stdout + completed.stderr)[-800:]
+        raise RuntimeError(
+            f"{codex_bin} --version exited with status {completed.returncode}: "
+            f"{detail}"
+        )
+    return (completed.stdout or completed.stderr).strip()
 
 
 def main() -> None:
@@ -565,7 +644,9 @@ def main() -> None:
 
     prices = None
     ledger = None
-    real_run = args.mock is None
+    backend_config: dict[str, Any] | None = None
+    selected_backend = "mock-file" if args.mock is not None else args.backend
+    real_run = selected_backend == "openai"
     if args.mock is not None:
         scripted = json.loads(args.mock.read_text(encoding="utf-8"))
         if not isinstance(scripted, list) or not all(
@@ -573,6 +654,27 @@ def main() -> None:
         ):
             parser.error("--mock SCRIPT.json must contain a list of strings")
         chat: ChatClient = MockChat(scripted)
+    elif selected_backend == "mock-file":
+        parser.error("--backend mock-file requires --mock SCRIPT.json")
+    elif selected_backend == "codex":
+        workspace = (
+            args.codex_workspace.expanduser().resolve()
+            if args.codex_workspace is not None
+            else Path(tempfile.mkdtemp(prefix="shaderperf-codex-"))
+        )
+        codex_version = _codex_cli_version()
+        chat = CodexChat(
+            args.model,
+            args.effort,
+            workspace,
+        )
+        backend_config = {
+            "effort": args.effort,
+            "codex_workspace": str(workspace),
+            "codex_cli_version": codex_version,
+            "codex_bin": "codex",
+            "codex_argv_flags": [],
+        }
     else:
         prices = load_prices()
         ledger = load_ledger()
@@ -621,6 +723,8 @@ def main() -> None:
         prices=prices,
         ledger=ledger,
         allow_unpriced=args.allow_unpriced,
+        backend=selected_backend,
+        backend_config=backend_config,
     )
     print(f"wrote {args.out / f'{args.label}.json'}")
     print(f"stop reason: {result['stop_reason']}")
