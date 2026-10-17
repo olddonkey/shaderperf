@@ -23,4 +23,25 @@ exact location of the license statement), popularity + contamination flag
 tasks/<task_id>.wgsl with the original header retained; reference solutions
 in tasks/<task_id>_ref.wgsl are NEVER shown to the agent.
 
-Agent-visible material per trajectory: tasks/<task_id>.wgsl only.
+The authoritative mapping is `registry.json`: natural tasks expose the original
+port and use a separate `_ref.wgsl`; injected tasks expose `_injected.wgsl` and
+use the immutable original port as the reference/revert. Gears is a backup,
+not one of the four registered evaluation tasks. `headroom` and `sealed_task`
+remain null until the maintainer measures and commits them.
+
+Frozen measurement settings (batch / duty): Tunnel 4 / 0.3, Dots3 96 / 0.7,
+Cherry 72 / 0.7, codebasealpha 384 / 0.7. Gears, if promoted, uses 4 / 0.3;
+it remains outside the registry while its contingency reference is measured.
+The loader requires a positive integer batch and numeric `0 < duty <= 1`.
+
+The maintainer's GPU null measurement showed why the light-task settings are
+paired: Cherry at batch 48 / duty 0.3 falsely measured 0.82x with 39% CV;
+batch 72 / duty 0.7 gave 0.9977x [0.9659, 1.0527] with 4.2% CV. Small submits
+and low duty let GPU clock ramp dominate; retain the frozen per-task pair.
+
+Agent-visible material per trajectory is **only that entry's `agent_file`**.
+Each entry's `never_shown` list includes its reference and, where applicable,
+its injection notes. `shaderperf.tasks_registry.load_registry(root=None)`
+validates the manifest and returns these lists as sets; callers must enforce
+that exclusion when assembling agent material. Sidecar notes are tracked
+maintainer material, never agent input.

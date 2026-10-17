@@ -1,0 +1,150 @@
+[
+  {
+    "task_id": "task_tunnel",
+    "stratum": "natural",
+    "agent_file": "tasks/task_tunnel.wgsl",
+    "reference_file": "tasks/task_tunnel_ref.wgsl",
+    "source": {
+      "title": "Tunnel (2021)",
+      "author": "pestis",
+      "url": "https://www.shadertoy.com/view/NtKGWh",
+      "license": "CC0-1.0",
+      "license_evidence": "tasks/sources/shader-advent-day03-README.md:277-279 (author's code is CC0; containing repository is MIT)",
+      "popularity": "Unknown; no view/star counts in the offline source snapshot.",
+      "contamination_flag": "Possibly in training data: publicly posted Shadertoy shader; exposure unmeasured."
+    },
+    "batch": 4,
+    "duty": 0.3,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "headroom": {
+      "speedup_point": 1.9708,
+      "ci_low": 1.813,
+      "ci_high": 2.0567,
+      "pairs": 30,
+      "batch": 4,
+      "duty": 0.3,
+      "measured_utc": "2026-10-17",
+      "device": "Apple M5 frozen protocol"
+    },
+    "sealed_task": "task_tunnel",
+    "never_shown": [
+      "tasks/task_tunnel_ref.wgsl"
+    ]
+  },
+  {
+    "task_id": "task_cherry",
+    "stratum": "injected",
+    "agent_file": "tasks/task_cherry_injected.wgsl",
+    "reference_file": "tasks/task_cherry.wgsl",
+    "source": {
+      "title": "Cherry",
+      "author": "keijiro",
+      "url": "https://github.com/keijiro/ShaderSketches",
+      "license": "Unlicense",
+      "license_evidence": "tasks/sources/keijiro-README.md:19-21 (License section: Code: Unlicense)",
+      "popularity": "Unknown; no star counts in the offline source snapshot.",
+      "contamination_flag": "Possibly in training data: public ShaderSketches repository; exposure unmeasured."
+    },
+    "batch": 72,
+    "duty": 0.7,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "headroom": {
+      "speedup_point": 1.2031,
+      "ci_low": 1.1804,
+      "ci_high": 1.2204,
+      "pairs": 30,
+      "batch": 72,
+      "duty": 0.7,
+      "measured_utc": "2026-10-17",
+      "device": "Apple M5 frozen protocol"
+    },
+    "sealed_task": "task_cherry",
+    "injection_notes": "tasks/task_cherry_injection_notes.md",
+    "never_shown": [
+      "tasks/task_cherry.wgsl",
+      "tasks/task_cherry_injection_notes.md"
+    ]
+  },
+  {
+    "task_id": "task_codebasealpha",
+    "stratum": "injected",
+    "agent_file": "tasks/task_codebasealpha_injected.wgsl",
+    "reference_file": "tasks/task_codebasealpha.wgsl",
+    "source": {
+      "title": "codebasealpha",
+      "author": "essenbee (Stu Bonham)",
+      "url": "https://github.com/essenbee",
+      "license": "MIT",
+      "license_evidence": "tasks/sources/LICENSE:1-21 (MIT, copyright 2019 Stu Bonham)",
+      "popularity": "Unknown; upstream shader URL and popularity counts absent from snapshot.",
+      "contamination_flag": "Unknown exposure; possibly in training data. Author URL retained because the snapshot lacks an upstream shader URL."
+    },
+    "batch": 384,
+    "duty": 0.7,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "headroom": {
+      "speedup_point": 1.4952,
+      "ci_low": 1.4485,
+      "ci_high": 1.5298,
+      "pairs": 30,
+      "batch": 384,
+      "duty": 0.7,
+      "measured_utc": "2026-10-17",
+      "device": "Apple M5 frozen protocol"
+    },
+    "sealed_task": "task_codebasealpha",
+    "injection_notes": "tasks/task_codebasealpha_injection_notes.md",
+    "never_shown": [
+      "tasks/task_codebasealpha.wgsl",
+      "tasks/task_codebasealpha_injection_notes.md"
+    ]
+  },
+  {
+    "task_id": "task_gears_backup",
+    "stratum": "natural",
+    "agent_file": "tasks/task_gears_backup.wgsl",
+    "reference_file": "tasks/task_gears_backup_ref.wgsl",
+    "source": {
+      "title": "gears",
+      "author": "pestis (Veikko Sariola)",
+      "url": "https://github.com/mrange/shader-advent-2024/blob/main/day-03/code/gears.frag",
+      "license": "CC0 (day-03 README author statement; repo MIT)",
+      "license_evidence": "tasks/sources/shader-advent-day03-README.md",
+      "popularity": "repo 79 stars; per-shader exposure minimal",
+      "contamination_flag": "low"
+    },
+    "batch": 4,
+    "duty": 0.3,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "headroom": {
+      "speedup_point": 4.8769,
+      "ci_low": 4.6994,
+      "ci_high": 5.0355,
+      "pairs": 30,
+      "batch": 4,
+      "duty": 0.3,
+      "measured_utc": "2026-10-17",
+      "device": "Apple M5 frozen protocol"
+    },
+    "sealed_task": "task_gears_backup",
+    "never_shown": [
+      "tasks/task_gears_backup_ref.wgsl"
+    ]
+  }
+]
