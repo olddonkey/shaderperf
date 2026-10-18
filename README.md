@@ -3,10 +3,13 @@
 Measurement harness for studying whether coding agents can honestly optimize
 real shaders for GPU time under a perceptual-equivalence constraint.
 
-**Status: pre-gate #0.** No agent code exists yet, by design: the first
-deliverable is a measurement-validity experiment (null runs + known-effect
-positive controls, certified with the same paired-CI criterion the eventual
-headline metric uses). Agent experiments only start after that gate passes.
+**Status: route-B quick report COMPLETE — see
+[docs/report-route-b.md](docs/report-route-b.md).** Headline: on 4 real
+shader tasks, a deployed coding agent produced 2 honest valid successes
+(2.07x, 3.98x) and 2 visual violations (12.6x, 13.3x) — both audited as
+supersampling removal, hidden from the per-frame FLIP gate but caught by
+the temporal-consistency band. Pre-registered, sealed, third-party
+recomputable; exploratory (n=4 tasks, one device, one agent).
 
 ## Stack
 

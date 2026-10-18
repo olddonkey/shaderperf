@@ -3,7 +3,7 @@
     "commitment": "bb2791f841ae9a4bba0e7e6a83fc6f26cea9a3e5ea0923235121a0f767395cf7",
     "committed_utc": "2026-10-17T23:16:11Z",
     "n": 12,
-    "revealed_seed": null,
+    "revealed_seed": "9b60660ee9d5d54609e063af3b028d54",
     "t_range": [
       0.0,
       10.0
@@ -13,7 +13,7 @@
     "commitment": "1599afe6e6a4fa6a1f2851d732377b916a3f0d3259ff95821068bb7e4fbb98b0",
     "committed_utc": "2026-10-17T23:16:11Z",
     "n": 12,
-    "revealed_seed": null,
+    "revealed_seed": "9e9f6b9c5086445ac845fb010405cfb8",
     "t_range": [
       0.0,
       10.0
@@ -23,7 +23,7 @@
     "commitment": "46983f66686589dbeff1057f2388f054a4a2f0b8f5faf667de5a7e83530c685f",
     "committed_utc": "2026-10-17T23:16:11Z",
     "n": 12,
-    "revealed_seed": null,
+    "revealed_seed": "1533f998f90bfb1985b2e5586164e0c8",
     "t_range": [
       0.0,
       10.0
@@ -33,7 +33,7 @@
     "commitment": "f6ce6b2ac689e77babf6d147f987896297fa309241f894af78d25ab8986fd22e",
     "committed_utc": "2026-10-17T23:16:11Z",
     "n": 12,
-    "revealed_seed": null,
+    "revealed_seed": "43d4bb76a80be66cb1e2feb51327bb2b",
     "t_range": [
       0.0,
       10.0
