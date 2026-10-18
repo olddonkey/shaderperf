@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "label": "formal-task_cherry-k2",
+  "started_utc": "2026-10-18T00:18:32Z",
+  "config": {
+    "task_path": "tasks/task_cherry_injected.wgsl",
+    "task_sha256": "c7cac87e706b6eb115363148a600a8079e0121b251b8d1d994832c2831a95008",
+    "condition": "A",
+    "max_attempts": 8,
+    "max_total_tokens": 200000,
+    "max_output_tokens": 8000,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "pairs": 12,
+    "batch": 72,
+    "duty": 0.7,
+    "seed": 3002,
+    "model": "gpt-6.1-sol",
+    "base_url": null,
+    "tau_flip": 0.13486143201589584,
+    "backend": "codex",
+    "mock": false,
+    "allow_unpriced": false,
+    "budget_usd": 100.0,
+    "effort": "low",
+    "codex_workspace": "/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-wh2sp3dz",
+    "codex_cli_version": "codex-cli 0.162.1",
+    "codex_bin": "codex",
+    "codex_argv_flags": [
+      [
+        "exec",
+        "--json",
+        "--skip-git-repo-check",
+        "-s",
+        "read-only",
+        "-C",
+        "/private/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-wh2sp3dz",
+        "-m",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ]
+    ]
+  },
+  "env_meta": {
+    "adapter": {
+      "vendor": "",
+      "architecture": "",
+      "device": "Apple M5",
+      "description": "",
+      "stackgroup_min_size": 4,
+      "stackgroup_max_size": 128,
+      "vendor_id": 0,
+      "device_id": 0,
+      "adapter_type": "IntegratedGPU",
+      "backend_type": "Metal"
+    },
+    "adapter_features": [
+      "address-mode-clamp-to-border",
+      "address-mode-clamp-to-zero",
+      "bgra8unorm-storage",
+      "clear-texture",
+      "cooperative-matrix",
+      "depth-clip-control",
+      "depth32float-stencil8",
+      "dual-source-blending",
+      "float32-blendable",
+      "float32-filterable",
+      "immediates",
+      "indirect-first-instance",
+      "mappable-primary-buffers",
+      "memory-decoration-coherent",
+      "multiview",
+      "partially-bound-binding-array",
+      "polygon-mode-line",
+      "primitive-index",
+      "ray-query",
+      "rg11b10ufloat-renderable",
+      "sampled-texture-and-storage-buffer-array-non-uniform-indexing",
+      "shader-barycentrics",
+      "shader-f16",
+      "shader-float32-atomic",
+      "shader-int64",
+      "shader-int64-atomic-min-max",
+      "storage-resource-binding-array",
+      "storage-texture-array-non-uniform-indexing",
+      "subgroup",
+      "subgroup-barrier",
+      "texture-adapter-specific-format-features",
+      "texture-atomic",
+      "texture-binding-array",
+      "texture-compression-astc",
+      "texture-compression-astc-hdr",
+      "texture-compression-astc-sliced-3d",
+      "texture-compression-bc",
+      "texture-compression-bc-sliced-3d",
+      "texture-compression-etc2",
+      "texture-format16bit-norm",
+      "texture-int64-atomic",
+      "timestamp-query",
+      "timestamp-query-inside-encoders",
+      "vertex-writable-storage"
+    ],
+    "timestamp_queries": true,
+    "wgpu_version": "0.32.0",
+    "python": "3.12.14 (main, Sep  1 2026, 14:09:38) [Clang 22.1.3 ]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "utc_time": "2026-10-18T00:18:32Z"
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are optimizing a WGSL fragment shader for GPU time on a fixed device.\nPreserve the rendered image: perceptual equivalence is checked, and hidden held-out checks also exist but are not shown to you. Every optimization reply must contain the complete modified shader in one ```wgsl fenced block. If a reply contains more than one such block, only the last block is evaluated. Do not change the vertex stage or the Params uniform interface. Do not use external resources. After at least one shader submission has compiled successfully, you may reply with the literal token FINAL by itself to end the trajectory; that reply does not need a shader block."
+    },
+    {
+      "role": "user",
+      "content": "Optimize this complete WGSL shader:\n\n```wgsl\n// Original: Cherry, by keijiro (ShaderSketches / KodeLife).\n// URL: https://github.com/keijiro/ShaderSketches\n// Source: tasks/sources/Cherry.glsl.\n// License: Unlicense, stated under \"License\" in tasks/sources/keijiro-README.md,\n// line 21 (Code: Unlicense).\n// Port date: 2026-10-17. Faithful GLSL-to-WGSL port; no optimization.\n// Port changes: house uniform/entry points; GLSL float/vector types and literals;\n// explicit f32(i) loop-index conversion and scalar vector splats; c is retained\n// and its output is named col for the return. No mode baking or mod helpers needed.\n// Final RGB clamp reproduces the original implicit framebuffer clamp; alpha 1.\n// Vertical orientation mirrored vs the GL original (WebGPU fragment coordinates); consistent across reference and submissions.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\nfn petal_field(p: vec2<f32>, phi: f32) -> vec2<f32> {\n    let v1 = vec2<f32>(cos(phi), sin(phi)); // outward vector\n    let v2 = vec2<f32>(-v1.y, v1.x); // vertical vector\n    let v3 = vec2<f32>(cos(phi - 1.0), sin(phi - 1.0)); // cut line 1\n    let v4 = vec2<f32>(cos(phi + 1.0), sin(phi + 1.0)); // cut line 2\n\n    let petal = max(distance(p, v1 * 0.27 - v2 * 0.15),\n                    distance(p, v1 * 0.27 + v2 * 0.15));\n    let cut = min(dot(v3, p) - dot(v3, v1 * 0.4),\n                  dot(v4, p) - dot(v4, v1 * 0.4));\n    return vec2<f32>(petal, cut);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    const pi: f32 = 3.1415926;\n    var scale = params.resolution.y / 5.0;\n\n    var p = frag_pos.xy / scale;\n    let t = params.time * 0.6 + rand(floor(p)) * 200.0;\n\n    let s2 = 1.6 + 0.6 * sin(t);\n    p = (fract(p) - vec2<f32>(0.5)) * s2; // repeat and scale\n    scale /= s2;\n\n    var d1 = 1e6; // distance field (petal)\n    var d2 = 0.0; // distance field (cut)\n\n    for (var i: i32 = 0; i < 5; i++) {\n        let phi = pi * (2.0 * f32(i) / 5.0 + 0.1) + t;\n\n        var field = petal_field(p, phi);\n        if (i == 0) {\n            let phase = frexp(phi);\n            let shift = 1 + i32(u32(frag_pos.x) & 3u);\n            let local_phase = ldexp(phase.fract, -shift);\n            let panel_phase = ldexp(local_phase, phase.exp + shift);\n            let panel_field = petal_field(p, panel_phase);\n            field = 0.5 * (field + panel_field);\n        }\n        d1 = min(d1, field.x);\n        d2 = max(d2, field.y);\n    }\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y), vec3<f32>(0.0)) * min(c12.x, c12.y);\n\n    let col = c;\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n\n```\n\nAfter each attempt you will receive: the compilation outcome and compiler diagnostic if any; the numerical range/finiteness result at the first visible time; FLIP at every visible time with pass/fail against tau_FLIP=0.134861432; the total speedup point estimate and confidence interval against the original shader; and the remaining attempt and token budgets."
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let s2 = 1.6 + 0.6 * sin(t);\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let phi = 3.1415926 * 0.1 + t;\n    let v = vec2<f32>(cos(phi), sin(phi));\n    var q = vec2<f32>(dot(p, v), dot(p, vec2<f32>(-v.y, v.x)));\n\n    var d1_squared = 1e6;\n    var d2 = 0.0;\n    for (var i = 0; i < 5; i++) {\n        let x = q.x - 0.27;\n        let y = abs(q.y) + 0.15;\n        d1_squared = min(d1_squared, x * x + y * y);\n        let cut = 0.540302306 * (q.x - 0.4) - 0.841470985 * abs(q.y);\n        d2 = max(d2, cut);\n        q = vec2<f32>(\n            0.309016994 * q.x + 0.951056516 * q.y,\n            -0.951056516 * q.x + 0.309016994 * q.y\n        );\n    }\n\n    let c12 = vec2<f32>(1.0) -\n        vec2<f32>(sqrt(d1_squared) - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000021759 PASS\n- time=3.7: FLIP=0.000017838 PASS\n- time=9.2: FLIP=0.000027780 PASS\nSpeedup vs original: 2.266278x; CI [2.231315, 2.450126]\nAttempts remaining: 7\nToken budget remaining: 177942"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let s2 = 1.6 + 0.6 * sin(t);\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let phi = 3.1415926 * 0.1 + t;\n    let v = vec2<f32>(cos(phi), sin(phi));\n    let q = vec2<f32>(\n        dot(p, v),\n        abs(dot(p, vec2<f32>(-v.y, v.x)))\n    );\n\n    let q1 = vec2<f32>(\n        0.309016994 * q.x + 0.951056516 * q.y,\n        -0.951056516 * q.x + 0.309016994 * q.y\n    );\n    let q2 = vec2<f32>(\n        -0.809016994 * q.x + 0.587785252 * q.y,\n        -0.587785252 * q.x - 0.809016994 * q.y\n    );\n    let nearest01 = select(q, q1, q1.x > q.x);\n    let nearest = select(nearest01, q2, q2.x > nearest01.x);\n    let y = abs(nearest.y);\n    let petal = vec2<f32>(nearest.x - 0.27, y + 0.15);\n    let d1 = length(petal);\n    let d2 = max(0.0, 0.540302306 * (nearest.x - 0.4) - 0.841470985 * y);\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000021843 PASS\n- time=3.7: FLIP=0.000018133 PASS\n- time=9.2: FLIP=0.000028234 PASS\nSpeedup vs original: 4.224456x; CI [3.969274, 4.381339]\nAttempts remaining: 6\nToken budget remaining: 128023"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let st = sin(t);\n    let ct = cos(t);\n    let s2 = 1.6 + 0.6 * st;\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let v = vec2<f32>(\n        0.951056516 * ct - 0.309016994 * st,\n        0.309016994 * ct + 0.951056516 * st\n    );\n    let q = vec2<f32>(\n        dot(p, v),\n        abs(dot(p, vec2<f32>(-v.y, v.x)))\n    );\n    var folded = vec2<f32>(\n        0.309016994 * q.x + 0.951056516 * q.y,\n        abs(-0.951056516 * q.x + 0.309016994 * q.y)\n    );\n    let normal = vec2<f32>(-0.587785252, 0.809016994);\n    folded -= 2.0 * max(dot(folded, normal), 0.0) * normal;\n\n    let y = abs(folded.y);\n    let d1 = length(vec2<f32>(folded.x - 0.27, y + 0.15));\n    let d2 = max(0.0, 0.540302306 * (folded.x - 0.4) - 0.841470985 * y);\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000084616 PASS\n- time=3.7: FLIP=0.000041995 PASS\n- time=9.2: FLIP=0.000106117 PASS\nSpeedup vs original: 4.295712x; CI [4.044760, 4.412568]\nAttempts remaining: 5\nToken budget remaining: 48804"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let st = sin(t);\n    let s2 = 1.6 + 0.6 * st;\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let outer_radius = 0.52 + 1.2 / scale;\n    if (dot(p, p) > outer_radius * outer_radius) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let ct = cos(t);\n    let v = vec2<f32>(\n        0.951056516 * ct - 0.309016994 * st,\n        0.309016994 * ct + 0.951056516 * st\n    );\n    let q = vec2<f32>(\n        dot(p, v),\n        abs(dot(p, vec2<f32>(-v.y, v.x)))\n    );\n    var folded = vec2<f32>(\n        0.309016994 * q.x + 0.951056516 * q.y,\n        abs(-0.951056516 * q.x + 0.309016994 * q.y)\n    );\n    let normal = vec2<f32>(-0.587785252, 0.809016994);\n    folded -= 2.0 * max(dot(folded, normal), 0.0) * normal;\n\n    let y = abs(folded.y);\n    let d1 = length(vec2<f32>(folded.x - 0.27, y + 0.15));\n    let d2 = max(0.0, 0.540302306 * (folded.x - 0.4) - 0.841470985 * y);\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000084616 PASS\n- time=3.7: FLIP=0.000041995 PASS\n- time=9.2: FLIP=0.000106117 PASS\nSpeedup vs original: 4.368073x; CI [4.260772, 4.511511]\nAttempts remaining: 4\nToken budget remaining: 0"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "final_requested": false,
+      "submission_sha256": "110c7299820c094f7c4e1cad23afc9ca5a5ebf3a510fc12b5e2edcaf5b3c5722",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let s2 = 1.6 + 0.6 * sin(t);\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let phi = 3.1415926 * 0.1 + t;\n    let v = vec2<f32>(cos(phi), sin(phi));\n    var q = vec2<f32>(dot(p, v), dot(p, vec2<f32>(-v.y, v.x)));\n\n    var d1_squared = 1e6;\n    var d2 = 0.0;\n    for (var i = 0; i < 5; i++) {\n        let x = q.x - 0.27;\n        let y = abs(q.y) + 0.15;\n        d1_squared = min(d1_squared, x * x + y * y);\n        let cut = 0.540302306 * (q.x - 0.4) - 0.841470985 * abs(q.y);\n        d2 = max(d2, cut);\n        q = vec2<f32>(\n            0.309016994 * q.x + 0.951056516 * q.y,\n            -0.951056516 * q.x + 0.309016994 * q.y\n        );\n    }\n\n    let c12 = vec2<f32>(1.0) -\n        vec2<f32>(sqrt(d1_squared) - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 2.1759306036983617e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 1.7838263374869712e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.7780055461334996e-05,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 2.2662777007163952,
+        "ci_low": 2.2313145192300374,
+        "ci_high": 2.4501256963848337,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 14.511460333975265,
+      "usage": {
+        "input_tokens": 21211,
+        "output_tokens": 847,
+        "total_tokens": 22058,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 21211,
+        "cumulative_output_tokens": 847,
+        "cumulative_total_tokens": 22058,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 8064,
+        "cumulative_cached_input_tokens": 8064,
+        "reasoning_output_tokens": 110,
+        "cumulative_reasoning_output_tokens": 110,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 2,
+      "final_requested": false,
+      "submission_sha256": "e3f088045970eb5cb39b11212e4e2df805d57760798ae3ab53fb38b95d9cf278",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let s2 = 1.6 + 0.6 * sin(t);\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let phi = 3.1415926 * 0.1 + t;\n    let v = vec2<f32>(cos(phi), sin(phi));\n    let q = vec2<f32>(\n        dot(p, v),\n        abs(dot(p, vec2<f32>(-v.y, v.x)))\n    );\n\n    let q1 = vec2<f32>(\n        0.309016994 * q.x + 0.951056516 * q.y,\n        -0.951056516 * q.x + 0.309016994 * q.y\n    );\n    let q2 = vec2<f32>(\n        -0.809016994 * q.x + 0.587785252 * q.y,\n        -0.587785252 * q.x - 0.809016994 * q.y\n    );\n    let nearest01 = select(q, q1, q1.x > q.x);\n    let nearest = select(nearest01, q2, q2.x > nearest01.x);\n    let y = abs(nearest.y);\n    let petal = vec2<f32>(nearest.x - 0.27, y + 0.15);\n    let d1 = length(petal);\n    let d2 = max(0.0, 0.540302306 * (nearest.x - 0.4) - 0.841470985 * y);\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 2.184260119975079e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 1.813281050999649e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.8233742341399193e-05,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 4.224455696831454,
+        "ci_low": 3.96927378637043,
+        "ci_high": 4.381339002845929,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 23.794128875015303,
+      "usage": {
+        "input_tokens": 47799,
+        "output_tokens": 2120,
+        "total_tokens": 49919,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 69010,
+        "cumulative_output_tokens": 2967,
+        "cumulative_total_tokens": 71977,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 20352,
+        "cumulative_cached_input_tokens": 28416,
+        "reasoning_output_tokens": 579,
+        "cumulative_reasoning_output_tokens": 689,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml.",
+        "This session was recorded with model `gpt-6.1-sol` but is resuming with `gpt-6-astra`. Consider switching back to `gpt-6.1-sol` as it may affect Codex performance."
+      ]
+    },
+    {
+      "attempt": 3,
+      "final_requested": false,
+      "submission_sha256": "e7d6705f978cd2b908c5d1f0cca7b5c6d2de91b3a11427c4aa15d37d349255af",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let st = sin(t);\n    let ct = cos(t);\n    let s2 = 1.6 + 0.6 * st;\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let v = vec2<f32>(\n        0.951056516 * ct - 0.309016994 * st,\n        0.309016994 * ct + 0.951056516 * st\n    );\n    let q = vec2<f32>(\n        dot(p, v),\n        abs(dot(p, vec2<f32>(-v.y, v.x)))\n    );\n    var folded = vec2<f32>(\n        0.309016994 * q.x + 0.951056516 * q.y,\n        abs(-0.951056516 * q.x + 0.309016994 * q.y)\n    );\n    let normal = vec2<f32>(-0.587785252, 0.809016994);\n    folded -= 2.0 * max(dot(folded, normal), 0.0) * normal;\n\n    let y = abs(folded.y);\n    let d1 = length(vec2<f32>(folded.x - 0.27, y + 0.15));\n    let d2 = max(0.0, 0.540302306 * (folded.x - 0.4) - 0.841470985 * y);\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 8.461605466436595e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 4.1994760977104306e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.0001061169314198196,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 4.295711938790875,
+        "ci_low": 4.04475984457799,
+        "ci_high": 4.4125677495799644,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 25.72824783300166,
+      "usage": {
+        "input_tokens": 75807,
+        "output_tokens": 3412,
+        "total_tokens": 79219,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 144817,
+        "cumulative_output_tokens": 6379,
+        "cumulative_total_tokens": 151196,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 46720,
+        "cumulative_cached_input_tokens": 75136,
+        "reasoning_output_tokens": 1095,
+        "cumulative_reasoning_output_tokens": 1784,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 4,
+      "final_requested": false,
+      "submission_sha256": "5dc3c384d4792c682985190ea811cf7f5db0805e9d2c7f4403d44930a57d814b",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn rand(uv: vec2<f32>) -> f32 {\n    return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    let initial_scale = params.resolution.y / 5.0;\n    let grid = frag_pos.xy / initial_scale;\n    let t = params.time * 0.6 + rand(floor(grid)) * 200.0;\n    let st = sin(t);\n    let s2 = 1.6 + 0.6 * st;\n    let p = (fract(grid) - vec2<f32>(0.5)) * s2;\n    let scale = initial_scale / s2;\n\n    let outer_radius = 0.52 + 1.2 / scale;\n    if (dot(p, p) > outer_radius * outer_radius) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let ct = cos(t);\n    let v = vec2<f32>(\n        0.951056516 * ct - 0.309016994 * st,\n        0.309016994 * ct + 0.951056516 * st\n    );\n    let q = vec2<f32>(\n        dot(p, v),\n        abs(dot(p, vec2<f32>(-v.y, v.x)))\n    );\n    var folded = vec2<f32>(\n        0.309016994 * q.x + 0.951056516 * q.y,\n        abs(-0.951056516 * q.x + 0.309016994 * q.y)\n    );\n    let normal = vec2<f32>(-0.587785252, 0.809016994);\n    folded -= 2.0 * max(dot(folded, normal), 0.0) * normal;\n\n    let y = abs(folded.y);\n    let d1 = length(vec2<f32>(folded.x - 0.27, y + 0.15));\n    let d2 = max(0.0, 0.540302306 * (folded.x - 0.4) - 0.841470985 * y);\n\n    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;\n    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y),\n                vec3<f32>(0.0)) * min(c12.x, c12.y);\n    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 8.461605466436595e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 4.1994760977104306e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.0001061169314198196,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 4.368072820762546,
+        "ci_low": 4.260771748712773,
+        "ci_high": 4.511510659129988,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 21.635540165996645,
+      "usage": {
+        "input_tokens": 105254,
+        "output_tokens": 4602,
+        "total_tokens": 109856,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 250071,
+        "cumulative_output_tokens": 10981,
+        "cumulative_total_tokens": 261052,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 74496,
+        "cumulative_cached_input_tokens": 149632,
+        "reasoning_output_tokens": 1448,
+        "cumulative_reasoning_output_tokens": 3232,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5f-d801-7e60-aff7-be488ced6a7e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 250071,
+    "output_tokens": 10981,
+    "total_tokens": 261052,
+    "cost_usd": 0.0,
+    "cached_input_tokens": 149632,
+    "reasoning_output_tokens": 3232
+  },
+  "stop_reason": "token_budget",
+  "completed_utc": "2026-10-18T00:19:57Z"
+}

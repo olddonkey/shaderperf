@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "label": "formal-task_codebasealpha-k1",
+  "started_utc": "2026-10-18T00:21:14Z",
+  "config": {
+    "task_path": "tasks/task_codebasealpha_injected.wgsl",
+    "task_sha256": "57030a1f8ddc921d2db76704d26b0f4649555df5c7ef80fd2f956db088943528",
+    "condition": "A",
+    "max_attempts": 8,
+    "max_total_tokens": 200000,
+    "max_output_tokens": 8000,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "pairs": 12,
+    "batch": 384,
+    "duty": 0.7,
+    "seed": 4001,
+    "model": "gpt-6.1-sol",
+    "base_url": null,
+    "tau_flip": 0.13486143201589584,
+    "backend": "codex",
+    "mock": false,
+    "allow_unpriced": false,
+    "budget_usd": 100.0,
+    "effort": "low",
+    "codex_workspace": "/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-68w2r328",
+    "codex_cli_version": "codex-cli 0.162.1",
+    "codex_bin": "codex",
+    "codex_argv_flags": [
+      [
+        "exec",
+        "--json",
+        "--skip-git-repo-check",
+        "-s",
+        "read-only",
+        "-C",
+        "/private/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-68w2r328",
+        "-m",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c62-5321-71b3-9db7-83822ed4cbce",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c62-5321-71b3-9db7-83822ed4cbce",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c62-5321-71b3-9db7-83822ed4cbce",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ]
+    ]
+  },
+  "env_meta": {
+    "adapter": {
+      "vendor": "",
+      "architecture": "",
+      "device": "Apple M5",
+      "description": "",
+      "stackgroup_min_size": 4,
+      "stackgroup_max_size": 128,
+      "vendor_id": 0,
+      "device_id": 0,
+      "adapter_type": "IntegratedGPU",
+      "backend_type": "Metal"
+    },
+    "adapter_features": [
+      "address-mode-clamp-to-border",
+      "address-mode-clamp-to-zero",
+      "bgra8unorm-storage",
+      "clear-texture",
+      "cooperative-matrix",
+      "depth-clip-control",
+      "depth32float-stencil8",
+      "dual-source-blending",
+      "float32-blendable",
+      "float32-filterable",
+      "immediates",
+      "indirect-first-instance",
+      "mappable-primary-buffers",
+      "memory-decoration-coherent",
+      "multiview",
+      "partially-bound-binding-array",
+      "polygon-mode-line",
+      "primitive-index",
+      "ray-query",
+      "rg11b10ufloat-renderable",
+      "sampled-texture-and-storage-buffer-array-non-uniform-indexing",
+      "shader-barycentrics",
+      "shader-f16",
+      "shader-float32-atomic",
+      "shader-int64",
+      "shader-int64-atomic-min-max",
+      "storage-resource-binding-array",
+      "storage-texture-array-non-uniform-indexing",
+      "subgroup",
+      "subgroup-barrier",
+      "texture-adapter-specific-format-features",
+      "texture-atomic",
+      "texture-binding-array",
+      "texture-compression-astc",
+      "texture-compression-astc-hdr",
+      "texture-compression-astc-sliced-3d",
+      "texture-compression-bc",
+      "texture-compression-bc-sliced-3d",
+      "texture-compression-etc2",
+      "texture-format16bit-norm",
+      "texture-int64-atomic",
+      "timestamp-query",
+      "timestamp-query-inside-encoders",
+      "vertex-writable-storage"
+    ],
+    "timestamp_queries": true,
+    "wgpu_version": "0.32.0",
+    "python": "3.12.14 (main, Sep  1 2026, 14:09:38) [Clang 22.1.3 ]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "utc_time": "2026-10-18T00:21:14Z"
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are optimizing a WGSL fragment shader for GPU time on a fixed device.\nPreserve the rendered image: perceptual equivalence is checked, and hidden held-out checks also exist but are not shown to you. Every optimization reply must contain the complete modified shader in one ```wgsl fenced block. If a reply contains more than one such block, only the last block is evaluated. Do not change the vertex stage or the Params uniform interface. Do not use external resources. After at least one shader submission has compiled successfully, you may reply with the literal token FINAL by itself to end the trajectory; that reply does not need a shader block."
+    },
+    {
+      "role": "user",
+      "content": "Optimize this complete WGSL shader:\n\n```wgsl\n// Original: codebasealpha, by essenbee (Stu Bonham).\n// URL: https://github.com/essenbee (author; upstream shader URL absent from snapshot).\n// Source: tasks/sources/codebasealpha.glsl.\n// License: MIT, stated in tasks/sources/LICENSE (copyright 2019 Stu Bonham).\n// Port date: 2026-10-17. Faithful GLSL-to-WGSL port; no optimization.\n// Port changes: house uniform/entry points; PI/TAU macros become const;\n// floor-mod uses mod_f/mod_v2; two-argument atan becomes atan2; scalar\n// vector offsets and clamp bounds use explicit splats. GLSL inout parameters\n// in pMod2/rotate become function pointers; mutable pos/col parameters use\n// pos_in/col_in aliases. No mode baking; unused helpers/computations retained.\n// Final RGB clamp reproduces the original implicit framebuffer clamp; alpha 1.\n// Vertical orientation mirrored vs the GL original (WebGPU fragment coordinates); consistent across reference and submissions.\n//\n// MIT License\n//\n// Copyright (c) 2019 Stu Bonham\n//\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n//\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn mod_v2(x: vec2<f32>, y: vec2<f32>) -> vec2<f32> {\n    return x - y * floor(x / y);\n}\n\nfn dCircle(pos: vec2<f32>, radius: f32) -> f32 {\n    return length(pos) - radius;\n}\n\nfn dRoundBox(pos_in: vec2<f32>, radius: f32) -> f32 {\n    var pos = pos_in;\n    pos = pos * pos;\n    pos = pos * pos;\n    let d8 = dot(pos, pos);\n    return pow(d8, 1.0 / 8.0) - radius;\n}\n\nfn dBox(pos_in: vec2<f32>, siz: vec2<f32>) -> f32 {\n    var pos = pos_in;\n    pos = abs(pos);\n    let dx = pos.x - siz.x;\n    let dy = pos.y - siz.y;\n    return max(dx, dy);\n}\n\nfn toPolarCoords(rectCoords: vec2<f32>) -> vec2<f32> {\n    return vec2<f32>(length(rectCoords), atan2(rectCoords.y, rectCoords.x));\n}\n\nfn toRectCoords(polarCoords: vec2<f32>) -> vec2<f32> {\n    return vec2<f32>(polarCoords.x * cos(polarCoords.y), polarCoords.x * sin(polarCoords.y));\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\n// Repeat in two dimensions\nfn pMod2(p: ptr<function, vec2<f32>>, size: vec2<f32>) -> vec2<f32> {\n    let c = floor((*p + size * 0.5) / size);\n    *p = mod_v2(*p + size * 0.5, size) - size * 0.5;\n    return c;\n}\n\nfn dF2(pos_in: vec2<f32>) -> f32 {\n    var pos = pos_in;\n    var pp = toPolarCoords(pos);\n    let a = TAU / 30.0;\n    let np = pp.y / a;\n    pp.y = mod_f(pp.y, a);\n    let m2 = mod_f(np, 2.0);\n    if (m2 > 1.0) {\n        pp.y = a - pp.y;\n    }\n\n    pp.y += params.time;\n    pos = toRectCoords(pp);\n\n    pMod2(&pos, vec2<f32>(0.5));\n\n    let d1 = dCircle(pos, 0.1);\n\n    let d3 = dBox(pos - vec2<f32>(0.1), vec2<f32>(0.1, 0.1));\n    let d = min(d1, d3);\n    return d;\n}\n\nfn dF(pos_in: vec2<f32>) -> f32 {\n    var pos = pos_in;\n    //pos = abs(pos);\n    var pPos = toPolarCoords(pos);\n    pPos.y = mod_f(pPos.y, TAU / 7.0);\n    pPos.y += params.time;\n\n    // pPos.x *= 1.0 + pos.y;\n    pos = toRectCoords(pPos);\n    pMod2(&pos, vec2<f32>(0.5));\n\n    let d1 = dCircle(pos, 0.1);\n\n    let d3 = dBox(pos - vec2<f32>(0.1), vec2<f32>(0.1, 0.1));\n    let d = min(d1, d3);\n    return d;\n}\n\nfn rotate(pos: ptr<function, vec2<f32>>, angle: f32) {\n    let c = cos(angle);\n    let s = sin(angle);\n    *pos = vec2<f32>(c * (*pos).x + s * (*pos).y, -s * (*pos).x + c * (*pos).y);\n}\n\nfn postProcess(col_in: vec3<f32>, pos_in: vec2<f32>) -> vec3<f32> {\n    var col = col_in;\n    var pos = pos_in;\n    rotate(&pos, params.time);\n    col = clamp(col, vec3<f32>(0.0), vec3<f32>(1.0));\n    return pow(col, vec3<f32>(abs(pos.x), abs(pos.y), length(pos)));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    var d = dF2(uv);\n    if (frag_pos.x < params.resolution.x * 0.5) {\n        let coordinate = frexp(uv);\n        let shift = vec2<i32>(1 + i32(u32(frag_pos.y) & 3u));\n        let local_coordinate = ldexp(coordinate.fract, -shift);\n        let panel_coordinate = ldexp(local_coordinate, coordinate.exp + shift);\n        let panel_distance = dF2(panel_coordinate);\n        d = 0.5 * (d + panel_distance);\n    }\n\n    var col = vec3<f32>(0.0);\n\n    let md = mod_f(d, 0.1);\n    let nd = abs(d / 0.1);\n\n    if (abs(md) < 0.01) {\n        if (d < 0.0) {\n            col = vec3<f32>(1.0, 0.3, 0.15) / nd;\n        } else {\n            col = vec3<f32>(0.3, 1.0, 0.15) / nd;\n        }\n    }\n\n    if (abs(d) < 0.02) {\n        col = vec3<f32>(1.0);\n    }\n\n    col = postProcess(col, uv);\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n\n```\n\nAfter each attempt you will receive: the compilation outcome and compiler diagnostic if any; the numerical range/finiteness result at the first visible time; FLIP at every visible time with pass/fail against tau_FLIP=0.134861432; the total speedup point estimate and confidence interval against the original shader; and the remaining attempt and token budgets."
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\n// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn distance_field(pos: vec2<f32>) -> f32 {\n    let radius = length(pos);\n    let angle = atan2(pos.y, pos.x);\n    let a = TAU / 30.0;\n    let np = angle / a;\n    var folded = angle - a * floor(angle / a);\n    let m2 = np - 2.0 * floor(np / 2.0);\n    if (m2 > 1.0) {\n        folded = a - folded;\n    }\n    folded += params.time;\n    let p = radius * vec2<f32>(cos(folded), sin(folded));\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted / vec2<f32>(0.5)) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let d = distance_field(uv);\n    let md = d - 0.1 * floor(d / 0.1);\n    let nd = abs(d / 0.1);\n    var col = vec3<f32>(0.0);\n    if (abs(md) < 0.01) {\n        if (d < 0.0) {\n            col = vec3<f32>(1.0, 0.3, 0.15) / nd;\n        } else {\n            col = vec3<f32>(0.3, 1.0, 0.15) / nd;\n        }\n    }\n    if (abs(d) < 0.02) {\n        col = vec3<f32>(1.0);\n    }\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    col = clamp(col, vec3<f32>(0.0), vec3<f32>(1.0));\n    col = pow(col, vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000000000 PASS\n- time=3.7: FLIP=0.000000000 PASS\n- time=9.2: FLIP=0.000000000 PASS\nSpeedup vs original: 1.477169x; CI [1.448377, 1.509527]\nAttempts remaining: 7\nToken budget remaining: 176862"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\n// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn distance_field(pos: vec2<f32>) -> f32 {\n    let radius = length(pos);\n    let angle = atan2(pos.y, pos.x);\n    let a = TAU / 30.0;\n    let np = angle / a;\n    var folded = angle - a * floor(angle / a);\n    let m2 = np - 2.0 * floor(np / 2.0);\n    if (m2 > 1.0) {\n        folded = a - folded;\n    }\n    folded += params.time;\n    let p = radius * vec2<f32>(cos(folded), sin(folded));\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted / vec2<f32>(0.5)) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let d = distance_field(uv);\n    if (abs(d) < 0.02) {\n        return vec4<f32>(1.0);\n    }\n\n    let md = d - 0.1 * floor(d / 0.1);\n    if (abs(md) >= 0.01) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let nd = abs(d / 0.1);\n    let base = select(vec3<f32>(0.3, 1.0, 0.15),\n                      vec3<f32>(1.0, 0.3, 0.15), d < 0.0);\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    let col = pow(clamp(base / nd, vec3<f32>(0.0), vec3<f32>(1.0)),\n                  vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000000000 PASS\n- time=3.7: FLIP=0.000000000 PASS\n- time=9.2: FLIP=0.000000000 PASS\nSpeedup vs original: 1.702184x; CI [1.671626, 1.718236]\nAttempts remaining: 6\nToken budget remaining: 124623"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\n// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn folded_angle(pos: vec2<f32>) -> f32 {\n    let v = abs(pos);\n    let t = min(v.x, v.y) / max(max(v.x, v.y), 1e-30);\n    let t2 = t * t;\n    let polynomial = 0.99997726 + t2 * (-0.33262347 + t2 *\n        (0.19354346 + t2 * (-0.11643287 + t2 *\n        (0.05265332 + t2 * -0.01172120))));\n    let small_angle = t * polynomial;\n    var angle = select(small_angle, PI * 0.5 - small_angle, v.y > v.x);\n    angle = select(angle, PI - angle, pos.x < 0.0);\n    let a = TAU / 30.0;\n    let phase = angle - (2.0 * a) * floor(angle / (2.0 * a));\n    return a - abs(phase - a);\n}\n\nfn distance_field(pos: vec2<f32>) -> f32 {\n    let radius = length(pos);\n    let angle = folded_angle(pos) + params.time;\n    let p = radius * vec2<f32>(cos(angle), sin(angle));\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted * 2.0) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let d = distance_field(uv);\n    if (abs(d) < 0.02) {\n        return vec4<f32>(1.0);\n    }\n    let md = d - 0.1 * floor(d / 0.1);\n    if (abs(md) >= 0.01) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let nd = abs(d / 0.1);\n    let base = select(vec3<f32>(0.3, 1.0, 0.15),\n                      vec3<f32>(1.0, 0.3, 0.15), d < 0.0);\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    let col = pow(clamp(base / nd, vec3<f32>(0.0), vec3<f32>(1.0)),\n                  vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000004772 PASS\n- time=3.7: FLIP=0.000028594 PASS\n- time=9.2: FLIP=0.000029282 PASS\nSpeedup vs original: 1.803932x; CI [1.756204, 1.914288]\nAttempts remaining: 5\nToken budget remaining: 41459"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\n// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn folded_angle(pos: vec2<f32>) -> f32 {\n    let v = abs(pos);\n    let t = min(v.x, v.y) / max(max(v.x, v.y), 1e-30);\n    let t2 = t * t;\n    let polynomial = 0.99997726 + t2 * (-0.33262347 + t2 *\n        (0.19354346 + t2 * (-0.11643287 + t2 *\n        (0.05265332 + t2 * -0.01172120))));\n    let small_angle = t * polynomial;\n    var angle = select(small_angle, PI * 0.5 - small_angle, v.y > v.x);\n    angle = select(angle, PI - angle, pos.x < 0.0);\n    let a = TAU / 30.0;\n    let phase = angle - (2.0 * a) * floor(angle / (2.0 * a));\n    return a - abs(phase - a);\n}\n\nfn distance_field(pos: vec2<f32>, c: f32, s: f32) -> f32 {\n    let radius = length(pos);\n    let angle = folded_angle(pos);\n    let a2 = angle * angle;\n    let ca = 1.0 + a2 * (-0.5 + a2 * (1.0 / 24.0 - a2 / 720.0));\n    let sa = angle * (1.0 + a2 * (-1.0 / 6.0 + a2 * (1.0 / 120.0 - a2 / 5040.0)));\n    let p = radius * vec2<f32>(c * ca - s * sa, s * ca + c * sa);\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted * 2.0) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let d = distance_field(uv, c, s);\n    if (abs(d) < 0.02) {\n        return vec4<f32>(1.0);\n    }\n    let md = d - 0.1 * floor(d / 0.1);\n    if (abs(md) >= 0.01) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let nd = abs(d / 0.1);\n    let base = select(vec3<f32>(0.3, 1.0, 0.15),\n                      vec3<f32>(1.0, 0.3, 0.15), d < 0.0);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    let col = pow(clamp(base / nd, vec3<f32>(0.0), vec3<f32>(1.0)),\n                  vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000004874 PASS\n- time=3.7: FLIP=0.000028594 PASS\n- time=9.2: FLIP=0.000029282 PASS\nSpeedup vs original: 1.749923x; CI [1.679077, 1.810797]\nAttempts remaining: 4\nToken budget remaining: 0"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "final_requested": false,
+      "submission_sha256": "1e4f964b0d03d58976b594138942e4b69be14fca950749700719a220037ce96b",
+      "submission_source": "// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn distance_field(pos: vec2<f32>) -> f32 {\n    let radius = length(pos);\n    let angle = atan2(pos.y, pos.x);\n    let a = TAU / 30.0;\n    let np = angle / a;\n    var folded = angle - a * floor(angle / a);\n    let m2 = np - 2.0 * floor(np / 2.0);\n    if (m2 > 1.0) {\n        folded = a - folded;\n    }\n    folded += params.time;\n    let p = radius * vec2<f32>(cos(folded), sin(folded));\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted / vec2<f32>(0.5)) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let d = distance_field(uv);\n    let md = d - 0.1 * floor(d / 0.1);\n    let nd = abs(d / 0.1);\n    var col = vec3<f32>(0.0);\n    if (abs(md) < 0.01) {\n        if (d < 0.0) {\n            col = vec3<f32>(1.0, 0.3, 0.15) / nd;\n        } else {\n            col = vec3<f32>(0.3, 1.0, 0.15) / nd;\n        }\n    }\n    if (abs(d) < 0.02) {\n        col = vec3<f32>(1.0);\n    }\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    col = clamp(col, vec3<f32>(0.0), vec3<f32>(1.0));\n    col = pow(col, vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.0,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.0,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.0,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 1.4771694375108182,
+        "ci_low": 1.448377013684826,
+        "ci_high": 1.5095272568519533,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 16.879452749999473,
+      "usage": {
+        "input_tokens": 22037,
+        "output_tokens": 1101,
+        "total_tokens": 23138,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 22037,
+        "cumulative_output_tokens": 1101,
+        "cumulative_total_tokens": 23138,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 19584,
+        "cumulative_cached_input_tokens": 19584,
+        "reasoning_output_tokens": 34,
+        "cumulative_reasoning_output_tokens": 34,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c62-5321-71b3-9db7-83822ed4cbce",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 2,
+      "final_requested": false,
+      "submission_sha256": "324ce10e036cb1e971bc0a60fd26b796b735106860c27cc4f9802ec77d84c579",
+      "submission_source": "// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn distance_field(pos: vec2<f32>) -> f32 {\n    let radius = length(pos);\n    let angle = atan2(pos.y, pos.x);\n    let a = TAU / 30.0;\n    let np = angle / a;\n    var folded = angle - a * floor(angle / a);\n    let m2 = np - 2.0 * floor(np / 2.0);\n    if (m2 > 1.0) {\n        folded = a - folded;\n    }\n    folded += params.time;\n    let p = radius * vec2<f32>(cos(folded), sin(folded));\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted / vec2<f32>(0.5)) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let d = distance_field(uv);\n    if (abs(d) < 0.02) {\n        return vec4<f32>(1.0);\n    }\n\n    let md = d - 0.1 * floor(d / 0.1);\n    if (abs(md) >= 0.01) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let nd = abs(d / 0.1);\n    let base = select(vec3<f32>(0.3, 1.0, 0.15),\n                      vec3<f32>(1.0, 0.3, 0.15), d < 0.0);\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    let col = pow(clamp(base / nd, vec3<f32>(0.0), vec3<f32>(1.0)),\n                  vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.0,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.0,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.0,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 1.702183595716185,
+        "ci_low": 1.6716260728185108,
+        "ci_high": 1.718235770601327,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 25.71180975000607,
+      "usage": {
+        "input_tokens": 49705,
+        "output_tokens": 2534,
+        "total_tokens": 52239,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 71742,
+        "cumulative_output_tokens": 3635,
+        "cumulative_total_tokens": 75377,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 39168,
+        "cumulative_cached_input_tokens": 58752,
+        "reasoning_output_tokens": 436,
+        "cumulative_reasoning_output_tokens": 470,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c62-5321-71b3-9db7-83822ed4cbce",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml.",
+        "This session was recorded with model `gpt-6.1-sol` but is resuming with `gpt-6-astra`. Consider switching back to `gpt-6.1-sol` as it may affect Codex performance."
+      ]
+    },
+    {
+      "attempt": 3,
+      "final_requested": false,
+      "submission_sha256": "103b409b41ee5e49f2ca23f7202912094cf3708e8bdb4b3d770a6cbf86996074",
+      "submission_source": "// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn folded_angle(pos: vec2<f32>) -> f32 {\n    let v = abs(pos);\n    let t = min(v.x, v.y) / max(max(v.x, v.y), 1e-30);\n    let t2 = t * t;\n    let polynomial = 0.99997726 + t2 * (-0.33262347 + t2 *\n        (0.19354346 + t2 * (-0.11643287 + t2 *\n        (0.05265332 + t2 * -0.01172120))));\n    let small_angle = t * polynomial;\n    var angle = select(small_angle, PI * 0.5 - small_angle, v.y > v.x);\n    angle = select(angle, PI - angle, pos.x < 0.0);\n    let a = TAU / 30.0;\n    let phase = angle - (2.0 * a) * floor(angle / (2.0 * a));\n    return a - abs(phase - a);\n}\n\nfn distance_field(pos: vec2<f32>) -> f32 {\n    let radius = length(pos);\n    let angle = folded_angle(pos) + params.time;\n    let p = radius * vec2<f32>(cos(angle), sin(angle));\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted * 2.0) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let d = distance_field(uv);\n    if (abs(d) < 0.02) {\n        return vec4<f32>(1.0);\n    }\n    let md = d - 0.1 * floor(d / 0.1);\n    if (abs(md) >= 0.01) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let nd = abs(d / 0.1);\n    let base = select(vec3<f32>(0.3, 1.0, 0.15),\n                      vec3<f32>(1.0, 0.3, 0.15), d < 0.0);\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    let col = pow(clamp(base / nd, vec3<f32>(0.0), vec3<f32>(1.0)),\n                  vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 4.772325155499857e-06,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 2.85937112494139e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.928245703515131e-05,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 1.8039321917377864,
+        "ci_low": 1.7562037998622138,
+        "ci_high": 1.9142878894108075,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 29.353172750008525,
+      "usage": {
+        "input_tokens": 78953,
+        "output_tokens": 4211,
+        "total_tokens": 83164,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 150695,
+        "cumulative_output_tokens": 7846,
+        "cumulative_total_tokens": 158541,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 66688,
+        "cumulative_cached_input_tokens": 125440,
+        "reasoning_output_tokens": 952,
+        "cumulative_reasoning_output_tokens": 1422,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c62-5321-71b3-9db7-83822ed4cbce",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 4,
+      "final_requested": false,
+      "submission_sha256": "8ee804fb631b1c06ef6c8e9dcc15d4571c6cb9feba84fe2f80f9532705a670f3",
+      "submission_source": "// Original: codebasealpha, by essenbee (Stu Bonham).\n// MIT License\n// Copyright (c) 2019 Stu Bonham\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all\n// copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n// SOFTWARE.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = 3.141592654;\nconst TAU: f32 = 2.0 * PI;\n\nfn folded_angle(pos: vec2<f32>) -> f32 {\n    let v = abs(pos);\n    let t = min(v.x, v.y) / max(max(v.x, v.y), 1e-30);\n    let t2 = t * t;\n    let polynomial = 0.99997726 + t2 * (-0.33262347 + t2 *\n        (0.19354346 + t2 * (-0.11643287 + t2 *\n        (0.05265332 + t2 * -0.01172120))));\n    let small_angle = t * polynomial;\n    var angle = select(small_angle, PI * 0.5 - small_angle, v.y > v.x);\n    angle = select(angle, PI - angle, pos.x < 0.0);\n    let a = TAU / 30.0;\n    let phase = angle - (2.0 * a) * floor(angle / (2.0 * a));\n    return a - abs(phase - a);\n}\n\nfn distance_field(pos: vec2<f32>, c: f32, s: f32) -> f32 {\n    let radius = length(pos);\n    let angle = folded_angle(pos);\n    let a2 = angle * angle;\n    let ca = 1.0 + a2 * (-0.5 + a2 * (1.0 / 24.0 - a2 / 720.0));\n    let sa = angle * (1.0 + a2 * (-1.0 / 6.0 + a2 * (1.0 / 120.0 - a2 / 5040.0)));\n    let p = radius * vec2<f32>(c * ca - s * sa, s * ca + c * sa);\n    let shifted = p + vec2<f32>(0.25);\n    let q = shifted - vec2<f32>(0.5) * floor(shifted * 2.0) - vec2<f32>(0.25);\n    let circle = length(q) - 0.1;\n    let box = abs(q - vec2<f32>(0.1)) - vec2<f32>(0.1);\n    return min(circle, max(box.x, box.y));\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var uv = frag_pos.xy / params.resolution - vec2<f32>(0.5);\n    uv.x *= params.resolution.x / params.resolution.y;\n\n    let c = cos(params.time);\n    let s = sin(params.time);\n    let d = distance_field(uv, c, s);\n    if (abs(d) < 0.02) {\n        return vec4<f32>(1.0);\n    }\n    let md = d - 0.1 * floor(d / 0.1);\n    if (abs(md) >= 0.01) {\n        return vec4<f32>(0.0, 0.0, 0.0, 1.0);\n    }\n\n    let nd = abs(d / 0.1);\n    let base = select(vec3<f32>(0.3, 1.0, 0.15),\n                      vec3<f32>(1.0, 0.3, 0.15), d < 0.0);\n    let rotated = vec2<f32>(c * uv.x + s * uv.y, -s * uv.x + c * uv.y);\n    let col = pow(clamp(base / nd, vec3<f32>(0.0), vec3<f32>(1.0)),\n                  vec3<f32>(abs(rotated.x), abs(rotated.y), length(rotated)));\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 4.8740298552729655e-06,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 2.85937112494139e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.928245703515131e-05,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 1.7499229040510456,
+        "ci_low": 1.6790770531472512,
+        "ci_high": 1.810796961466688,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 24.56324224997661,
+      "usage": {
+        "input_tokens": 110025,
+        "output_tokens": 5577,
+        "total_tokens": 115602,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 260720,
+        "cumulative_output_tokens": 13423,
+        "cumulative_total_tokens": 274143,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 95744,
+        "cumulative_cached_input_tokens": 221184,
+        "reasoning_output_tokens": 1044,
+        "cumulative_reasoning_output_tokens": 2466,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c62-5321-71b3-9db7-83822ed4cbce",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 260720,
+    "output_tokens": 13423,
+    "total_tokens": 274143,
+    "cost_usd": 0.0,
+    "cached_input_tokens": 221184,
+    "reasoning_output_tokens": 2466
+  },
+  "stop_reason": "token_budget"
+}

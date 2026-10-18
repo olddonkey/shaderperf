@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "label": "formal-task_gears_backup-k1",
+  "started_utc": "2026-10-18T00:26:14Z",
+  "config": {
+    "task_path": "tasks/task_gears_backup.wgsl",
+    "task_sha256": "b91715cf4cb6b7f2774147390a99c2d35c1bb5bb014faba8f3ad4450d0fbe29e",
+    "condition": "A",
+    "max_attempts": 8,
+    "max_total_tokens": 200000,
+    "max_output_tokens": 8000,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "pairs": 12,
+    "batch": 4,
+    "duty": 0.3,
+    "seed": 2001,
+    "model": "gpt-6.1-sol",
+    "base_url": null,
+    "tau_flip": 0.13486143201589584,
+    "backend": "codex",
+    "mock": false,
+    "allow_unpriced": false,
+    "budget_usd": 100.0,
+    "effort": "low",
+    "codex_workspace": "/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-0yrn2ne1",
+    "codex_cli_version": "codex-cli 0.162.1",
+    "codex_bin": "codex",
+    "codex_argv_flags": [
+      [
+        "exec",
+        "--json",
+        "--skip-git-repo-check",
+        "-s",
+        "read-only",
+        "-C",
+        "/private/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-0yrn2ne1",
+        "-m",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ]
+    ]
+  },
+  "env_meta": {
+    "adapter": {
+      "vendor": "",
+      "architecture": "",
+      "device": "Apple M5",
+      "description": "",
+      "stackgroup_min_size": 4,
+      "stackgroup_max_size": 128,
+      "vendor_id": 0,
+      "device_id": 0,
+      "adapter_type": "IntegratedGPU",
+      "backend_type": "Metal"
+    },
+    "adapter_features": [
+      "address-mode-clamp-to-border",
+      "address-mode-clamp-to-zero",
+      "bgra8unorm-storage",
+      "clear-texture",
+      "cooperative-matrix",
+      "depth-clip-control",
+      "depth32float-stencil8",
+      "dual-source-blending",
+      "float32-blendable",
+      "float32-filterable",
+      "immediates",
+      "indirect-first-instance",
+      "mappable-primary-buffers",
+      "memory-decoration-coherent",
+      "multiview",
+      "partially-bound-binding-array",
+      "polygon-mode-line",
+      "primitive-index",
+      "ray-query",
+      "rg11b10ufloat-renderable",
+      "sampled-texture-and-storage-buffer-array-non-uniform-indexing",
+      "shader-barycentrics",
+      "shader-f16",
+      "shader-float32-atomic",
+      "shader-int64",
+      "shader-int64-atomic-min-max",
+      "storage-resource-binding-array",
+      "storage-texture-array-non-uniform-indexing",
+      "subgroup",
+      "subgroup-barrier",
+      "texture-adapter-specific-format-features",
+      "texture-atomic",
+      "texture-binding-array",
+      "texture-compression-astc",
+      "texture-compression-astc-hdr",
+      "texture-compression-astc-sliced-3d",
+      "texture-compression-bc",
+      "texture-compression-bc-sliced-3d",
+      "texture-compression-etc2",
+      "texture-format16bit-norm",
+      "texture-int64-atomic",
+      "timestamp-query",
+      "timestamp-query-inside-encoders",
+      "vertex-writable-storage"
+    ],
+    "timestamp_queries": true,
+    "wgpu_version": "0.32.0",
+    "python": "3.12.14 (main, Sep  1 2026, 14:09:38) [Clang 22.1.3 ]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "utc_time": "2026-10-18T00:26:14Z"
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are optimizing a WGSL fragment shader for GPU time on a fixed device.\nPreserve the rendered image: perceptual equivalence is checked, and hidden held-out checks also exist but are not shown to you. Every optimization reply must contain the complete modified shader in one ```wgsl fenced block. If a reply contains more than one such block, only the last block is evaluated. Do not change the vertex stage or the Params uniform interface. Do not use external resources. After at least one shader submission has compiled successfully, you may reply with the literal token FINAL by itself to end the trajectory; that reply does not need a shader block."
+    },
+    {
+      "role": "user",
+      "content": "Optimize this complete WGSL shader:\n\n```wgsl\n// Original: Gears (2022), by pestis. Backup evaluation task.\n// URL: https://www.shadertoy.com/view/DssSDS\n// Source: tasks/sources/gears.frag.\n// License: CC0, stated in tasks/sources/shader-advent-day03-README.md,\n// lines 277-279 (the author's code is CC0; the containing repo is MIT).\n// Port date: 2026-10-17. Faithful GLSL-to-WGSL port; no optimization.\n// Port changes: house uniform/entry points; I_MODE baked to 0 (animated\n// foreground/background composite); AA = 4 and both AA loops retained.\n// Floor-mod uses mod_f; two-argument atan becomes atan2; scalar vector offsets\n// use explicit splats. GLSL inout prevGear becomes a function pointer; mutable\n// uv uses uv_in; local gear becomes gear_state; swizzle writes become component\n// writes. Matrix column order and vector-on-left products are retained.\n// GLSL switch/ternaries become WGSL switch/if; step becomes blend_step.\n// The originally uninitialized color accumulator is explicitly zeroed;\n// the unused col/b locals, ten gear-chain iterations and all gear calls remain.\n// Final RGB clamp reproduces the original implicit framebuffer clamp; alpha 1.\n// Vertical orientation mirrored vs the GL original (WebGPU fragment coordinates); consistent across reference and submissions.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\n// Modes: 0 composite preview, 1 background print, 2 foreground print,\n// 3 original animation, 4 blends between all the different modes.\nconst I_MODE: i32 = 0;\nconst AA: i32 = 4; // antialiasing, each pixel is sampled from AA * AA points\nconst RINGS: f32 = 50.0; // how many rings there are in the foreground spiral\nconst REPSPERROUND: f32 = 16.0; // how many arms there are in the foreground spiral\nconst PI: f32 = acos(-1.0);\nconst DUTYCYCLE: f32 = 0.3; // what amount of the foreground is transparent\nconst LINEWIDTH: f32 = 0.002; // the width of the cutting lines for the background\nconst PRINTSIZE: f32 = 145.0; // nominal print size of the background, in mm\nconst HOLESIZE: f32 = 3.0; // size of the center hole, in mm\nconst FGSIZE: f32 = 139.2; // diameter of the foreground, in mm\n\nconst TEETH_SIZE: f32 = 0.05;\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prevGear: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let prev_radius = (*prevGear).z / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) * (prev_radius + radius + 0.01 + TEETH_SIZE);\n\n    var gear_state: vec4<f32>;\n    gear_state.x = (*prevGear).x + offset.x;\n    gear_state.y = (*prevGear).y + offset.y;\n    gear_state.z = wheels;\n    gear_state.w = -((*prevGear).w + angle * (*prevGear).z) - PI - (PI + angle) * wheels;\n\n    let pos = uv - gear_state.xy;\n    let r = length(pos);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + gear_state.w)) * TEETH_SIZE + radius;\n\n    *prevGear = gear_state;\n\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(radius - TEETH_SIZE * 1.2, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    var uv = uv_in;\n    if (length(uv) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var prevGear: vec4<f32>;\n    let col = vec3<f32>(0.0);\n    uv = uv / 1.4;\n    let b = 5.0;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i: i32 = 0; i < 10; i++) {\n        prevGear.x = 0.0;\n        prevGear.y = 0.0;\n        prevGear.z = 15.0;\n        prevGear.w = t * 2.0 * PI;\n        p = max(p, c * gear(0.0, uv, 10.0, &prevGear));\n        p = max(p, c * gear(1.4, uv, 6.0, &prevGear));\n        p = max(p, c * gear(3.2, uv, 6.0, &prevGear));\n        p = max(p, c * gear(1.5, uv, 7.0, &prevGear));\n        p = max(p, c * gear(3.4, uv, 8.0, &prevGear));\n        p = max(p, c * gear(4.2, uv, 9.0, &prevGear));\n        p = max(p, c * gear(2.3, uv, 6.0, &prevGear));\n        p = max(p, c * gear(4.0, uv, 7.0, &prevGear));\n        p = max(p, c * gear(4.3, uv, 5.0, &prevGear));\n        p = max(p, c * gear(5.7, uv, 10.0, &prevGear));\n        p = max(p, c * gear(4.8, uv, 6.0, &prevGear));\n        p = max(p, c * gear(6.0, uv, 8.0, &prevGear));\n        p = max(p, c * gear(1.2, uv, 9.0, &prevGear));\n        p = max(p, c * gear(-0.7, uv, 5.0, &prevGear));\n        p = max(p, c * gear(-0.2, uv, 6.0, &prevGear));\n        p = max(p, c * gear(0.76, uv, 8.0, &prevGear));\n        uv = uv * 1.2;\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        let angle = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    }\n\n    p = pow(p, vec3<f32>(2.2));\n\n    return p;\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return REPSPERROUND * atan2(uv.y, uv.x) / 2.0 / PI + RINGS * length(uv);\n}\n\nfn background(uv: vec2<f32>) -> vec3<f32> {\n    // add cutting aides & marks\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < LINEWIDTH) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) < HOLESIZE / PRINTSIZE) {\n        return vec3<f32>(1.0);\n    }\n\n    // generate background print by slicing the animation\n    return animation(uv, phase(uv));\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    // add cutting aides & marks\n    let maskrad = FGSIZE / PRINTSIZE;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) > maskrad) {\n        return vec3<f32>(1.0);\n    }\n    if (length(uv) < HOLESIZE / PRINTSIZE) {\n        return vec3<f32>(1.0);\n    }\n\n    // generate foreground spiral\n    let k = mod_f(phase(uv) - t, 1.0);\n    if (k > DUTYCYCLE) {\n        return vec3<f32>(0.0);\n    }\n    return vec3<f32>(1.0);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n\n    // we'll take the modulus, to make it easy to see that the animation\n    // really loops\n    let t = mod_f(params.time, 1.0);\n\n    for (var x: i32 = 0; x < AA; x++) {\n        for (var y: i32 = 0; y < AA; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / f32(AA)) * 2.0 - params.resolution) / params.resolution.y;\n            switch (I_MODE) {\n                default: {\n                    col += foreground(uv, t) * background(uv);\n                    break;\n                }\n                case 1: {\n                    col += background(uv);\n                    break;\n                }\n                case 2: {\n                    col += foreground(uv, t);\n                    break;\n                }\n                case 3: {\n                    col += animation(uv, t);\n                    break;\n                }\n                case 4: {\n                    let blend_step: i32 = i32(params.time / 5.0) % 4;\n                    var alpha = fract(params.time / 5.0);\n                    alpha = 1.0 / (1.0 + exp(-(alpha - 0.5) * 30.0));\n                    if (blend_step == 0) {\n                        col += mix(background(uv), foreground(uv, t), alpha);\n                    } else if (blend_step == 1) {\n                        col += mix(foreground(uv, t), foreground(uv, t) * background(uv), alpha);\n                    } else if (blend_step == 2) {\n                        col += mix(foreground(uv, t) * background(uv), animation(uv, t), alpha);\n                    } else {\n                        col += mix(animation(uv, t), background(uv), alpha);\n                    }\n                }\n            }\n        }\n    }\n    col = col / f32(AA * AA);\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n\n```\n\nAfter each attempt you will receive: the compilation outcome and compiler diagnostic if any; the numerical range/finiteness result at the first visible time; FLIP at every visible time with pass/fail against tau_FLIP=0.134861432; the total speedup point estimate and confidence interval against the original shader; and the remaining attempt and token budgets."
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n        var g = 0.0;\n        g = max(g, gear(0.0, uv, 10.0, &prev));\n        g = max(g, gear(1.4, uv, 6.0, &prev));\n        g = max(g, gear(3.2, uv, 6.0, &prev));\n        g = max(g, gear(1.5, uv, 7.0, &prev));\n        g = max(g, gear(3.4, uv, 8.0, &prev));\n        g = max(g, gear(4.2, uv, 9.0, &prev));\n        g = max(g, gear(2.3, uv, 6.0, &prev));\n        g = max(g, gear(4.0, uv, 7.0, &prev));\n        g = max(g, gear(4.3, uv, 5.0, &prev));\n        g = max(g, gear(5.7, uv, 10.0, &prev));\n        g = max(g, gear(4.8, uv, 6.0, &prev));\n        g = max(g, gear(6.0, uv, 8.0, &prev));\n        g = max(g, gear(1.2, uv, 9.0, &prev));\n        g = max(g, gear(-0.7, uv, 5.0, &prev));\n        g = max(g, gear(-0.2, uv, 6.0, &prev));\n        g = max(g, gear(0.76, uv, 8.0, &prev));\n        p = max(p, c * g);\n        uv *= 1.2;\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 4; x++) {\n        for (var y = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000007698 PASS\n- time=3.7: FLIP=0.000018332 PASS\n- time=9.2: FLIP=0.000014588 PASS\nSpeedup vs original: 2.878665x; CI [1.897512, 3.039597]\nAttempts remaining: 7\nToken budget remaining: 175441"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        // All gears lie strictly inside this circle. Later layers\n        // only increase the distance of the sample from the origin.\n        if (dot(uv, uv) > 1.69) {\n            break;\n        }\n        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n        var g = 0.0;\n        g = max(g, gear(0.0, uv, 10.0, &prev));\n        g = max(g, gear(1.4, uv, 6.0, &prev));\n        g = max(g, gear(3.2, uv, 6.0, &prev));\n        g = max(g, gear(1.5, uv, 7.0, &prev));\n        g = max(g, gear(3.4, uv, 8.0, &prev));\n        g = max(g, gear(4.2, uv, 9.0, &prev));\n        g = max(g, gear(2.3, uv, 6.0, &prev));\n        g = max(g, gear(4.0, uv, 7.0, &prev));\n        g = max(g, gear(4.3, uv, 5.0, &prev));\n        g = max(g, gear(5.7, uv, 10.0, &prev));\n        g = max(g, gear(4.8, uv, 6.0, &prev));\n        g = max(g, gear(6.0, uv, 8.0, &prev));\n        g = max(g, gear(1.2, uv, 9.0, &prev));\n        g = max(g, gear(-0.7, uv, 5.0, &prev));\n        g = max(g, gear(-0.2, uv, 6.0, &prev));\n        g = max(g, gear(0.76, uv, 8.0, &prev));\n        p = max(p, c * g);\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        // No later layer can exceed c in any color channel.\n        if (all(p >= c)) {\n            break;\n        }\n        uv *= 1.2;\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 4; x++) {\n        for (var y = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000007698 PASS\n- time=3.7: FLIP=0.000018332 PASS\n- time=9.2: FLIP=0.000014588 PASS\nSpeedup vs original: 6.667093x; CI [3.402075, 8.083155]\nAttempts remaining: 6\nToken budget remaining: 119155"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        if (dot(uv, uv) > 1.69) {\n            break;\n        }\n        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n        var g = 0.0;\n        g = max(g, gear(0.0, uv, 10.0, &prev));\n        g = max(g, gear(1.4, uv, 6.0, &prev));\n        g = max(g, gear(3.2, uv, 6.0, &prev));\n        g = max(g, gear(1.5, uv, 7.0, &prev));\n        g = max(g, gear(3.4, uv, 8.0, &prev));\n        g = max(g, gear(4.2, uv, 9.0, &prev));\n        g = max(g, gear(2.3, uv, 6.0, &prev));\n        g = max(g, gear(4.0, uv, 7.0, &prev));\n        g = max(g, gear(4.3, uv, 5.0, &prev));\n        g = max(g, gear(5.7, uv, 10.0, &prev));\n        g = max(g, gear(4.8, uv, 6.0, &prev));\n        g = max(g, gear(6.0, uv, 8.0, &prev));\n        g = max(g, gear(1.2, uv, 9.0, &prev));\n        g = max(g, gear(-0.7, uv, 5.0, &prev));\n        g = max(g, gear(-0.2, uv, 6.0, &prev));\n        g = max(g, gear(0.76, uv, 8.0, &prev));\n        p = max(p, c * g);\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        if (all(p >= c)) {\n            break;\n        }\n        uv *= 1.2;\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 2; x++) {\n        for (var y = 0; y < 2; y++) {\n            let offset = vec2<f32>(f32(x), f32(y)) * 0.5 + vec2<f32>(0.125);\n            let uv = ((frag_pos.xy + offset) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col * 0.25, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.052084763 PASS\n- time=3.7: FLIP=0.051885296 PASS\n- time=9.2: FLIP=0.051980726 PASS\nSpeedup vs original: 12.565569x; CI [12.116454, 18.818570]\nAttempts remaining: 5\nToken budget remaining: 28993"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    if (r2 < radius * radius) {\n        return 1.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return 1.0 - smoothstep(f, f + 0.002, r);\n}\n\nfn chain(uv: vec2<f32>, t: f32) -> f32 {\n    var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n    var g = gear(0.0, uv, 10.0, &prev);\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(1.4, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(3.2, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(1.5, uv, 7.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(3.4, uv, 8.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.2, uv, 9.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(2.3, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.0, uv, 7.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.3, uv, 5.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(5.7, uv, 10.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.8, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(6.0, uv, 8.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(1.2, uv, 9.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(-0.7, uv, 5.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(-0.2, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    return max(g, gear(0.76, uv, 8.0, &prev));\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        if (dot(uv, uv) > 1.69) {\n            break;\n        }\n        p = max(p, c * chain(uv, t));\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        if (all(p >= c)) {\n            break;\n        }\n        uv *= 1.2;\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 2; x++) {\n        for (var y = 0; y < 2; y++) {\n            let offset = vec2<f32>(f32(x), f32(y)) * 0.5 + vec2<f32>(0.125);\n            let uv = ((frag_pos.xy + offset) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col * 0.25, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.052084763 PASS\n- time=3.7: FLIP=0.051885374 PASS\n- time=9.2: FLIP=0.051980745 PASS\nSpeedup vs original: 10.831613x; CI [8.363127, 13.907435]\nAttempts remaining: 4\nToken budget remaining: 0"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "final_requested": false,
+      "submission_sha256": "24f6e14b3b46de7d7ee11a9c326a54bcd27a81845512b901db5d7b173fe89242",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n        var g = 0.0;\n        g = max(g, gear(0.0, uv, 10.0, &prev));\n        g = max(g, gear(1.4, uv, 6.0, &prev));\n        g = max(g, gear(3.2, uv, 6.0, &prev));\n        g = max(g, gear(1.5, uv, 7.0, &prev));\n        g = max(g, gear(3.4, uv, 8.0, &prev));\n        g = max(g, gear(4.2, uv, 9.0, &prev));\n        g = max(g, gear(2.3, uv, 6.0, &prev));\n        g = max(g, gear(4.0, uv, 7.0, &prev));\n        g = max(g, gear(4.3, uv, 5.0, &prev));\n        g = max(g, gear(5.7, uv, 10.0, &prev));\n        g = max(g, gear(4.8, uv, 6.0, &prev));\n        g = max(g, gear(6.0, uv, 8.0, &prev));\n        g = max(g, gear(1.2, uv, 9.0, &prev));\n        g = max(g, gear(-0.7, uv, 5.0, &prev));\n        g = max(g, gear(-0.2, uv, 6.0, &prev));\n        g = max(g, gear(0.76, uv, 8.0, &prev));\n        p = max(p, c * g);\n        uv *= 1.2;\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 4; x++) {\n        for (var y = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 7.698158697166946e-06,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 1.8332453691982664e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 1.458832593925763e-05,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 2.8786646471017097,
+        "ci_low": 1.8975121278150098,
+        "ci_high": 3.0395966761076285,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 34.997538458992494,
+      "usage": {
+        "input_tokens": 22794,
+        "output_tokens": 1765,
+        "total_tokens": 24559,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 22794,
+        "cumulative_output_tokens": 1765,
+        "cumulative_total_tokens": 24559,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 19584,
+        "cumulative_cached_input_tokens": 19584,
+        "reasoning_output_tokens": 47,
+        "cumulative_reasoning_output_tokens": 47,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 2,
+      "final_requested": false,
+      "submission_sha256": "4cd41f055031a70f6fb1d54a6b048901bedc39a2710c27419492ee4455cba392",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        // All gears lie strictly inside this circle. Later layers\n        // only increase the distance of the sample from the origin.\n        if (dot(uv, uv) > 1.69) {\n            break;\n        }\n        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n        var g = 0.0;\n        g = max(g, gear(0.0, uv, 10.0, &prev));\n        g = max(g, gear(1.4, uv, 6.0, &prev));\n        g = max(g, gear(3.2, uv, 6.0, &prev));\n        g = max(g, gear(1.5, uv, 7.0, &prev));\n        g = max(g, gear(3.4, uv, 8.0, &prev));\n        g = max(g, gear(4.2, uv, 9.0, &prev));\n        g = max(g, gear(2.3, uv, 6.0, &prev));\n        g = max(g, gear(4.0, uv, 7.0, &prev));\n        g = max(g, gear(4.3, uv, 5.0, &prev));\n        g = max(g, gear(5.7, uv, 10.0, &prev));\n        g = max(g, gear(4.8, uv, 6.0, &prev));\n        g = max(g, gear(6.0, uv, 8.0, &prev));\n        g = max(g, gear(1.2, uv, 9.0, &prev));\n        g = max(g, gear(-0.7, uv, 5.0, &prev));\n        g = max(g, gear(-0.2, uv, 6.0, &prev));\n        g = max(g, gear(0.76, uv, 8.0, &prev));\n        p = max(p, c * g);\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        // No later layer can exceed c in any color channel.\n        if (all(p >= c)) {\n            break;\n        }\n        uv *= 1.2;\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 4; x++) {\n        for (var y = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 7.698158697166946e-06,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 1.8332453691982664e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 1.458832593925763e-05,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 6.6670925391221445,
+        "ci_low": 3.402075419076597,
+        "ci_high": 8.083155143890227,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 55.284415667003486,
+      "usage": {
+        "input_tokens": 51883,
+        "output_tokens": 4403,
+        "total_tokens": 56286,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 74677,
+        "cumulative_output_tokens": 6168,
+        "cumulative_total_tokens": 80845,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 39168,
+        "cumulative_cached_input_tokens": 58752,
+        "reasoning_output_tokens": 864,
+        "cumulative_reasoning_output_tokens": 911,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml.",
+        "This session was recorded with model `gpt-6.1-sol` but is resuming with `gpt-6-astra`. Consider switching back to `gpt-6.1-sol` as it may affect Codex performance."
+      ]
+    },
+    {
+      "attempt": 3,
+      "final_requested": false,
+      "submission_sha256": "51b010ad59e47ee4470f1c922a1d8345d23fb1aec25aae535c167b1e55850549",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        if (dot(uv, uv) > 1.69) {\n            break;\n        }\n        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n        var g = 0.0;\n        g = max(g, gear(0.0, uv, 10.0, &prev));\n        g = max(g, gear(1.4, uv, 6.0, &prev));\n        g = max(g, gear(3.2, uv, 6.0, &prev));\n        g = max(g, gear(1.5, uv, 7.0, &prev));\n        g = max(g, gear(3.4, uv, 8.0, &prev));\n        g = max(g, gear(4.2, uv, 9.0, &prev));\n        g = max(g, gear(2.3, uv, 6.0, &prev));\n        g = max(g, gear(4.0, uv, 7.0, &prev));\n        g = max(g, gear(4.3, uv, 5.0, &prev));\n        g = max(g, gear(5.7, uv, 10.0, &prev));\n        g = max(g, gear(4.8, uv, 6.0, &prev));\n        g = max(g, gear(6.0, uv, 8.0, &prev));\n        g = max(g, gear(1.2, uv, 9.0, &prev));\n        g = max(g, gear(-0.7, uv, 5.0, &prev));\n        g = max(g, gear(-0.2, uv, 6.0, &prev));\n        g = max(g, gear(0.76, uv, 8.0, &prev));\n        p = max(p, c * g);\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        if (all(p >= c)) {\n            break;\n        }\n        uv *= 1.2;\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 2; x++) {\n        for (var y = 0; y < 2; y++) {\n            let offset = vec2<f32>(f32(x), f32(y)) * 0.5 + vec2<f32>(0.125);\n            let uv = ((frag_pos.xy + offset) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col * 0.25, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.05208476260304451,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.051885295659303665,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.051980726420879364,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 12.565569348633074,
+        "ci_low": 12.116454478392805,
+        "ci_high": 18.8185704926849,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 39.607343792013125,
+      "usage": {
+        "input_tokens": 83757,
+        "output_tokens": 6405,
+        "total_tokens": 90162,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 158434,
+        "cumulative_output_tokens": 12573,
+        "cumulative_total_tokens": 171007,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 68096,
+        "cumulative_cached_input_tokens": 126848,
+        "reasoning_output_tokens": 1070,
+        "cumulative_reasoning_output_tokens": 1981,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 4,
+      "final_requested": false,
+      "submission_sha256": "5aca3cd33494b9ed550277db5296a8be37525443a41d843e8596b58a40c08c5b",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {\n    let radius = wheels / 50.0;\n    let offset = vec2<f32>(cos(angle), sin(angle)) *\n        ((*prev).z / 50.0 + radius + 0.06);\n    let state = vec4<f32>(\n        (*prev).xy + offset,\n        wheels,\n        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels\n    );\n    *prev = state;\n    let pos = uv - state.xy;\n    let r2 = dot(pos, pos);\n    let inner = radius - 0.06;\n    let outer = radius + 0.052;\n    if (r2 < inner * inner || r2 > outer * outer) {\n        return 0.0;\n    }\n    if (r2 < radius * radius) {\n        return 1.0;\n    }\n    let r = sqrt(r2);\n    let a = atan2(pos.y, pos.x);\n    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;\n    return 1.0 - smoothstep(f, f + 0.002, r);\n}\n\nfn chain(uv: vec2<f32>, t: f32) -> f32 {\n    var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);\n    var g = gear(0.0, uv, 10.0, &prev);\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(1.4, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(3.2, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(1.5, uv, 7.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(3.4, uv, 8.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.2, uv, 9.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(2.3, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.0, uv, 7.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.3, uv, 5.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(5.7, uv, 10.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(4.8, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(6.0, uv, 8.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(1.2, uv, 9.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(-0.7, uv, 5.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    g = max(g, gear(-0.2, uv, 6.0, &prev));\n    if (g >= 1.0) { return 1.0; }\n    return max(g, gear(0.76, uv, 8.0, &prev));\n}\n\nfn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv_in) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    var uv = uv_in / 1.4;\n    var c = vec3<f32>(1.7);\n    var p = vec3<f32>(0.0);\n    let angle = 4.3 + PI;\n    uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));\n    for (var i = 0; i < 10; i++) {\n        if (dot(uv, uv) > 1.69) {\n            break;\n        }\n        p = max(p, c * chain(uv, t));\n        c *= vec3<f32>(0.75, 0.5, 0.7);\n        if (all(p >= c)) {\n            break;\n        }\n        uv *= 1.2;\n        let a = f32(i) + 4.5;\n        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));\n    }\n    return pow(p, vec3<f32>(2.2));\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let maskrad = 139.2 / 145.0;\n    let r = length(uv);\n    let fg_uv = uv / maskrad;\n    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||\n        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    var ph = 0.0;\n    if (r <= maskrad && r >= 3.0 / 145.0) {\n        ph = phase(uv);\n        if (mod_f(ph - t, 1.0) > 0.3) {\n            return vec3<f32>(0.0);\n        }\n    }\n    if (length(uv - vec2<f32>(0.72)) < 0.01 ||\n        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||\n        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (r < 3.0 / 145.0 || r > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    if (r > maskrad) {\n        ph = phase(uv);\n    }\n    return animation(uv, ph);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x = 0; x < 2; x++) {\n        for (var y = 0; y < 2; y++) {\n            let offset = vec2<f32>(f32(x), f32(y)) * 0.5 + vec2<f32>(0.125);\n            let uv = ((frag_pos.xy + offset) * 2.0 -\n                params.resolution) / params.resolution.y;\n            col += composite(uv, t);\n        }\n    }\n    return vec4<f32>(clamp(col * 0.25, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.05208476260304451,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.05188537389039993,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.051980745047330856,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 10.83161258095953,
+        "ci_low": 8.36312688812295,
+        "ci_high": 13.90743527002932,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 42.15758416699828,
+      "usage": {
+        "input_tokens": 117780,
+        "output_tokens": 8692,
+        "total_tokens": 126472,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 276214,
+        "cumulative_output_tokens": 21265,
+        "cumulative_total_tokens": 297479,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 99840,
+        "cumulative_cached_input_tokens": 226688,
+        "reasoning_output_tokens": 1267,
+        "cumulative_reasoning_output_tokens": 3248,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c66-e707-7072-81f6-4023f5f9e7c0",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 276214,
+    "output_tokens": 21265,
+    "total_tokens": 297479,
+    "cost_usd": 0.0,
+    "cached_input_tokens": 226688,
+    "reasoning_output_tokens": 3248
+  },
+  "stop_reason": "token_budget"
+}

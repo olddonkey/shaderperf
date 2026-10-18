@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "label": "formal-task_tunnel-k3",
+  "started_utc": "2026-10-18T00:13:51Z",
+  "config": {
+    "task_path": "tasks/task_tunnel.wgsl",
+    "task_sha256": "e387d4c546964dc3b9680482fc08f3d12f84aecd4e6a011fa83466c3d11a2ab1",
+    "condition": "A",
+    "max_attempts": 8,
+    "max_total_tokens": 200000,
+    "max_output_tokens": 8000,
+    "visible_times": [
+      1.0,
+      3.7,
+      9.2
+    ],
+    "pairs": 12,
+    "batch": 4,
+    "duty": 0.3,
+    "seed": 1003,
+    "model": "gpt-6.1-sol",
+    "base_url": null,
+    "tau_flip": 0.13486143201589584,
+    "backend": "codex",
+    "mock": false,
+    "allow_unpriced": false,
+    "budget_usd": 100.0,
+    "effort": "low",
+    "codex_workspace": "/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-i51046ca",
+    "codex_cli_version": "codex-cli 0.162.1",
+    "codex_bin": "codex",
+    "codex_argv_flags": [
+      [
+        "exec",
+        "--json",
+        "--skip-git-repo-check",
+        "-s",
+        "read-only",
+        "-C",
+        "/private/var/folders/bx/ytqqwcvs6pj48qqwm6r862pr0000gn/T/shaderperf-codex-i51046ca",
+        "-m",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c5b-9109-7841-a67b-c20c7696623e",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c5b-9109-7841-a67b-c20c7696623e",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ],
+      [
+        "exec",
+        "resume",
+        "01a14c5b-9109-7841-a67b-c20c7696623e",
+        "--json",
+        "--skip-git-repo-check",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "sandbox_mode=\"read-only\"",
+        "-c",
+        "mcp_servers={}"
+      ]
+    ]
+  },
+  "env_meta": {
+    "adapter": {
+      "vendor": "",
+      "architecture": "",
+      "device": "Apple M5",
+      "description": "",
+      "stackgroup_min_size": 4,
+      "stackgroup_max_size": 128,
+      "vendor_id": 0,
+      "device_id": 0,
+      "adapter_type": "IntegratedGPU",
+      "backend_type": "Metal"
+    },
+    "adapter_features": [
+      "address-mode-clamp-to-border",
+      "address-mode-clamp-to-zero",
+      "bgra8unorm-storage",
+      "clear-texture",
+      "cooperative-matrix",
+      "depth-clip-control",
+      "depth32float-stencil8",
+      "dual-source-blending",
+      "float32-blendable",
+      "float32-filterable",
+      "immediates",
+      "indirect-first-instance",
+      "mappable-primary-buffers",
+      "memory-decoration-coherent",
+      "multiview",
+      "partially-bound-binding-array",
+      "polygon-mode-line",
+      "primitive-index",
+      "ray-query",
+      "rg11b10ufloat-renderable",
+      "sampled-texture-and-storage-buffer-array-non-uniform-indexing",
+      "shader-barycentrics",
+      "shader-f16",
+      "shader-float32-atomic",
+      "shader-int64",
+      "shader-int64-atomic-min-max",
+      "storage-resource-binding-array",
+      "storage-texture-array-non-uniform-indexing",
+      "subgroup",
+      "subgroup-barrier",
+      "texture-adapter-specific-format-features",
+      "texture-atomic",
+      "texture-binding-array",
+      "texture-compression-astc",
+      "texture-compression-astc-hdr",
+      "texture-compression-astc-sliced-3d",
+      "texture-compression-bc",
+      "texture-compression-bc-sliced-3d",
+      "texture-compression-etc2",
+      "texture-format16bit-norm",
+      "texture-int64-atomic",
+      "timestamp-query",
+      "timestamp-query-inside-encoders",
+      "vertex-writable-storage"
+    ],
+    "timestamp_queries": true,
+    "wgpu_version": "0.32.0",
+    "python": "3.12.14 (main, Sep  1 2026, 14:09:38) [Clang 22.1.3 ]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "utc_time": "2026-10-18T00:13:51Z"
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are optimizing a WGSL fragment shader for GPU time on a fixed device.\nPreserve the rendered image: perceptual equivalence is checked, and hidden held-out checks also exist but are not shown to you. Every optimization reply must contain the complete modified shader in one ```wgsl fenced block. If a reply contains more than one such block, only the last block is evaluated. Do not change the vertex stage or the Params uniform interface. Do not use external resources. After at least one shader submission has compiled successfully, you may reply with the literal token FINAL by itself to end the trajectory; that reply does not need a shader block."
+    },
+    {
+      "role": "user",
+      "content": "Optimize this complete WGSL shader:\n\n```wgsl\n// Original: Tunnel (2021), by pestis.\n// URL: https://www.shadertoy.com/view/NtKGWh\n// Source: tasks/sources/tunnel.frag.\n// License: CC0, stated in tasks/sources/shader-advent-day03-README.md,\n// lines 277-279 (the author's code is CC0; the containing repo is MIT).\n// Port date: 2026-10-17. Faithful GLSL-to-WGSL port; no optimization.\n// Port changes: house uniform/entry points; I_MODE baked to 0 (animated\n// foreground/background composite); AA = 4 and both AA loops retained.\n// Floor-mod uses mod_f/mod_v2; two-argument atan becomes atan2; scalar\n// vector offsets use explicit splats; mutable parameters p/x use p_in/x_in.\n// GLSL switch/ternaries become WGSL switch/if; step becomes blend_step.\n// The originally uninitialized color accumulator is explicitly zeroed.\n// Final RGB clamp reproduces the original implicit framebuffer clamp; alpha 1.\n// Vertical orientation mirrored vs the GL original (WebGPU fragment coordinates); consistent across reference and submissions.\n\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\n// Modes: 0 composite preview, 1 background print, 2 foreground print,\n// 3 original animation, 4 blends between all the different modes.\nconst I_MODE: i32 = 0;\nconst AA: i32 = 4; // antialiasing, each pixel is sampled from AA * AA points\nconst RINGS: f32 = 50.0; // how many rings there are in the foreground spiral\nconst REPSPERROUND: f32 = 16.0; // how many arms there are in the foreground spiral\nconst PI: f32 = acos(-1.0);\nconst DUTYCYCLE: f32 = 0.3; // what amount of the foreground is transparent\nconst LINEWIDTH: f32 = 0.002; // the width of the cutting lines for the background\nconst PRINTSIZE: f32 = 145.0; // nominal print size of the background, in mm\nconst HOLESIZE: f32 = 3.0; // size of the center hole, in mm\nconst FGSIZE: f32 = 139.2; // diameter of the foreground, in mm\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn mod_v2(x: vec2<f32>, y: vec2<f32>) -> vec2<f32> {\n    return x - y * floor(x / y);\n}\n\nfn hash(p_in: vec2<f32>) -> vec2<f32> {\n    var p = p_in;\n    p = vec2<f32>(dot(p, vec2<f32>(127.1, 311.7)),\n                  dot(p, vec2<f32>(269.5, 183.3)));\n    return fract(sin(p) * 18.5453);\n}\n\n// return distance, and cell id\nfn voronoi(x_in: vec2<f32>) -> vec2<f32> {\n    var x = x_in;\n    x.x = mod_f(x.x * 12.0, 12.0);\n    let n = vec2<f32>(floor(x.x) + floor(x.y), 0.0);\n    let f = fract(x);\n\n    var m = vec3<f32>(8.0);\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let g = vec2<f32>(f32(i), f32(j));\n            let g2 = vec2<f32>(f32(i + j), 0.0);\n            let o = hash(mod_v2(n + g2, vec2<f32>(12.0)));\n            let r = g - f + (vec2<f32>(0.5) + 0.5 * sin(3.0 * o - vec2<f32>(0.1)));\n            let d = dot(r, r);\n            if (d < m.x) {\n                m = vec3<f32>(d, o);\n            }\n        }\n    }\n\n    return vec2<f32>(sqrt(m.x), m.y + m.z);\n}\n\n// we're going to raymarch to this distance field. Returns vec4(color,distance)\nfn map(p: vec3<f32>, t: f32) -> vec4<f32> {\n    let u = atan2(p.y, p.x) / PI;\n    let v = p.z * 4.0;\n    let q = voronoi(vec2<f32>(u - t / 12.0, v + t));\n    var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n    col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q.x * q.x, 0.0, 1.0)) * 7.0;\n    return vec4<f32>(col, 1.0 - length(p.xy) - q.x / 3.0);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    let o = vec3<f32>(0.0, 0.0, -5.0);\n    let r = normalize(vec3<f32>(uv, 0.5));\n    var col = vec3<f32>(0.0);\n    var d = 0.0;\n    for (var i: i32 = 0; i < 70; i++) {\n        let m = map(o + d * r, t);\n        if (m.w < 0.001) {\n            col = m.xyz * pow(2.0, -d);\n            break;\n        }\n        d += m.w;\n    }\n    return col;\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return REPSPERROUND * atan2(uv.y, uv.x) / 2.0 / PI + RINGS * length(uv);\n}\n\nfn background(uv: vec2<f32>) -> vec3<f32> {\n    // add cutting aides & marks\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < LINEWIDTH) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) < HOLESIZE / PRINTSIZE) {\n        return vec3<f32>(1.0);\n    }\n\n    // generate background print by slicing the animation\n    return animation(uv, phase(uv));\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    // add cutting aides & marks\n    let maskrad = FGSIZE / PRINTSIZE;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) > maskrad) {\n        return vec3<f32>(1.0);\n    }\n    if (length(uv) < HOLESIZE / PRINTSIZE) {\n        return vec3<f32>(1.0);\n    }\n\n    // generate foreground spiral\n    let k = mod_f(phase(uv) - t, 1.0);\n    if (k > DUTYCYCLE) {\n        return vec3<f32>(0.0);\n    }\n    return vec3<f32>(1.0);\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n\n    // we'll take the modulus, to make it easy to see that the animation\n    // really loops\n    let t = mod_f(params.time, 1.0);\n\n    for (var x: i32 = 0; x < AA; x++) {\n        for (var y: i32 = 0; y < AA; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / f32(AA)) * 2.0 - params.resolution) / params.resolution.y;\n            switch (I_MODE) {\n                default: {\n                    col += foreground(uv, t) * background(uv);\n                    break;\n                }\n                case 1: {\n                    col += background(uv);\n                    break;\n                }\n                case 2: {\n                    col += foreground(uv, t);\n                    break;\n                }\n                case 3: {\n                    col += animation(uv, t);\n                    break;\n                }\n                case 4: {\n                    let blend_step: i32 = i32(params.time / 5.0) % 4;\n                    var alpha = fract(params.time / 5.0);\n                    alpha = 1.0 / (1.0 + exp(-(alpha - 0.5) * 30.0));\n                    if (blend_step == 0) {\n                        col += mix(background(uv), foreground(uv, t), alpha);\n                    } else if (blend_step == 1) {\n                        col += mix(foreground(uv, t), foreground(uv, t) * background(uv), alpha);\n                    } else if (blend_step == 2) {\n                        col += mix(foreground(uv, t) * background(uv), animation(uv, t), alpha);\n                    } else {\n                        col += mix(animation(uv, t), background(uv), alpha);\n                    }\n                }\n            }\n        }\n    }\n    col = col / f32(AA * AA);\n    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n\n```\n\nAfter each attempt you will receive: the compilation outcome and compiler diagnostic if any; the numerical range/finiteness result at the first visible time; FLIP at every visible time with pass/fail against tau_FLIP=0.134861432; the total speedup point estimate and confidence interval against the original shader; and the remaining attempt and token budgets."
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn hash(p: f32) -> vec2<f32> {\n    return fract(sin(vec2<f32>(p * 127.1, p * 269.5)) * 18.5453);\n}\n\nfn voronoi(x_in: vec2<f32>) -> f32 {\n    let x = vec2<f32>(mod_f(x_in.x * 12.0, 12.0), x_in.y);\n    let n = floor(x.x) + floor(x.y);\n    let f = fract(x);\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        let o = hash(mod_f(n + f32(k - 2), 12.0));\n        offsets[k] = vec2<f32>(0.5) + 0.5 * sin(3.0 * o - vec2<f32>(0.1));\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    let o = vec3<f32>(0.0, 0.0, -5.0);\n    let r = normalize(vec3<f32>(uv, 0.5));\n    var d = 0.0;\n    for (var i: i32 = 0; i < 70; i++) {\n        let p = o + d * r;\n        let u = atan2(p.y, p.x) / PI;\n        let v = p.z * 4.0;\n        let q = voronoi(vec2<f32>(u - t / 12.0, v + t));\n        let distance = 1.0 - length(p.xy) - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * pow(2.0, -d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn background(uv: vec2<f32>) -> vec3<f32> {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return vec3<f32>(1.0);\n    }\n    return animation(uv, phase(uv));\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> f32 {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return 0.0;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0.0;\n    }\n    if (length(uv) > maskrad) {\n        return 1.0;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return 1.0;\n    }\n    if (mod_f(phase(uv) - t, 1.0) > 0.3) {\n        return 0.0;\n    }\n    return 1.0;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x: i32 = 0; x < 4; x++) {\n        for (var y: i32 = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 - params.resolution) / params.resolution.y;\n            if (foreground(uv, t) > 0.0) {\n                col += background(uv);\n            }\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.000001825 PASS\n- time=3.7: FLIP=0.000003359 PASS\n- time=9.2: FLIP=0.000002286 PASS\nSpeedup vs original: 1.463019x; CI [1.404553, 1.581922]\nAttempts remaining: 7\nToken budget remaining: 175804"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\nconst H: vec2<f32> = vec2<f32>(127.1, 269.5);\nconst HALF: vec2<f32> = vec2<f32>(0.5);\nconst BIAS: vec2<f32> = vec2<f32>(0.1);\nconst OFFSETS: array<vec2<f32>, 12> = array<vec2<f32>, 12>(\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 0.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 1.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 2.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 3.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 4.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 5.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 6.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 7.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 8.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 9.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 10.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 11.0) * 18.5453) - BIAS)\n);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn voronoi(x: f32, y: f32) -> f32 {\n    let n = floor(x) + floor(y);\n    let f = fract(vec2<f32>(x, y));\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        offsets[k] = OFFSETS[u32(mod_f(n + f32(k - 2), 12.0))];\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    let r = normalize(vec3<f32>(uv, 0.5));\n    let u = atan2(r.y, r.x) / PI;\n    let angular_x = mod_f((u - t / 12.0) * 12.0, 12.0);\n    let initial_x = mod_f((-t / 12.0) * 12.0, 12.0);\n    let initial_q = voronoi(initial_x, -20.0 + t);\n    var d = 1.0 - initial_q / 3.0;\n    let radial_speed = length(r.xy);\n    for (var i: i32 = 1; i < 70; i++) {\n        let v = (-5.0 + d * r.z) * 4.0;\n        let q = voronoi(angular_x, v + t);\n        let distance = 1.0 - d * radial_speed - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * exp2(-d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn background(uv: vec2<f32>) -> vec3<f32> {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return vec3<f32>(1.0);\n    }\n    return animation(uv, phase(uv));\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> f32 {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return 0.0;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0.0;\n    }\n    if (length(uv) > maskrad) {\n        return 1.0;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return 1.0;\n    }\n    if (mod_f(phase(uv) - t, 1.0) > 0.3) {\n        return 0.0;\n    }\n    return 1.0;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x: i32 = 0; x < 4; x++) {\n        for (var y: i32 = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 - params.resolution) / params.resolution.y;\n            if (foreground(uv, t) > 0.0) {\n                col += background(uv);\n            }\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.048807703 PASS\n- time=3.7: FLIP=0.054183651 PASS\n- time=9.2: FLIP=0.050894115 PASS\nSpeedup vs original: 1.953775x; CI [1.759442, 2.129457]\nAttempts remaining: 6\nToken budget remaining: 120367"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\nconst H: vec2<f32> = vec2<f32>(127.1, 269.5);\nconst HALF: vec2<f32> = vec2<f32>(0.5);\nconst BIAS: vec2<f32> = vec2<f32>(0.1);\nconst OFFSETS: array<vec2<f32>, 12> = array<vec2<f32>, 12>(\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 0.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 1.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 2.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 3.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 4.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 5.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 6.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 7.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 8.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 9.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 10.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 11.0) * 18.5453) - BIAS)\n);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn voronoi(x: f32, y: f32) -> f32 {\n    let n = floor(x) + floor(y);\n    let f = fract(vec2<f32>(x, y));\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        offsets[k] = OFFSETS[u32(mod_f(n + f32(k - 2), 12.0))];\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let r = normalize(vec3<f32>(uv, 0.5));\n    let u = atan2(r.y, r.x) / PI;\n    let angular_x = mod_f((u - t / 12.0) * 12.0, 12.0);\n    let initial_x = mod_f((-t / 12.0) * 12.0, 12.0);\n    let initial_q = voronoi(initial_x, -20.0 + t);\n    var d = 1.0 - initial_q / 3.0;\n    let radial_speed = length(r.xy);\n    for (var i: i32 = 1; i < 70; i++) {\n        let v = (-5.0 + d * r.z) * 4.0;\n        let q = voronoi(angular_x, v + t);\n        let distance = 1.0 - d * radial_speed - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * exp2(-d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> bool {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return false;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return false;\n    }\n    if (length(uv) > maskrad) {\n        return true;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return true;\n    }\n    return mod_f(phase(uv) - t, 1.0) <= 0.3;\n}\n\nfn background_kind(uv: vec2<f32>) -> i32 {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return 0;\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0;\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return 0;\n    }\n    let radius = length(uv);\n    if (radius < 3.0 / 145.0 || radius > 1.0) {\n        return 1;\n    }\n    return 2;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var gx: i32 = 0; gx < 2; gx++) {\n        for (var gy: i32 = 0; gy < 2; gy++) {\n            var uv_sum = vec2<f32>(0.0);\n            var count = 0.0;\n            for (var sx: i32 = 0; sx < 2; sx++) {\n                for (var sy: i32 = 0; sy < 2; sy++) {\n                    let offset = vec2<f32>(f32(gx * 2 + sx), f32(gy * 2 + sy)) / 4.0;\n                    let uv = ((frag_pos.xy + offset) * 2.0 - params.resolution) / params.resolution.y;\n                    if (foreground(uv, t)) {\n                        let kind = background_kind(uv);\n                        if (kind == 1) {\n                            col += vec3<f32>(1.0);\n                        } else if (kind == 2) {\n                            uv_sum += uv;\n                            count += 1.0;\n                        }\n                    }\n                }\n            }\n            if (count > 0.0) {\n                let uv = uv_sum / count;\n                col += count * animation(uv, phase(uv));\n            }\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.050723277 PASS\n- time=3.7: FLIP=0.056302670 PASS\n- time=9.2: FLIP=0.052865148 PASS\nSpeedup vs original: 6.081656x; CI [5.480706, 6.918387]\nAttempts remaining: 5\nToken budget remaining: 24211"
+    },
+    {
+      "role": "assistant",
+      "content": "```wgsl\nstruct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\nconst H: vec2<f32> = vec2<f32>(127.1, 269.5);\nconst HALF: vec2<f32> = vec2<f32>(0.5);\nconst BIAS: vec2<f32> = vec2<f32>(0.1);\nconst OFFSETS: array<vec2<f32>, 12> = array<vec2<f32>, 12>(\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 0.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 1.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 2.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 3.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 4.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 5.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 6.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 7.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 8.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 9.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 10.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 11.0) * 18.5453) - BIAS)\n);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn voronoi(x: f32, y: f32) -> f32 {\n    let n = floor(x) + floor(y);\n    let f = fract(vec2<f32>(x, y));\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        offsets[k] = OFFSETS[u32(mod_f(n + f32(k - 2), 12.0))];\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let r = normalize(vec3<f32>(uv, 0.5));\n    let u = atan2(r.y, r.x) / PI;\n    let angular_x = mod_f((u - t / 12.0) * 12.0, 12.0);\n    let initial_x = mod_f((-t / 12.0) * 12.0, 12.0);\n    let initial_q = voronoi(initial_x, -20.0 + t);\n    var d = 1.0 - initial_q / 3.0;\n    let radial_speed = length(r.xy);\n    for (var i: i32 = 1; i < 70; i++) {\n        let v = (-5.0 + d * r.z) * 4.0;\n        let q = voronoi(angular_x, v + t);\n        let distance = 1.0 - d * radial_speed - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * exp2(-d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> bool {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return false;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return false;\n    }\n    if (length(uv) > maskrad) {\n        return true;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return true;\n    }\n    return mod_f(phase(uv) - t, 1.0) <= 0.3;\n}\n\nfn background_kind(uv: vec2<f32>) -> i32 {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return 0;\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0;\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return 0;\n    }\n    let radius = length(uv);\n    if (radius < 3.0 / 145.0 || radius > 1.0) {\n        return 1;\n    }\n    return 2;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var white_count = 0.0;\n    var uv_sum = vec2<f32>(0.0);\n    var count = 0.0;\n    let t = mod_f(params.time, 1.0);\n    for (var x: i32 = 0; x < 4; x++) {\n        for (var y: i32 = 0; y < 4; y++) {\n            let offset = vec2<f32>(f32(x), f32(y)) / 4.0;\n            let uv = ((frag_pos.xy + offset) * 2.0 - params.resolution) / params.resolution.y;\n            if (foreground(uv, t)) {\n                let kind = background_kind(uv);\n                if (kind == 1) {\n                    white_count += 1.0;\n                } else if (kind == 2) {\n                    uv_sum += uv;\n                    count += 1.0;\n                }\n            }\n        }\n    }\n    var col = vec3<f32>(white_count);\n    if (count > 0.0) {\n        let uv = uv_sum / count;\n        col += count * animation(uv, phase(uv));\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}\n```"
+    },
+    {
+      "role": "user",
+      "content": "Attempt feedback (Condition A)\nCompilation: PASS\nNumerical check: PASS; has_nan=False; has_inf=False; min=0.0; max=1.0; in_range=True\nVisible FLIP (tau_FLIP=0.134861432):\n- time=1: FLIP=0.057515085 PASS\n- time=3.7: FLIP=0.063602939 PASS\n- time=9.2: FLIP=0.060264118 PASS\nSpeedup vs original: 13.946151x; CI [13.564161, 25.793555]\nAttempts remaining: 4\nToken budget remaining: 0"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "final_requested": false,
+      "submission_sha256": "6b807d02094d6fa940b5b65882164798cbdf7ef21321b091ef5e422e1e2d4fda",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn hash(p: f32) -> vec2<f32> {\n    return fract(sin(vec2<f32>(p * 127.1, p * 269.5)) * 18.5453);\n}\n\nfn voronoi(x_in: vec2<f32>) -> f32 {\n    let x = vec2<f32>(mod_f(x_in.x * 12.0, 12.0), x_in.y);\n    let n = floor(x.x) + floor(x.y);\n    let f = fract(x);\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        let o = hash(mod_f(n + f32(k - 2), 12.0));\n        offsets[k] = vec2<f32>(0.5) + 0.5 * sin(3.0 * o - vec2<f32>(0.1));\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    let o = vec3<f32>(0.0, 0.0, -5.0);\n    let r = normalize(vec3<f32>(uv, 0.5));\n    var d = 0.0;\n    for (var i: i32 = 0; i < 70; i++) {\n        let p = o + d * r;\n        let u = atan2(p.y, p.x) / PI;\n        let v = p.z * 4.0;\n        let q = voronoi(vec2<f32>(u - t / 12.0, v + t));\n        let distance = 1.0 - length(p.xy) - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * pow(2.0, -d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn background(uv: vec2<f32>) -> vec3<f32> {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return vec3<f32>(1.0);\n    }\n    return animation(uv, phase(uv));\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> f32 {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return 0.0;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0.0;\n    }\n    if (length(uv) > maskrad) {\n        return 1.0;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return 1.0;\n    }\n    if (mod_f(phase(uv) - t, 1.0) > 0.3) {\n        return 0.0;\n    }\n    return 1.0;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x: i32 = 0; x < 4; x++) {\n        for (var y: i32 = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 - params.resolution) / params.resolution.y;\n            if (foreground(uv, t) > 0.0) {\n                col += background(uv);\n            }\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 1.8245482351630926e-06,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 3.358905587447225e-06,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.286260041728383e-06,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 1.463019222986222,
+        "ci_low": 1.4045529856130619,
+        "ci_high": 1.5819217359698088,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 48.52761079199263,
+      "usage": {
+        "input_tokens": 22552,
+        "output_tokens": 1644,
+        "total_tokens": 24196,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 22552,
+        "cumulative_output_tokens": 1644,
+        "cumulative_total_tokens": 24196,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 7168,
+        "cumulative_cached_input_tokens": 7168,
+        "reasoning_output_tokens": 123,
+        "cumulative_reasoning_output_tokens": 123,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5b-9109-7841-a67b-c20c7696623e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 2,
+      "final_requested": false,
+      "submission_sha256": "22e4429391c05c308dd101990740b01e792706b93534aa88630f8981ae42ab14",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\nconst H: vec2<f32> = vec2<f32>(127.1, 269.5);\nconst HALF: vec2<f32> = vec2<f32>(0.5);\nconst BIAS: vec2<f32> = vec2<f32>(0.1);\nconst OFFSETS: array<vec2<f32>, 12> = array<vec2<f32>, 12>(\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 0.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 1.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 2.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 3.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 4.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 5.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 6.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 7.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 8.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 9.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 10.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 11.0) * 18.5453) - BIAS)\n);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn voronoi(x: f32, y: f32) -> f32 {\n    let n = floor(x) + floor(y);\n    let f = fract(vec2<f32>(x, y));\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        offsets[k] = OFFSETS[u32(mod_f(n + f32(k - 2), 12.0))];\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    if (length(uv) > 1.0) {\n        return vec3<f32>(1.0);\n    }\n    let r = normalize(vec3<f32>(uv, 0.5));\n    let u = atan2(r.y, r.x) / PI;\n    let angular_x = mod_f((u - t / 12.0) * 12.0, 12.0);\n    let initial_x = mod_f((-t / 12.0) * 12.0, 12.0);\n    let initial_q = voronoi(initial_x, -20.0 + t);\n    var d = 1.0 - initial_q / 3.0;\n    let radial_speed = length(r.xy);\n    for (var i: i32 = 1; i < 70; i++) {\n        let v = (-5.0 + d * r.z) * 4.0;\n        let q = voronoi(angular_x, v + t);\n        let distance = 1.0 - d * radial_speed - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * exp2(-d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn background(uv: vec2<f32>) -> vec3<f32> {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return vec3<f32>(0.0);\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return vec3<f32>(0.0);\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return vec3<f32>(1.0);\n    }\n    return animation(uv, phase(uv));\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> f32 {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return 0.0;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0.0;\n    }\n    if (length(uv) > maskrad) {\n        return 1.0;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return 1.0;\n    }\n    if (mod_f(phase(uv) - t, 1.0) > 0.3) {\n        return 0.0;\n    }\n    return 1.0;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var x: i32 = 0; x < 4; x++) {\n        for (var y: i32 = 0; y < 4; y++) {\n            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / 4.0) * 2.0 - params.resolution) / params.resolution.y;\n            if (foreground(uv, t) > 0.0) {\n                col += background(uv);\n            }\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.04880770295858383,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.05418365076184273,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.0508941151201725,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 1.9537751941893582,
+        "ci_low": 1.7594415993223702,
+        "ci_high": 2.1294569011553603,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 56.77541245799512,
+      "usage": {
+        "input_tokens": 51278,
+        "output_tokens": 4159,
+        "total_tokens": 55437,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 73830,
+        "cumulative_output_tokens": 5803,
+        "cumulative_total_tokens": 79633,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 15232,
+        "cumulative_cached_input_tokens": 22400,
+        "reasoning_output_tokens": 639,
+        "cumulative_reasoning_output_tokens": 762,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5b-9109-7841-a67b-c20c7696623e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml.",
+        "This session was recorded with model `gpt-6.1-sol` but is resuming with `gpt-6-astra`. Consider switching back to `gpt-6.1-sol` as it may affect Codex performance."
+      ]
+    },
+    {
+      "attempt": 3,
+      "final_requested": false,
+      "submission_sha256": "8b9267a7c0f0ba52b2a6e3f986f1999571b54a0c7d45043dc2162cc6c02da778",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\nconst H: vec2<f32> = vec2<f32>(127.1, 269.5);\nconst HALF: vec2<f32> = vec2<f32>(0.5);\nconst BIAS: vec2<f32> = vec2<f32>(0.1);\nconst OFFSETS: array<vec2<f32>, 12> = array<vec2<f32>, 12>(\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 0.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 1.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 2.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 3.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 4.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 5.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 6.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 7.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 8.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 9.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 10.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 11.0) * 18.5453) - BIAS)\n);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn voronoi(x: f32, y: f32) -> f32 {\n    let n = floor(x) + floor(y);\n    let f = fract(vec2<f32>(x, y));\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        offsets[k] = OFFSETS[u32(mod_f(n + f32(k - 2), 12.0))];\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let r = normalize(vec3<f32>(uv, 0.5));\n    let u = atan2(r.y, r.x) / PI;\n    let angular_x = mod_f((u - t / 12.0) * 12.0, 12.0);\n    let initial_x = mod_f((-t / 12.0) * 12.0, 12.0);\n    let initial_q = voronoi(initial_x, -20.0 + t);\n    var d = 1.0 - initial_q / 3.0;\n    let radial_speed = length(r.xy);\n    for (var i: i32 = 1; i < 70; i++) {\n        let v = (-5.0 + d * r.z) * 4.0;\n        let q = voronoi(angular_x, v + t);\n        let distance = 1.0 - d * radial_speed - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * exp2(-d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> bool {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return false;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return false;\n    }\n    if (length(uv) > maskrad) {\n        return true;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return true;\n    }\n    return mod_f(phase(uv) - t, 1.0) <= 0.3;\n}\n\nfn background_kind(uv: vec2<f32>) -> i32 {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return 0;\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0;\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return 0;\n    }\n    let radius = length(uv);\n    if (radius < 3.0 / 145.0 || radius > 1.0) {\n        return 1;\n    }\n    return 2;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var col = vec3<f32>(0.0);\n    let t = mod_f(params.time, 1.0);\n    for (var gx: i32 = 0; gx < 2; gx++) {\n        for (var gy: i32 = 0; gy < 2; gy++) {\n            var uv_sum = vec2<f32>(0.0);\n            var count = 0.0;\n            for (var sx: i32 = 0; sx < 2; sx++) {\n                for (var sy: i32 = 0; sy < 2; sy++) {\n                    let offset = vec2<f32>(f32(gx * 2 + sx), f32(gy * 2 + sy)) / 4.0;\n                    let uv = ((frag_pos.xy + offset) * 2.0 - params.resolution) / params.resolution.y;\n                    if (foreground(uv, t)) {\n                        let kind = background_kind(uv);\n                        if (kind == 1) {\n                            col += vec3<f32>(1.0);\n                        } else if (kind == 2) {\n                            uv_sum += uv;\n                            count += 1.0;\n                        }\n                    }\n                }\n            }\n            if (count > 0.0) {\n                let uv = uv_sum / count;\n                col += count * animation(uv, phase(uv));\n            }\n        }\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.050723277032375336,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.056302670389413834,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.05286514759063721,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 6.081655610551227,
+        "ci_low": 5.480706142520134,
+        "ci_high": 6.918387114831094,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 52.806044249999104,
+      "usage": {
+        "input_tokens": 89296,
+        "output_tokens": 6860,
+        "total_tokens": 96156,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 163126,
+        "cumulative_output_tokens": 12663,
+        "cumulative_total_tokens": 175789,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 43776,
+        "cumulative_cached_input_tokens": 66176,
+        "reasoning_output_tokens": 1246,
+        "cumulative_reasoning_output_tokens": 2008,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5b-9109-7841-a67b-c20c7696623e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    },
+    {
+      "attempt": 4,
+      "final_requested": false,
+      "submission_sha256": "7ad8ddfb3a26e2772c27060df45467dec7df184afaf81850f5a1ee5207cea06b",
+      "submission_source": "struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };\n@group(0) @binding(0) var<uniform> params: Params;\n\nstruct VSOut { @builtin(position) pos: vec4<f32>, };\n\n@vertex\nfn vs_main(@builtin(vertex_index) vi: u32) -> VSOut {\n    var out: VSOut;\n    let x = f32(i32(vi & 1u) * 4 - 1);\n    let y = f32(i32(vi >> 1u) * 4 - 1);\n    out.pos = vec4<f32>(x, y, 0.0, 1.0);\n    return out;\n}\n\nconst PI: f32 = acos(-1.0);\nconst H: vec2<f32> = vec2<f32>(127.1, 269.5);\nconst HALF: vec2<f32> = vec2<f32>(0.5);\nconst BIAS: vec2<f32> = vec2<f32>(0.1);\nconst OFFSETS: array<vec2<f32>, 12> = array<vec2<f32>, 12>(\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 0.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 1.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 2.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 3.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 4.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 5.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 6.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 7.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 8.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 9.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 10.0) * 18.5453) - BIAS),\n    HALF + 0.5 * sin(3.0 * fract(sin(H * 11.0) * 18.5453) - BIAS)\n);\n\nfn mod_f(x: f32, y: f32) -> f32 {\n    return x - y * floor(x / y);\n}\n\nfn voronoi(x: f32, y: f32) -> f32 {\n    let n = floor(x) + floor(y);\n    let f = fract(vec2<f32>(x, y));\n    var offsets: array<vec2<f32>, 5>;\n    for (var k: i32 = 0; k < 5; k++) {\n        offsets[k] = OFFSETS[u32(mod_f(n + f32(k - 2), 12.0))];\n    }\n    var d = 8.0;\n    for (var j: i32 = -1; j <= 1; j++) {\n        for (var i: i32 = -1; i <= 1; i++) {\n            let r = vec2<f32>(f32(i), f32(j)) - f + offsets[i + j + 2];\n            d = min(d, dot(r, r));\n        }\n    }\n    return sqrt(d);\n}\n\nfn animation(uv: vec2<f32>, t: f32) -> vec3<f32> {\n    let r = normalize(vec3<f32>(uv, 0.5));\n    let u = atan2(r.y, r.x) / PI;\n    let angular_x = mod_f((u - t / 12.0) * 12.0, 12.0);\n    let initial_x = mod_f((-t / 12.0) * 12.0, 12.0);\n    let initial_q = voronoi(initial_x, -20.0 + t);\n    var d = 1.0 - initial_q / 3.0;\n    let radial_speed = length(r.xy);\n    for (var i: i32 = 1; i < 70; i++) {\n        let v = (-5.0 + d * r.z) * 4.0;\n        let q = voronoi(angular_x, v + t);\n        let distance = 1.0 - d * radial_speed - q / 3.0;\n        if (distance < 0.001) {\n            var col = vec3<f32>(0.6) + 0.4 * cos(vec3<f32>(u * PI) + vec3<f32>(0.0, 0.5, 1.0) + vec3<f32>(v));\n            col *= vec3<f32>(1.0 - clamp(1.0 - 2.0 * q * q, 0.0, 1.0)) * 7.0;\n            return col * exp2(-d);\n        }\n        d += distance;\n    }\n    return vec3<f32>(0.0);\n}\n\nfn phase(uv: vec2<f32>) -> f32 {\n    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);\n}\n\nfn foreground(uv: vec2<f32>, t: f32) -> bool {\n    let maskrad = 139.2 / 145.0;\n    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {\n        return false;\n    }\n    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return false;\n    }\n    if (length(uv) > maskrad) {\n        return true;\n    }\n    if (length(uv) < 3.0 / 145.0) {\n        return true;\n    }\n    return mod_f(phase(uv) - t, 1.0) <= 0.3;\n}\n\nfn background_kind(uv: vec2<f32>) -> i32 {\n    if (length(uv - vec2<f32>(0.72)) < 0.01) {\n        return 0;\n    }\n    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {\n        return 0;\n    }\n    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {\n        return 0;\n    }\n    let radius = length(uv);\n    if (radius < 3.0 / 145.0 || radius > 1.0) {\n        return 1;\n    }\n    return 2;\n}\n\n@fragment\nfn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {\n    var white_count = 0.0;\n    var uv_sum = vec2<f32>(0.0);\n    var count = 0.0;\n    let t = mod_f(params.time, 1.0);\n    for (var x: i32 = 0; x < 4; x++) {\n        for (var y: i32 = 0; y < 4; y++) {\n            let offset = vec2<f32>(f32(x), f32(y)) / 4.0;\n            let uv = ((frag_pos.xy + offset) * 2.0 - params.resolution) / params.resolution.y;\n            if (foreground(uv, t)) {\n                let kind = background_kind(uv);\n                if (kind == 1) {\n                    white_count += 1.0;\n                } else if (kind == 2) {\n                    uv_sum += uv;\n                    count += 1.0;\n                }\n            }\n        }\n    }\n    var col = vec3<f32>(white_count);\n    if (count > 0.0) {\n        let uv = uv_sum / count;\n        col += count * animation(uv, phase(uv));\n    }\n    return vec4<f32>(clamp(col / 16.0, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);\n}",
+      "compile_ok": true,
+      "compile_error": null,
+      "numerical": {
+        "has_nan": false,
+        "has_inf": false,
+        "min": 0.0,
+        "max": 1.0,
+        "in_range": true,
+        "passed": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.057515084743499756,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.06360293924808502,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.060264118015766144,
+          "passed": true
+        }
+      ],
+      "speedup_ci": {
+        "speedup_point": 13.946150523419812,
+        "ci_low": 13.56416055371305,
+        "ci_high": 25.793555132570173,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "wall_seconds": 44.06591175001813,
+      "usage": {
+        "input_tokens": 133488,
+        "output_tokens": 9198,
+        "total_tokens": 142686,
+        "cost_usd": 0.0,
+        "cumulative_input_tokens": 296614,
+        "cumulative_output_tokens": 21861,
+        "cumulative_total_tokens": 318475,
+        "cumulative_cost_usd": 0.0,
+        "cached_input_tokens": 81664,
+        "cumulative_cached_input_tokens": 147840,
+        "reasoning_output_tokens": 1544,
+        "cumulative_reasoning_output_tokens": 3552,
+        "requested_max_output_tokens": 8000
+      },
+      "thread_id": "01a14c5b-9109-7841-a67b-c20c7696623e",
+      "warnings": [
+        "Under-development features enabled: mcp_oauth_refresh_coordination, respect_system_proxy. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/olddonkey/.codex/config.toml."
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 296614,
+    "output_tokens": 21861,
+    "total_tokens": 318475,
+    "cost_usd": 0.0,
+    "cached_input_tokens": 147840,
+    "reasoning_output_tokens": 3552
+  },
+  "stop_reason": "token_budget",
+  "completed_utc": "2026-10-18T00:17:13Z"
+}
