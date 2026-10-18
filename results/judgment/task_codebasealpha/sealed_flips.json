@@ -1,0 +1,467 @@
+{
+  "warning": "WARNING: This judgment bundle contains sealed times and held-out results. It must not be shown to any future agent.",
+  "sealed": {
+    "thresholds": {
+      "tau_flip": 0.13486143201589584,
+      "tau_tc": 0.00011554360389709473
+    },
+    "samples": [
+      {
+        "time": 0.184595,
+        "flip_mean": 0.0,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 0.886641,
+        "flip_mean": 6.333177680062363e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 1.799997,
+        "flip_mean": 2.0521809346973896e-05,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 2.987228,
+        "flip_mean": 0.0,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 3.663384,
+        "flip_mean": 9.869942914519925e-06,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 4.384089,
+        "flip_mean": 0.0,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 5.81107,
+        "flip_mean": 2.0382415186759317e-06,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 6.011451,
+        "flip_mean": 1.2952895644957607e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 7.166319,
+        "flip_mean": 9.966257721316651e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 7.739091,
+        "flip_mean": 5.33554384674062e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 8.597493,
+        "flip_mean": 1.3760273986918037e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      },
+      {
+        "time": 9.501388,
+        "flip_mean": 0.0,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true,
+        "flip_pass": true,
+        "passed": true
+      }
+    ],
+    "temporal_frames": [
+      {
+        "time": 0.184595,
+        "flip_mean": 0.0,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.234595,
+        "flip_mean": 3.8519505096701323e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.28459500000000004,
+        "flip_mean": 5.311144946062996e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.33459500000000003,
+        "flip_mean": 1.026299628392735e-06,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.384595,
+        "flip_mean": 3.2414311590400757e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.434595,
+        "flip_mean": 6.091560749155178e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.48459500000000005,
+        "flip_mean": 3.819599442067556e-05,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      },
+      {
+        "time": 0.534595,
+        "flip_mean": 9.664840945333708e-07,
+        "numerical_ref": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_test": {
+          "has_nan": false,
+          "has_inf": false,
+          "min": 0.0,
+          "max": 1.0,
+          "in_range": true,
+          "passed": true
+        },
+        "numerical_pass": true
+      }
+    ],
+    "tc_max_delta": 3.758683834576004e-05,
+    "component_passes": {
+      "sample_flip": true,
+      "numerical": true,
+      "temporal": true
+    },
+    "failing_components": [],
+    "perceptual_pass": true,
+    "worst_sealed_time": 1.799997,
+    "worst_sealed_flip": 2.0521809346973896e-05
+  }
+}

@@ -1,0 +1,290 @@
+{
+  "task_id": "task_gears_backup",
+  "stratum": "natural",
+  "selected": {
+    "trajectory_label": "formal-task_gears_backup-k1",
+    "attempt": 3,
+    "submission_sha256": "51b010ad59e47ee4470f1c922a1d8345d23fb1aec25aae535c167b1e55850549",
+    "visible_speedup_point": 12.565569348633074,
+    "visible_speedup_ci": {
+      "speedup_point": 12.565569348633074,
+      "ci_low": 12.116454478392805,
+      "ci_high": 18.8185704926849,
+      "alpha": 0.05,
+      "n_boot": 10000,
+      "seed": 0,
+      "certified_at_1.10": true
+    },
+    "visible_flips": [
+      {
+        "time": 1.0,
+        "flip_mean": 0.05208476260304451,
+        "passed": true
+      },
+      {
+        "time": 3.7,
+        "flip_mean": 0.051885295659303665,
+        "passed": true
+      },
+      {
+        "time": 9.2,
+        "flip_mean": 0.051980726420879364,
+        "passed": true
+      }
+    ]
+  },
+  "status": "selected",
+  "trajectories": [
+    {
+      "trajectory_label": "formal-task_gears_backup-k1",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 276214,
+        "output_tokens": 21265,
+        "total_tokens": 297479,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 226688,
+        "reasoning_output_tokens": 3248
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_gears_backup-k1",
+        "attempt": 3,
+        "submission_sha256": "51b010ad59e47ee4470f1c922a1d8345d23fb1aec25aae535c167b1e55850549",
+        "visible_speedup_point": 12.565569348633074,
+        "visible_speedup_ci": {
+          "speedup_point": 12.565569348633074,
+          "ci_low": 12.116454478392805,
+          "ci_high": 18.8185704926849,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 0.05208476260304451,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 0.051885295659303665,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 0.051980726420879364,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "trajectory_label": "formal-task_gears_backup-k2",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 217106,
+        "output_tokens": 12395,
+        "total_tokens": 229501,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 124032,
+        "reasoning_output_tokens": 680
+      },
+      "attempt_statistics": {
+        "total": 3,
+        "submissions": 3,
+        "compile_ok": 3,
+        "visible_qualifying": 3,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_gears_backup-k2",
+        "attempt": 3,
+        "submission_sha256": "a391ed4bae1e7971cb2e2a33074acbd771f8b5b49ef6696aa62605cd32fee6c1",
+        "visible_speedup_point": 12.212676907571042,
+        "visible_speedup_ci": {
+          "speedup_point": 12.212676907571042,
+          "ci_low": 11.600367601986786,
+          "ci_high": 19.115722057267163,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 0.05208474025130272,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 0.05188515782356262,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 0.05198077857494354,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "trajectory_label": "formal-task_gears_backup-k3",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 222999,
+        "output_tokens": 12777,
+        "total_tokens": 235776,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 143360,
+        "reasoning_output_tokens": 1164
+      },
+      "attempt_statistics": {
+        "total": 3,
+        "submissions": 3,
+        "compile_ok": 3,
+        "visible_qualifying": 3,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_gears_backup-k3",
+        "attempt": 3,
+        "submission_sha256": "e6f95a3dc1d2acd73488222ee2f8682bb6baa8c0aba1b9926195d91a4a213ccf",
+        "visible_speedup_point": 6.424401760233689,
+        "visible_speedup_ci": {
+          "speedup_point": 6.424401760233689,
+          "ci_low": 5.436123578170274,
+          "ci_high": 6.67719463009853,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 0.0,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 1.0614512575557455e-05,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 6.64511526338174e-06,
+            "passed": true
+          }
+        ]
+      }
+    }
+  ],
+  "pass_at_k_inputs": [
+    {
+      "trajectory_label": "formal-task_gears_backup-k1",
+      "attempt": 3,
+      "submission_sha256": "51b010ad59e47ee4470f1c922a1d8345d23fb1aec25aae535c167b1e55850549",
+      "visible_speedup_point": 12.565569348633074,
+      "visible_speedup_ci": {
+        "speedup_point": 12.565569348633074,
+        "ci_low": 12.116454478392805,
+        "ci_high": 18.8185704926849,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.05208476260304451,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.051885295659303665,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.051980726420879364,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "trajectory_label": "formal-task_gears_backup-k2",
+      "attempt": 3,
+      "submission_sha256": "a391ed4bae1e7971cb2e2a33074acbd771f8b5b49ef6696aa62605cd32fee6c1",
+      "visible_speedup_point": 12.212676907571042,
+      "visible_speedup_ci": {
+        "speedup_point": 12.212676907571042,
+        "ci_low": 11.600367601986786,
+        "ci_high": 19.115722057267163,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.05208474025130272,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.05188515782356262,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.05198077857494354,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "trajectory_label": "formal-task_gears_backup-k3",
+      "attempt": 3,
+      "submission_sha256": "e6f95a3dc1d2acd73488222ee2f8682bb6baa8c0aba1b9926195d91a4a213ccf",
+      "visible_speedup_point": 6.424401760233689,
+      "visible_speedup_ci": {
+        "speedup_point": 6.424401760233689,
+        "ci_low": 5.436123578170274,
+        "ci_high": 6.67719463009853,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.0,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 1.0614512575557455e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 6.64511526338174e-06,
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

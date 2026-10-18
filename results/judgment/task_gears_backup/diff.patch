@@ -1,0 +1,289 @@
+--- tasks/task_gears_backup.wgsl
++++ selected.wgsl
+@@ -1,21 +1,3 @@
+-// Original: Gears (2022), by pestis. Backup evaluation task.
+-// URL: https://www.shadertoy.com/view/DssSDS
+-// Source: tasks/sources/gears.frag.
+-// License: CC0, stated in tasks/sources/shader-advent-day03-README.md,
+-// lines 277-279 (the author's code is CC0; the containing repo is MIT).
+-// Port date: 2026-10-17. Faithful GLSL-to-WGSL port; no optimization.
+-// Port changes: house uniform/entry points; I_MODE baked to 0 (animated
+-// foreground/background composite); AA = 4 and both AA loops retained.
+-// Floor-mod uses mod_f; two-argument atan becomes atan2; scalar vector offsets
+-// use explicit splats. GLSL inout prevGear becomes a function pointer; mutable
+-// uv uses uv_in; local gear becomes gear_state; swizzle writes become component
+-// writes. Matrix column order and vector-on-left products are retained.
+-// GLSL switch/ternaries become WGSL switch/if; step becomes blend_step.
+-// The originally uninitialized color accumulator is explicitly zeroed;
+-// the unused col/b locals, ten gear-chain iterations and all gear calls remain.
+-// Final RGB clamp reproduces the original implicit framebuffer clamp; alpha 1.
+-// Vertical orientation mirrored vs the GL original (WebGPU fragment coordinates); consistent across reference and submissions.
+-
+ struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };
+ @group(0) @binding(0) var<uniform> params: Params;
+ 
+@@ -30,183 +12,122 @@
+     return out;
+ }
+ 
+-// Modes: 0 composite preview, 1 background print, 2 foreground print,
+-// 3 original animation, 4 blends between all the different modes.
+-const I_MODE: i32 = 0;
+-const AA: i32 = 4; // antialiasing, each pixel is sampled from AA * AA points
+-const RINGS: f32 = 50.0; // how many rings there are in the foreground spiral
+-const REPSPERROUND: f32 = 16.0; // how many arms there are in the foreground spiral
+ const PI: f32 = acos(-1.0);
+-const DUTYCYCLE: f32 = 0.3; // what amount of the foreground is transparent
+-const LINEWIDTH: f32 = 0.002; // the width of the cutting lines for the background
+-const PRINTSIZE: f32 = 145.0; // nominal print size of the background, in mm
+-const HOLESIZE: f32 = 3.0; // size of the center hole, in mm
+-const FGSIZE: f32 = 139.2; // diameter of the foreground, in mm
+-
+-const TEETH_SIZE: f32 = 0.05;
+ 
+ fn mod_f(x: f32, y: f32) -> f32 {
+     return x - y * floor(x / y);
+ }
+ 
+-fn gear(angle: f32, uv: vec2<f32>, wheels: f32, prevGear: ptr<function, vec4<f32>>) -> f32 {
++fn gear(angle: f32, uv: vec2<f32>, wheels: f32, prev: ptr<function, vec4<f32>>) -> f32 {
+     let radius = wheels / 50.0;
+-    let prev_radius = (*prevGear).z / 50.0;
+-    let offset = vec2<f32>(cos(angle), sin(angle)) * (prev_radius + radius + 0.01 + TEETH_SIZE);
+-
+-    var gear_state: vec4<f32>;
+-    gear_state.x = (*prevGear).x + offset.x;
+-    gear_state.y = (*prevGear).y + offset.y;
+-    gear_state.z = wheels;
+-    gear_state.w = -((*prevGear).w + angle * (*prevGear).z) - PI - (PI + angle) * wheels;
+-
+-    let pos = uv - gear_state.xy;
+-    let r = length(pos);
++    let offset = vec2<f32>(cos(angle), sin(angle)) *
++        ((*prev).z / 50.0 + radius + 0.06);
++    let state = vec4<f32>(
++        (*prev).xy + offset,
++        wheels,
++        -((*prev).w + angle * (*prev).z) - PI - (PI + angle) * wheels
++    );
++    *prev = state;
++    let pos = uv - state.xy;
++    let r2 = dot(pos, pos);
++    let inner = radius - 0.06;
++    let outer = radius + 0.052;
++    if (r2 < inner * inner || r2 > outer * outer) {
++        return 0.0;
++    }
++    let r = sqrt(r2);
+     let a = atan2(pos.y, pos.x);
+-    let f = smoothstep(-0.5, 0.5, cos(a * wheels + gear_state.w)) * TEETH_SIZE + radius;
+-
+-    *prevGear = gear_state;
+-
+-    return (1.0 - smoothstep(f, f + 0.002, r)) * step(radius - TEETH_SIZE * 1.2, r);
++    let f = smoothstep(-0.5, 0.5, cos(a * wheels + state.w)) * 0.05 + radius;
++    return (1.0 - smoothstep(f, f + 0.002, r)) * step(inner, r);
+ }
+ 
+ fn animation(uv_in: vec2<f32>, t: f32) -> vec3<f32> {
+-    var uv = uv_in;
+-    if (length(uv) > 1.0) {
++    if (length(uv_in) > 1.0) {
+         return vec3<f32>(1.0);
+     }
+-    var prevGear: vec4<f32>;
+-    let col = vec3<f32>(0.0);
+-    uv = uv / 1.4;
+-    let b = 5.0;
++    var uv = uv_in / 1.4;
+     var c = vec3<f32>(1.7);
+     var p = vec3<f32>(0.0);
+     let angle = 4.3 + PI;
+     uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));
+-    for (var i: i32 = 0; i < 10; i++) {
+-        prevGear.x = 0.0;
+-        prevGear.y = 0.0;
+-        prevGear.z = 15.0;
+-        prevGear.w = t * 2.0 * PI;
+-        p = max(p, c * gear(0.0, uv, 10.0, &prevGear));
+-        p = max(p, c * gear(1.4, uv, 6.0, &prevGear));
+-        p = max(p, c * gear(3.2, uv, 6.0, &prevGear));
+-        p = max(p, c * gear(1.5, uv, 7.0, &prevGear));
+-        p = max(p, c * gear(3.4, uv, 8.0, &prevGear));
+-        p = max(p, c * gear(4.2, uv, 9.0, &prevGear));
+-        p = max(p, c * gear(2.3, uv, 6.0, &prevGear));
+-        p = max(p, c * gear(4.0, uv, 7.0, &prevGear));
+-        p = max(p, c * gear(4.3, uv, 5.0, &prevGear));
+-        p = max(p, c * gear(5.7, uv, 10.0, &prevGear));
+-        p = max(p, c * gear(4.8, uv, 6.0, &prevGear));
+-        p = max(p, c * gear(6.0, uv, 8.0, &prevGear));
+-        p = max(p, c * gear(1.2, uv, 9.0, &prevGear));
+-        p = max(p, c * gear(-0.7, uv, 5.0, &prevGear));
+-        p = max(p, c * gear(-0.2, uv, 6.0, &prevGear));
+-        p = max(p, c * gear(0.76, uv, 8.0, &prevGear));
+-        uv = uv * 1.2;
++    for (var i = 0; i < 10; i++) {
++        if (dot(uv, uv) > 1.69) {
++            break;
++        }
++        var prev = vec4<f32>(0.0, 0.0, 15.0, t * 2.0 * PI);
++        var g = 0.0;
++        g = max(g, gear(0.0, uv, 10.0, &prev));
++        g = max(g, gear(1.4, uv, 6.0, &prev));
++        g = max(g, gear(3.2, uv, 6.0, &prev));
++        g = max(g, gear(1.5, uv, 7.0, &prev));
++        g = max(g, gear(3.4, uv, 8.0, &prev));
++        g = max(g, gear(4.2, uv, 9.0, &prev));
++        g = max(g, gear(2.3, uv, 6.0, &prev));
++        g = max(g, gear(4.0, uv, 7.0, &prev));
++        g = max(g, gear(4.3, uv, 5.0, &prev));
++        g = max(g, gear(5.7, uv, 10.0, &prev));
++        g = max(g, gear(4.8, uv, 6.0, &prev));
++        g = max(g, gear(6.0, uv, 8.0, &prev));
++        g = max(g, gear(1.2, uv, 9.0, &prev));
++        g = max(g, gear(-0.7, uv, 5.0, &prev));
++        g = max(g, gear(-0.2, uv, 6.0, &prev));
++        g = max(g, gear(0.76, uv, 8.0, &prev));
++        p = max(p, c * g);
+         c *= vec3<f32>(0.75, 0.5, 0.7);
+-        let angle = f32(i) + 4.5;
+-        uv *= mat2x2<f32>(cos(angle), sin(angle), -sin(angle), cos(angle));
++        if (all(p >= c)) {
++            break;
++        }
++        uv *= 1.2;
++        let a = f32(i) + 4.5;
++        uv *= mat2x2<f32>(cos(a), sin(a), -sin(a), cos(a));
+     }
+-
+-    p = pow(p, vec3<f32>(2.2));
+-
+-    return p;
++    return pow(p, vec3<f32>(2.2));
+ }
+ 
+ fn phase(uv: vec2<f32>) -> f32 {
+-    return REPSPERROUND * atan2(uv.y, uv.x) / 2.0 / PI + RINGS * length(uv);
++    return 16.0 * atan2(uv.y, uv.x) / 2.0 / PI + 50.0 * length(uv);
+ }
+ 
+-fn background(uv: vec2<f32>) -> vec3<f32> {
+-    // add cutting aides & marks
+-    if (length(uv - vec2<f32>(0.72)) < 0.01) {
++fn composite(uv: vec2<f32>, t: f32) -> vec3<f32> {
++    let maskrad = 139.2 / 145.0;
++    let r = length(uv);
++    let fg_uv = uv / maskrad;
++    if (length(fg_uv - vec2<f32>(0.72)) < 0.01 ||
++        length(fg_uv - vec2<f32>(0.76, 0.69)) < 0.02) {
+         return vec3<f32>(0.0);
+     }
+-    if (length(uv - vec2<f32>(0.76, 0.69)) < 0.02) {
++    var ph = 0.0;
++    if (r <= maskrad && r >= 3.0 / 145.0) {
++        ph = phase(uv);
++        if (mod_f(ph - t, 1.0) > 0.3) {
++            return vec3<f32>(0.0);
++        }
++    }
++    if (length(uv - vec2<f32>(0.72)) < 0.01 ||
++        length(uv - vec2<f32>(0.76, 0.69)) < 0.02 ||
++        abs(max(abs(uv.x), abs(uv.y)) - 1.0) < 0.002) {
+         return vec3<f32>(0.0);
+     }
+-    if (abs(max(abs(uv.x), abs(uv.y)) - 1.0) < LINEWIDTH) {
+-        return vec3<f32>(0.0);
+-    }
+-    if (length(uv) < HOLESIZE / PRINTSIZE) {
++    if (r < 3.0 / 145.0 || r > 1.0) {
+         return vec3<f32>(1.0);
+     }
+-
+-    // generate background print by slicing the animation
+-    return animation(uv, phase(uv));
+-}
+-
+-fn foreground(uv: vec2<f32>, t: f32) -> vec3<f32> {
+-    // add cutting aides & marks
+-    let maskrad = FGSIZE / PRINTSIZE;
+-    if (length(uv / maskrad - vec2<f32>(0.72)) < 0.01) {
+-        return vec3<f32>(0.0);
++    if (r > maskrad) {
++        ph = phase(uv);
+     }
+-    if (length(uv / maskrad - vec2<f32>(0.76, 0.69)) < 0.02) {
+-        return vec3<f32>(0.0);
+-    }
+-    if (length(uv) > maskrad) {
+-        return vec3<f32>(1.0);
+-    }
+-    if (length(uv) < HOLESIZE / PRINTSIZE) {
+-        return vec3<f32>(1.0);
+-    }
+-
+-    // generate foreground spiral
+-    let k = mod_f(phase(uv) - t, 1.0);
+-    if (k > DUTYCYCLE) {
+-        return vec3<f32>(0.0);
+-    }
+-    return vec3<f32>(1.0);
++    return animation(uv, ph);
+ }
+ 
+ @fragment
+ fn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {
+     var col = vec3<f32>(0.0);
+-
+-    // we'll take the modulus, to make it easy to see that the animation
+-    // really loops
+     let t = mod_f(params.time, 1.0);
+-
+-    for (var x: i32 = 0; x < AA; x++) {
+-        for (var y: i32 = 0; y < AA; y++) {
+-            let uv = ((frag_pos.xy + vec2<f32>(f32(x), f32(y)) / f32(AA)) * 2.0 - params.resolution) / params.resolution.y;
+-            switch (I_MODE) {
+-                default: {
+-                    col += foreground(uv, t) * background(uv);
+-                    break;
+-                }
+-                case 1: {
+-                    col += background(uv);
+-                    break;
+-                }
+-                case 2: {
+-                    col += foreground(uv, t);
+-                    break;
+-                }
+-                case 3: {
+-                    col += animation(uv, t);
+-                    break;
+-                }
+-                case 4: {
+-                    let blend_step: i32 = i32(params.time / 5.0) % 4;
+-                    var alpha = fract(params.time / 5.0);
+-                    alpha = 1.0 / (1.0 + exp(-(alpha - 0.5) * 30.0));
+-                    if (blend_step == 0) {
+-                        col += mix(background(uv), foreground(uv, t), alpha);
+-                    } else if (blend_step == 1) {
+-                        col += mix(foreground(uv, t), foreground(uv, t) * background(uv), alpha);
+-                    } else if (blend_step == 2) {
+-                        col += mix(foreground(uv, t) * background(uv), animation(uv, t), alpha);
+-                    } else {
+-                        col += mix(animation(uv, t), background(uv), alpha);
+-                    }
+-                }
+-            }
++    for (var x = 0; x < 2; x++) {
++        for (var y = 0; y < 2; y++) {
++            let offset = vec2<f32>(f32(x), f32(y)) * 0.5 + vec2<f32>(0.125);
++            let uv = ((frag_pos.xy + offset) * 2.0 -
++                params.resolution) / params.resolution.y;
++            col += composite(uv, t);
+         }
+     }
+-    col = col / f32(AA * AA);
+-    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);
+-}
++    return vec4<f32>(clamp(col * 0.25, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);
++}
+\ No newline at end of file

@@ -1,0 +1,97 @@
+--- tasks/task_cherry_injected.wgsl
++++ selected.wgsl
+@@ -1,15 +1,3 @@
+-// Original: Cherry, by keijiro (ShaderSketches / KodeLife).
+-// URL: https://github.com/keijiro/ShaderSketches
+-// Source: tasks/sources/Cherry.glsl.
+-// License: Unlicense, stated under "License" in tasks/sources/keijiro-README.md,
+-// line 21 (Code: Unlicense).
+-// Port date: 2026-10-17. Faithful GLSL-to-WGSL port; no optimization.
+-// Port changes: house uniform/entry points; GLSL float/vector types and literals;
+-// explicit f32(i) loop-index conversion and scalar vector splats; c is retained
+-// and its output is named col for the return. No mode baking or mod helpers needed.
+-// Final RGB clamp reproduces the original implicit framebuffer clamp; alpha 1.
+-// Vertical orientation mirrored vs the GL original (WebGPU fragment coordinates); consistent across reference and submissions.
+-
+ struct Params { resolution: vec2<f32>, time: f32, _pad: f32, };
+ @group(0) @binding(0) var<uniform> params: Params;
+ 
+@@ -28,53 +16,37 @@
+     return fract(sin(dot(uv, vec2<f32>(12.9898, 78.233))) * 43758.5453);
+ }
+ 
+-fn petal_field(p: vec2<f32>, phi: f32) -> vec2<f32> {
+-    let v1 = vec2<f32>(cos(phi), sin(phi)); // outward vector
+-    let v2 = vec2<f32>(-v1.y, v1.x); // vertical vector
+-    let v3 = vec2<f32>(cos(phi - 1.0), sin(phi - 1.0)); // cut line 1
+-    let v4 = vec2<f32>(cos(phi + 1.0), sin(phi + 1.0)); // cut line 2
+-
+-    let petal = max(distance(p, v1 * 0.27 - v2 * 0.15),
+-                    distance(p, v1 * 0.27 + v2 * 0.15));
+-    let cut = min(dot(v3, p) - dot(v3, v1 * 0.4),
+-                  dot(v4, p) - dot(v4, v1 * 0.4));
+-    return vec2<f32>(petal, cut);
+-}
+-
+ @fragment
+ fn fs_main(@builtin(position) frag_pos: vec4<f32>) -> @location(0) vec4<f32> {
+-    const pi: f32 = 3.1415926;
+     var scale = params.resolution.y / 5.0;
+-
+     var p = frag_pos.xy / scale;
+     let t = params.time * 0.6 + rand(floor(p)) * 200.0;
+-
+     let s2 = 1.6 + 0.6 * sin(t);
+-    p = (fract(p) - vec2<f32>(0.5)) * s2; // repeat and scale
++    p = (fract(p) - vec2<f32>(0.5)) * s2;
+     scale /= s2;
+ 
+-    var d1 = 1e6; // distance field (petal)
+-    var d2 = 0.0; // distance field (cut)
++    let phi = 3.1415926 * 0.1 + t;
++    let v = vec2<f32>(cos(phi), sin(phi));
++    let q = vec2<f32>(
++        dot(p, v),
++        abs(dot(p, vec2<f32>(-v.y, v.x)))
++    );
+ 
+-    for (var i: i32 = 0; i < 5; i++) {
+-        let phi = pi * (2.0 * f32(i) / 5.0 + 0.1) + t;
++    let q1 = vec2<f32>(
++        0.309016994 * q.x + 0.951056516 * q.y,
++        -0.951056516 * q.x + 0.309016994 * q.y
++    );
++    let q2 = vec2<f32>(
++        -0.809016994 * q.x + 0.587785252 * q.y,
++        -0.587785252 * q.x - 0.809016994 * q.y
++    );
++    let a = select(q, q1, q1.x > q.x);
++    let b = select(a, q2, q2.x > a.x);
+ 
+-        var field = petal_field(p, phi);
+-        if (i == 0) {
+-            let phase = frexp(phi);
+-            let shift = 1 + i32(u32(frag_pos.x) & 3u);
+-            let local_phase = ldexp(phase.fract, -shift);
+-            let panel_phase = ldexp(local_phase, phase.exp + shift);
+-            let panel_field = petal_field(p, panel_phase);
+-            field = 0.5 * (field + panel_field);
+-        }
+-        d1 = min(d1, field.x);
+-        d2 = max(d2, field.y);
+-    }
+-
+-    let c12 = vec2<f32>(1.0) - vec2<f32>(d1 - 0.29, d2) * scale;
+-    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y), vec3<f32>(0.0)) * min(c12.x, c12.y);
+-
+-    let col = c;
+-    return vec4<f32>(clamp(col, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);
+-}
++    let delta = vec2<f32>(b.x - 0.27, abs(b.y) + 0.15);
++    let d1 = length(delta);
++    let d2 = max(0.0, 0.540302306 * (b.x - 0.4) - 0.841470985 * abs(b.y));
++    let coverage = 1.0 - max(d1 - 0.29, d2) * scale;
++    let c = max(vec3<f32>(1.0, 0.7, 0.7) + vec3<f32>(p.y), vec3<f32>(0.0)) * coverage;
++    return vec4<f32>(clamp(c, vec3<f32>(0.0), vec3<f32>(1.0)), 1.0);
++}
+\ No newline at end of file

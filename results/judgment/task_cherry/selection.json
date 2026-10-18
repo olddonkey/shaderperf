@@ -1,0 +1,290 @@
+{
+  "task_id": "task_cherry",
+  "stratum": "injected",
+  "selected": {
+    "trajectory_label": "formal-task_cherry-k3",
+    "attempt": 3,
+    "submission_sha256": "b6419978915b63683df8f1638b6aff062c97631a5f855cdf3e8a1e84dbb6b777",
+    "visible_speedup_point": 4.487683384415264,
+    "visible_speedup_ci": {
+      "speedup_point": 4.487683384415264,
+      "ci_low": 4.091271100444769,
+      "ci_high": 4.5350744987231275,
+      "alpha": 0.05,
+      "n_boot": 10000,
+      "seed": 0,
+      "certified_at_1.10": true
+    },
+    "visible_flips": [
+      {
+        "time": 1.0,
+        "flip_mean": 2.184260119975079e-05,
+        "passed": true
+      },
+      {
+        "time": 3.7,
+        "flip_mean": 1.813281050999649e-05,
+        "passed": true
+      },
+      {
+        "time": 9.2,
+        "flip_mean": 2.8233742341399193e-05,
+        "passed": true
+      }
+    ]
+  },
+  "status": "selected",
+  "trajectories": [
+    {
+      "trajectory_label": "formal-task_cherry-k1",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 249013,
+        "output_tokens": 10175,
+        "total_tokens": 259188,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 80256,
+        "reasoning_output_tokens": 2619
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_cherry-k1",
+        "attempt": 3,
+        "submission_sha256": "af2a2964fd6c15e4ce3097d48db75a80e2078d8ea5c7b8a0117bc06efadfda4a",
+        "visible_speedup_point": 4.452419587254914,
+        "visible_speedup_ci": {
+          "speedup_point": 4.452419587254914,
+          "ci_low": 4.383601585080366,
+          "ci_high": 4.661124710723591,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 8.451830217381939e-05,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 4.190876643406227e-05,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 0.00010611921607051045,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "trajectory_label": "formal-task_cherry-k2",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 250071,
+        "output_tokens": 10981,
+        "total_tokens": 261052,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 149632,
+        "reasoning_output_tokens": 3232
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_cherry-k2",
+        "attempt": 4,
+        "submission_sha256": "5dc3c384d4792c682985190ea811cf7f5db0805e9d2c7f4403d44930a57d814b",
+        "visible_speedup_point": 4.368072820762546,
+        "visible_speedup_ci": {
+          "speedup_point": 4.368072820762546,
+          "ci_low": 4.260771748712773,
+          "ci_high": 4.511510659129988,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 8.461605466436595e-05,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 4.1994760977104306e-05,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 0.0001061169314198196,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "trajectory_label": "formal-task_cherry-k3",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 248958,
+        "output_tokens": 9643,
+        "total_tokens": 258601,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 167808,
+        "reasoning_output_tokens": 1833
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_cherry-k3",
+        "attempt": 3,
+        "submission_sha256": "b6419978915b63683df8f1638b6aff062c97631a5f855cdf3e8a1e84dbb6b777",
+        "visible_speedup_point": 4.487683384415264,
+        "visible_speedup_ci": {
+          "speedup_point": 4.487683384415264,
+          "ci_low": 4.091271100444769,
+          "ci_high": 4.5350744987231275,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 2.184260119975079e-05,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 1.813281050999649e-05,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 2.8233742341399193e-05,
+            "passed": true
+          }
+        ]
+      }
+    }
+  ],
+  "pass_at_k_inputs": [
+    {
+      "trajectory_label": "formal-task_cherry-k1",
+      "attempt": 3,
+      "submission_sha256": "af2a2964fd6c15e4ce3097d48db75a80e2078d8ea5c7b8a0117bc06efadfda4a",
+      "visible_speedup_point": 4.452419587254914,
+      "visible_speedup_ci": {
+        "speedup_point": 4.452419587254914,
+        "ci_low": 4.383601585080366,
+        "ci_high": 4.661124710723591,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 8.451830217381939e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 4.190876643406227e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.00010611921607051045,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "trajectory_label": "formal-task_cherry-k2",
+      "attempt": 4,
+      "submission_sha256": "5dc3c384d4792c682985190ea811cf7f5db0805e9d2c7f4403d44930a57d814b",
+      "visible_speedup_point": 4.368072820762546,
+      "visible_speedup_ci": {
+        "speedup_point": 4.368072820762546,
+        "ci_low": 4.260771748712773,
+        "ci_high": 4.511510659129988,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 8.461605466436595e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 4.1994760977104306e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.0001061169314198196,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "trajectory_label": "formal-task_cherry-k3",
+      "attempt": 3,
+      "submission_sha256": "b6419978915b63683df8f1638b6aff062c97631a5f855cdf3e8a1e84dbb6b777",
+      "visible_speedup_point": 4.487683384415264,
+      "visible_speedup_ci": {
+        "speedup_point": 4.487683384415264,
+        "ci_low": 4.091271100444769,
+        "ci_high": 4.5350744987231275,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 2.184260119975079e-05,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 1.813281050999649e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.8233742341399193e-05,
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

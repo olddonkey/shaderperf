@@ -1,0 +1,290 @@
+{
+  "task_id": "task_codebasealpha",
+  "stratum": "injected",
+  "selected": {
+    "trajectory_label": "formal-task_codebasealpha-k3",
+    "attempt": 4,
+    "submission_sha256": "38622318dc34303d664543d89f09f82585ff529057afd277db90eaaf52780bd4",
+    "visible_speedup_point": 2.01602189197046,
+    "visible_speedup_ci": {
+      "speedup_point": 2.01602189197046,
+      "ci_low": 1.9186751082084434,
+      "ci_high": 2.0860174019560342,
+      "alpha": 0.05,
+      "n_boot": 10000,
+      "seed": 0,
+      "certified_at_1.10": true
+    },
+    "visible_flips": [
+      {
+        "time": 1.0,
+        "flip_mean": 7.468074159078242e-07,
+        "passed": true
+      },
+      {
+        "time": 3.7,
+        "flip_mean": 0.0,
+        "passed": true
+      },
+      {
+        "time": 9.2,
+        "flip_mean": 5.544464443119068e-07,
+        "passed": true
+      }
+    ]
+  },
+  "status": "selected",
+  "trajectories": [
+    {
+      "trajectory_label": "formal-task_codebasealpha-k1",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 260720,
+        "output_tokens": 13423,
+        "total_tokens": 274143,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 221184,
+        "reasoning_output_tokens": 2466
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_codebasealpha-k1",
+        "attempt": 3,
+        "submission_sha256": "103b409b41ee5e49f2ca23f7202912094cf3708e8bdb4b3d770a6cbf86996074",
+        "visible_speedup_point": 1.8039321917377864,
+        "visible_speedup_ci": {
+          "speedup_point": 1.8039321917377864,
+          "ci_low": 1.7562037998622138,
+          "ci_high": 1.9142878894108075,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 4.772325155499857e-06,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 2.85937112494139e-05,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 2.928245703515131e-05,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "trajectory_label": "formal-task_codebasealpha-k2",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 260736,
+        "output_tokens": 13530,
+        "total_tokens": 274266,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 166272,
+        "reasoning_output_tokens": 2402
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_codebasealpha-k2",
+        "attempt": 3,
+        "submission_sha256": "d154aceb1bbde566c1e4a1436ad2e5c2ca35548bd608d26f558428d9be60e779",
+        "visible_speedup_point": 1.6866543307609458,
+        "visible_speedup_ci": {
+          "speedup_point": 1.6866543307609458,
+          "ci_low": 1.6553523700633586,
+          "ci_high": 1.7115307151589243,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 0.00031977141043171287,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 0.000346493354300037,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 0.00016409042291343212,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "trajectory_label": "formal-task_codebasealpha-k3",
+      "status": "selected",
+      "usage": {
+        "input_tokens": 284450,
+        "output_tokens": 14839,
+        "total_tokens": 299289,
+        "cost_usd": 0.0,
+        "cached_input_tokens": 198912,
+        "reasoning_output_tokens": 3193
+      },
+      "attempt_statistics": {
+        "total": 4,
+        "submissions": 4,
+        "compile_ok": 4,
+        "visible_qualifying": 4,
+        "final_requests": 0
+      },
+      "selected": {
+        "trajectory_label": "formal-task_codebasealpha-k3",
+        "attempt": 4,
+        "submission_sha256": "38622318dc34303d664543d89f09f82585ff529057afd277db90eaaf52780bd4",
+        "visible_speedup_point": 2.01602189197046,
+        "visible_speedup_ci": {
+          "speedup_point": 2.01602189197046,
+          "ci_low": 1.9186751082084434,
+          "ci_high": 2.0860174019560342,
+          "alpha": 0.05,
+          "n_boot": 10000,
+          "seed": 0,
+          "certified_at_1.10": true
+        },
+        "visible_flips": [
+          {
+            "time": 1.0,
+            "flip_mean": 7.468074159078242e-07,
+            "passed": true
+          },
+          {
+            "time": 3.7,
+            "flip_mean": 0.0,
+            "passed": true
+          },
+          {
+            "time": 9.2,
+            "flip_mean": 5.544464443119068e-07,
+            "passed": true
+          }
+        ]
+      }
+    }
+  ],
+  "pass_at_k_inputs": [
+    {
+      "trajectory_label": "formal-task_codebasealpha-k1",
+      "attempt": 3,
+      "submission_sha256": "103b409b41ee5e49f2ca23f7202912094cf3708e8bdb4b3d770a6cbf86996074",
+      "visible_speedup_point": 1.8039321917377864,
+      "visible_speedup_ci": {
+        "speedup_point": 1.8039321917377864,
+        "ci_low": 1.7562037998622138,
+        "ci_high": 1.9142878894108075,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 4.772325155499857e-06,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 2.85937112494139e-05,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 2.928245703515131e-05,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "trajectory_label": "formal-task_codebasealpha-k2",
+      "attempt": 3,
+      "submission_sha256": "d154aceb1bbde566c1e4a1436ad2e5c2ca35548bd608d26f558428d9be60e779",
+      "visible_speedup_point": 1.6866543307609458,
+      "visible_speedup_ci": {
+        "speedup_point": 1.6866543307609458,
+        "ci_low": 1.6553523700633586,
+        "ci_high": 1.7115307151589243,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 0.00031977141043171287,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.000346493354300037,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 0.00016409042291343212,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "trajectory_label": "formal-task_codebasealpha-k3",
+      "attempt": 4,
+      "submission_sha256": "38622318dc34303d664543d89f09f82585ff529057afd277db90eaaf52780bd4",
+      "visible_speedup_point": 2.01602189197046,
+      "visible_speedup_ci": {
+        "speedup_point": 2.01602189197046,
+        "ci_low": 1.9186751082084434,
+        "ci_high": 2.0860174019560342,
+        "alpha": 0.05,
+        "n_boot": 10000,
+        "seed": 0,
+        "certified_at_1.10": true
+      },
+      "visible_flips": [
+        {
+          "time": 1.0,
+          "flip_mean": 7.468074159078242e-07,
+          "passed": true
+        },
+        {
+          "time": 3.7,
+          "flip_mean": 0.0,
+          "passed": true
+        },
+        {
+          "time": 9.2,
+          "flip_mean": 5.544464443119068e-07,
+          "passed": true
+        }
+      ]
+    }
+  ]
+}
