@@ -22,6 +22,12 @@ EXPECTED_TASKS = {
     "task_cherry.wgsl",
     "task_codebasealpha.wgsl",
     "task_gears_backup.wgsl",
+    "task_dkmandel.wgsl",
+    "task_dkburning.wgsl",
+    "task_lobes.wgsl",
+    "task_menger.wgsl",
+    "task_goursat.wgsl",
+    "task_devchatter.wgsl",
 }
 # Deliberately crude, line-based heuristic, not WGSL type inference: a line
 # mentioning i32/u32 is exempt. Keep integer remainder explicitly typed on
